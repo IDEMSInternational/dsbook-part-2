@@ -19,7 +19,7 @@
     <calculator model="none"/>
     <index-page ref="frontmatter"/>
     <video privacy="yes"/>
-    <baseurl href="https://example.com"/>
+    <baseurl href="https://rafalab.github.io/dsbook-part-2/"/>
   </html>
 
   <latex>
