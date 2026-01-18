@@ -1,0 +1,34 @@
+    <!-- Part 5: High Dimensional Data -->
+    <part xml:id="part-hdd">
+      <title>High Dimensional Data</title>
+
+      <chapter xml:id="working-with-matrices-in-r">
+    <title>Working with Matrices in R</title>
+        <p>Content will be added here.</p>
+      </chapter>
+
+      <chapter xml:id="applied-linear-algebra">
+    <title>Applied Linear Algebra</title>
+        <p>Content will be added here.</p>
+      </chapter>
+
+      <chapter xml:id="dimension-reduction">
+        <title>Dimension Reduction</title>
+        <p>Content will be added here.</p>
+      </chapter>
+
+      <chapter xml:id="regularization">
+    <title>Regularization</title>
+        <p>Content will be added here.</p>
+      </chapter>
+
+      <chapter xml:id="latent-factor-models">
+    <title>Latent Factor Models</title>
+        <p>Content will be added here.</p>
+      </chapter>
+
+      <chapter xml:id="hdd-recommended-reading">
+        <title>Recommended Reading</title>
+        <p>Content will be added here.</p>
+      </chapter>
+</part>
