@@ -18,24 +18,22 @@
     <node>node</node>
     <liblouis>file2brl</liblouis>
   </executables>
-  <targets>
-    <target name="html">
-      <format>html</format>
-      <source>pretext/source/main.ptx</source>
-      <publication>pretext/publication/publication.ptx</publication>
-      <output-dir>pretext/output/html</output-dir>
-    </target>
-    <target name="latex">
-      <format>latex</format>
-      <source>pretext/source/main.ptx</source>
-      <publication>pretext/publication/publication.ptx</publication>
-      <output-dir>pretext/output/latex</output-dir>
-    </target>
-    <target name="pdf">
-      <format>pdf</format>
-      <source>pretext/source/main.ptx</source>
-      <publication>pretext/publication/publication.ptx</publication>
-      <output-dir>pretext/output/pdf</output-dir>
-    </target>
-  </targets>
+  <target name="html">
+    <format>html</format>
+    <source>pretext/source/main.ptx</source>
+    <publication>pretext/publication/publication.ptx</publication>
+    <output-dir>pretext/output/html</output-dir>
+  </target>
+  <target name="latex">
+    <format>latex</format>
+    <source>pretext/source/main.ptx</source>
+    <publication>pretext/publication/publication.ptx</publication>
+    <output-dir>pretext/output/latex</output-dir>
+  </target>
+  <target name="pdf">
+    <format>pdf</format>
+    <source>pretext/source/main.ptx</source>
+    <publication>pretext/publication/publication.ptx</publication>
+    <output-dir>pretext/output/pdf</output-dir>
+  </target>
 </project>
