@@ -1,54 +1,38 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!--
-    Main PreTeXt source file for Introduction to Data Science
--->
+
 <pretext xmlns:xi="http://www.w3.org/2001/XInclude" xml:lang="en-US">
-  
+
   <docinfo>
     <macros>
-      \newcommand{\R}{\mathbb{R}}
     </macros>
-    <latex-image-preamble>
-      \usepackage{tikz}
-    </latex-image-preamble>
   </docinfo>
 
   <book xml:id="intro-data-science">
     <title>Introduction to Data Science</title>
-    <subtitle>Statistics and Prediction Algorithms Through Case Studies</subtitle>
 
-    <frontmatter xml:id="frontmatter">
-      <titlepage>
-        <author>
-          <personname>Rafael A. Irizarry</personname>
-        </author>
-      </titlepage>
-
-      <xi:include href="./frontmatter.ptx"/>
-    </frontmatter>
-
-    <xi:include href="./summary-statistics.ptx"/>
+    <!-- Preface -->
+    <xi:include href="preface.ptx"/>
     
-    <xi:include href="./probability.ptx"/>
-    
-    <xi:include href="./statistical-inference.ptx"/>
-    
-    <xi:include href="./linear-models.ptx"/>
-    
-    <xi:include href="./high-dimensional-data.ptx"/>
-    
-    <xi:include href="./machine-learning.ptx"/>
+    <!-- Acknowledgments -->
+    <xi:include href="acknowledgements.ptx"/>
 
-    <backmatter xml:id="backmatter">
-      <title>Back Matter</title>
+    <!-- Introduction -->
+    <xi:include href="summary-statistics.ptx"/>
 
-      <colophon>
-        <p>
-          This book was authored in PreTeXt.
-        </p>
-      </colophon>
+    <!-- Probability -->
+    <xi:include href="probability.ptx"/>
 
-    </backmatter>
+    <!-- Statistical Inference -->
+    <xi:include href="statistical-inference.ptx"/>
+
+    <!-- Linear Models -->
+    <xi:include href="linear-models.ptx"/>
+
+    <!-- High Dimensional Data -->
+    <xi:include href="high-dimensional-data.ptx"/>
+
+    <!-- Machine Learning -->
+    <xi:include href="machine-learning.ptx"/>
 
   </book>
 
