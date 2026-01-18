@@ -8,5 +8,6 @@
   <targets>
     <target name="html" format="html" />
     <target name="pdf" format="pdf" />
+    <target name="web" format="html" />
   </targets>
 </project>
