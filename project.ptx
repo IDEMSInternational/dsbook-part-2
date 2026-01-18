@@ -3,7 +3,21 @@
     This file provides the overall configuration for your PreTeXt
     project. To edit the content of your document, open `pretext/source/main.ptx`.
 -->
-<project>
+<project ptx-version="2">
+  <executables>
+    <latex>latex</latex>
+    <pdflatex>pdflatex</pdflatex>
+    <xelatex>xelatex</xelatex>
+    <pdfsvg>pdf2svg</pdfsvg>
+    <asy>asy</asy>
+    <sage>sage</sage>
+    <pdfpng>convert</pdfpng>
+    <pdfeps>pdftops</pdfeps>
+    <pdfcrop>pdf-crop-margins</pdfcrop>
+    <pageres>pageres</pageres>
+    <node>node</node>
+    <liblouis>file2brl</liblouis>
+  </executables>
   <targets>
     <target name="html">
       <format>html</format>
