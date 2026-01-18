@@ -1,10 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!--
-    Summary Statistics Chapter
--->
-<chapter xml:id="summary-statistics" xmlns:xi="http://www.w3.org/2001/XInclude">
-  <title>Summary Statistics</title>
+<part xml:id="part-summary-statistics-chapter">
+   <title>Summary Statistics</title>
 
+   <chapter xml:id="ch-visualizing-data-distributions">
+        <title>Visualizing data distributions</title>
+        
   <introduction>
     <p>
       This chapter introduces summary statistics and distributions.
@@ -39,4 +38,6 @@
     </p>
   </section>
 
-</chapter>
+ </chapter>
+
+ </part>
