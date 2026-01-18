@@ -1,42 +1,40 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!--
-    Linear Models Chapter
--->
-<chapter xml:id="linear-models" xmlns:xi="http://www.w3.org/2001/XInclude">
-  <title>Linear Models</title>
+    <!-- Part 4: Linear Models -->
+    <part xml:id="part-linear-models">
+      <title>Linear Models</title>
 
-  <introduction>
-    <p>
-      This chapter covers linear regression and related modeling techniques.
-    </p>
-  </introduction>
+      <chapter xml:id="introduction-to-regression">
+    <title>Introduction to Regression</title>
+        <p>Content will be added here.</p>
+      </chapter>
 
-  <section xml:id="regression">
-    <title>Regression</title>
-    <p>
-      <!-- Content to be added -->
-    </p>
-  </section>
-
-  <section xml:id="linear-model-framework">
+      <chapter xml:id="linear-model-framework">
     <title>Linear Model Framework</title>
-    <p>
-      <!-- Content to be added -->
-    </p>
-  </section>
+        <p>Content will be added here.</p>
+      </chapter>
 
-  <section xml:id="multivariable-regression">
-    <title>Multivariable Regression</title>
-    <p>
-      <!-- Content to be added -->
-    </p>
-  </section>
+      <chapter xml:id="treatment-effect-models">
+        <title>Treatment Effect Models</title>
+        <p>Content will be added here.</p>
+      </chapter>
 
-  <section xml:id="generalized-linear-models">
+      <chapter xml:id="generalized-linear-models">
     <title>Generalized Linear Models</title>
-    <p>
-      <!-- Content to be added -->
-    </p>
-  </section>
+        <p>Content will be added here.</p>
+      </chapter>
 
+      <chapter xml:id="association-is-not-causation">
+    <title>Association is not Causation</title>
+        <p>Content will be added here.</p>
+      </chapter>
+
+      <chapter xml:id="multivariable-regression">
+    <title>Multivariable Regression</title>
+        <p>Content will be added here.</p>
+      </chapter>
+
+      <chapter xml:id="lm-recommended-reading">
+        <title>Recommended Reading</title>
+        <p>Content will be added here.</p>
+      </chapter>
+</part>
 </chapter>
