@@ -8,7 +8,7 @@ This directory contains the PreText version of "Introduction to Data Science".
 - `publication/publication.ptx` - Publication settings
 - `source/` - Source files for the textbook
   - `main.ptx` - Main book structure file
-  - `frontmatter.ptx` - Front Matter chapter
+  - `frontmatter.ptx` - Front Matter (Preface and Acknowledgments)
   - `summary-statistics.ptx` - Summary Statistics chapter
   - `probability.ptx` - Probability chapter
   - `statistical-inference.ptx` - Statistical Inference chapter
@@ -31,7 +31,15 @@ This directory contains the PreText version of "Introduction to Data Science".
 
 ## Building the Book
 
-To build this PreText book, you'll need to have the PreText CLI installed. Then you can run:
+To build this PreText book, you'll need to have the PreText CLI installed. 
+
+### From the repository root:
+
+```bash
+pretext build html --project pretext/project.ptx
+```
+
+Or specify the project file location:
 
 ```bash
 cd pretext
