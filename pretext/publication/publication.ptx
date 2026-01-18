@@ -1,28 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!--
-    This file contains publication-specific configuration for your PreTeXt project.
--->
+
 <publication>
+  <common>
+    <!-- HTML-specific options -->
+  </common>
   <source>
     <directories external="../assets" generated="../generated-assets"/>
   </source>
-
-  <common>
-    <!-- Document title -->
-    <chunking level="2"/>
-    <tableofcontents level="2"/>
-    <exercise-inline hint="yes" answer="no" solution="no"/>
-    <exercise-divisional hint="yes" answer="no" solution="no"/>
-  </common>
-
-  <html>
-    <calculator model="none"/>
-    <index-page ref="frontmatter"/>
-    <video privacy="yes"/>
-    <baseurl href="https://rafalab.github.io/dsbook-part-2/"/>
-  </html>
-
-  <latex>
-    <asymptote links="no"/>
-  </latex>
 </publication>
