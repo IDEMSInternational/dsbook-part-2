@@ -1,28 +1,16 @@
-<?xml version="1.0" encoding="UTF-8" ?>
 <!--
-    Front Matter Chapter
+    Front Matter - Preface and Acknowledgments
 -->
-<chapter xml:id="front-matter" xmlns:xi="http://www.w3.org/2001/XInclude">
-  <title>Front Matter</title>
+<preface xml:id="preface">
+  <title>Preface</title>
+  <p>
+    <!-- Content to be added -->
+  </p>
+</preface>
 
-  <introduction>
-    <p>
-      This chapter contains the preface and introductory material for the textbook.
-    </p>
-  </introduction>
-
-  <section xml:id="preface">
-    <title>Preface</title>
-    <p>
-      <!-- Content to be added -->
-    </p>
-  </section>
-
-  <section xml:id="acknowledgments">
-    <title>Acknowledgments</title>
-    <p>
-      <!-- Content to be added -->
-    </p>
-  </section>
-
-</chapter>
+<acknowledgement xml:id="acknowledgments">
+  <title>Acknowledgments</title>
+  <p>
+    <!-- Content to be added -->
+  </p>
+</acknowledgement>
