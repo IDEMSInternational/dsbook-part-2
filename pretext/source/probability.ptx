@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    Probability Chapter
+-->
+<chapter xml:id="probability" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Probability</title>
+
+  <introduction>
+    <p>
+      This chapter covers probability theory and its applications in data science.
+    </p>
+  </introduction>
+
+  <section xml:id="discrete-probability">
+    <title>Discrete Probability</title>
+    <p>
+      <!-- Content to be added -->
+    </p>
+  </section>
+
+  <section xml:id="continuous-probability">
+    <title>Continuous Probability</title>
+    <p>
+      <!-- Content to be added -->
+    </p>
+  </section>
+
+  <section xml:id="random-variables">
+    <title>Random Variables</title>
+    <p>
+      <!-- Content to be added -->
+    </p>
+  </section>
+
+</chapter>

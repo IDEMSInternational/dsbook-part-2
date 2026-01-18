@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    Linear Models Chapter
+-->
+<chapter xml:id="linear-models" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Linear Models</title>
+
+  <introduction>
+    <p>
+      This chapter covers linear regression and related modeling techniques.
+    </p>
+  </introduction>
+
+  <section xml:id="regression">
+    <title>Regression</title>
+    <p>
+      <!-- Content to be added -->
+    </p>
+  </section>
+
+  <section xml:id="linear-model-framework">
+    <title>Linear Model Framework</title>
+    <p>
+      <!-- Content to be added -->
+    </p>
+  </section>
+
+  <section xml:id="multivariable-regression">
+    <title>Multivariable Regression</title>
+    <p>
+      <!-- Content to be added -->
+    </p>
+  </section>
+
+  <section xml:id="generalized-linear-models">
+    <title>Generalized Linear Models</title>
+    <p>
+      <!-- Content to be added -->
+    </p>
+  </section>
+
+</chapter>

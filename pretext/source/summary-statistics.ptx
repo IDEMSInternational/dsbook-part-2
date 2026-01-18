@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    Summary Statistics Chapter
+-->
+<chapter xml:id="summary-statistics" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Summary Statistics</title>
+
+  <introduction>
+    <p>
+      This chapter introduces summary statistics and distributions.
+    </p>
+  </introduction>
+
+  <section xml:id="distributions">
+    <title>Distributions</title>
+    <p>
+      <!-- Content to be added -->
+    </p>
+  </section>
+
+  <section xml:id="numerical-summaries">
+    <title>Numerical Summaries</title>
+    <p>
+      <!-- Content to be added -->
+    </p>
+  </section>
+
+  <section xml:id="comparing-groups">
+    <title>Comparing Groups</title>
+    <p>
+      <!-- Content to be added -->
+    </p>
+  </section>
+
+</chapter>
