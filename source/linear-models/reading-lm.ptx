@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<chapter xmlns:xi="http://www.w3.org/2001/XInclude" xml:id="reading-lm">
+  <title>Reading: Linear Models</title>
+  
+  <introduction>
+    <p>
+      Additional reading on linear models.
+    </p>
+  </introduction>
+
+</chapter>
