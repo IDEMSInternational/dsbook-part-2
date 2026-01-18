@@ -1,10 +1,12 @@
 # PreText Textbook Structure
 
-This directory contains the PreText version of "Introduction to Data Science".
+This directory contains the PreText source files for "Introduction to Data Science".
+
+The main `project.ptx` configuration file is located in the repository root.
 
 ## Structure
 
-- `project.ptx` - Main project configuration file
+- `../project.ptx` - Main project configuration file (in repository root)
 - `publication/publication.ptx` - Publication settings
 - `source/` - Source files for the textbook
   - `main.ptx` - Main book structure file
@@ -36,15 +38,10 @@ To build this PreText book, you'll need to have the PreText CLI installed.
 ### From the repository root:
 
 ```bash
-pretext build html --project pretext/project.ptx
-```
-
-Or specify the project file location:
-
-```bash
-cd pretext
 pretext build html
 ```
+
+The `project.ptx` file in the repository root will be automatically detected by PreText CLI.
 
 For more information about PreText, visit: https://pretextbook.org/
 
