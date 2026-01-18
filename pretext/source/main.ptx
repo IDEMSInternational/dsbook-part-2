@@ -12,9 +12,6 @@
 
     <!-- Preface -->
     <xi:include href="preface.ptx"/>
-    
-    <!-- Acknowledgments -->
-    <xi:include href="acknowledgements.ptx"/>
 
     <!-- Introduction -->
     <xi:include href="summary-statistics.ptx"/>
