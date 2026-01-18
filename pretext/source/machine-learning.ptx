@@ -1,42 +1,44 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!--
-    Machine Learning Chapter
--->
-<chapter xml:id="machine-learning" xmlns:xi="http://www.w3.org/2001/XInclude">
-  <title>Machine Learning</title>
+    <!-- Part 5: High Dimensional Data -->
+    <part xml:id="part-hdd">
+      <title>High Dimensional Data</title>
 
-  <introduction>
-    <p>
-      This chapter covers machine learning algorithms and techniques.
-    </p>
-  </introduction>
-
-  <section xml:id="ml-notation-terminology">
+      <chapter xml:id="ml-notation-terminology">
     <title>Notation and Terminology</title>
-    <p>
-      <!-- Content to be added -->
-    </p>
-  </section>
+        <p>Content will be added here.</p>
+      </chapter>
 
-  <section xml:id="evaluation-metrics">
+      <chapter xml:id="performance-metrics">
     <title>Evaluation Metrics</title>
-    <p>
-      <!-- Content to be added -->
-    </p>
-  </section>
+        <p>Content will be added here.</p>
+      </chapter>
 
-  <section xml:id="ml-algorithms">
-    <title>Machine Learning Algorithms</title>
-    <p>
-      <!-- Content to be added -->
-    </p>
-  </section>
+      <chapter xml:id="conditional-expectations-and-smoothing">
+        <title>Conditional Expectations and Smoothing</title>
+        <p>Content will be added here.</p>
+      </chapter>
 
-  <section xml:id="clustering">
-    <title>Clustering</title>
-    <p>
-      <!-- Content to be added -->
-    </p>
-  </section>
+      <chapter xml:id="resampling-and-model-assessment">
+    <title>Resampling and Model Assessment</title>
+        <p>Content will be added here.</p>
+      </chapter>
 
-</chapter>
+      <chapter xml:id="supervised-learning-models">
+    <title>Supervised Learning Models</title>
+        <p>Content will be added here.</p>
+      </chapter>
+
+      <chapter xml:id="building-machine-learning-models">
+    <title>Building Machine Learning Models</title>
+        <p>Content will be added here.</p>
+      </chapter>
+
+     <chapter xml:id="unsupervised-learning-clustering">
+    <title>Unsupervised Learning: Clustering</title>
+        <p>Content will be added here.</p>
+      </chapter>
+
+      <chapter xml:id="ml-recommended-reading">
+        <title>Recommended Reading</title>
+        <p>Content will be added here.</p>
+      </chapter>
+</part>
