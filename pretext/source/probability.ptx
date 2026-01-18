@@ -1,35 +1,35 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!--
-    Probability Chapter
--->
-<chapter xml:id="probability" xmlns:xi="http://www.w3.org/2001/XInclude">
-  <title>Probability</title>
+    <!-- Part 2: Probability -->
+    <part xml:id="part-probability">
+      <title>Probability</title>
 
-  <introduction>
-    <p>
-      This chapter covers probability theory and its applications in data science.
-    </p>
-  </introduction>
+      <chapter xml:id="ch-connecting-data-and-probability">
+        <title>Connecting Data and Probability</title>
+        <p>Content will be added here.</p>
+      </chapter>
 
-  <section xml:id="discrete-probability">
-    <title>Discrete Probability</title>
-    <p>
-      <!-- Content to be added -->
-    </p>
-  </section>
+      <chapter xml:id="discrete-probability">
+        <title>Discrete Probability</title>
+        <p>Content will be added here.</p>
+      </chapter>
 
-  <section xml:id="continuous-probability">
-    <title>Continuous Probability</title>
-    <p>
-      <!-- Content to be added -->
-    </p>
-  </section>
+      <chapter xml:id="continuous-probability">
+        <title>Continuous Probability</title>
+        <p>Content will be added here.</p>
+      </chapter>
 
-  <section xml:id="random-variables">
-    <title>Random Variables</title>
-    <p>
-      <!-- Content to be added -->
-    </p>
-  </section>
+      <chapter xml:id="random-variables">
+        <title>Random Variables</title>
+        <p>Content will be added here.</p>
+      </chapter>
 
-</chapter>
+      <chapter xml:id="sampling-models-and-the-central-limit-theorem">
+        <title>Sampling Models and the Central Limit Theorem</title>
+        <p>Content will be added here.</p>
+      </chapter>
+
+      <chapter xml:id="probability-recommended-reading">
+        <title>Recommended Reading</title>
+        <p>Content will be added here.</p>
+      </chapter>
+
+    </part>
