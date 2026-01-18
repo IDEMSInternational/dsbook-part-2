@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    Introduction to Data Science
+    Statistics and Prediction Algorithms Through Case Studies
+-->
+<pretext xmlns:xi="http://www.w3.org/2001/XInclude" xml:lang="en-US">
+  
+  <docinfo>
+    <macros>
+      % Add any custom LaTeX macros here
+    </macros>
+  </docinfo>
+
+  <book xml:id="intro-data-science">
+    <title>Introduction to Data Science</title>
+    <subtitle>Statistics and Prediction Algorithms Through Case Studies</subtitle>
+
+    <!-- Front Matter -->
+    <xi:include href="./frontmatter/frontmatter.ptx"/>
+
+    <!-- Part 1: Summary Statistics -->
+    <part xml:id="part-summary-statistics">
+      <title>Summary Statistics</title>
+      <xi:include href="./summaries/intro-summaries.ptx"/>
+      <xi:include href="./summaries/distributions.ptx"/>
+      <xi:include href="./summaries/numerical-summaries.ptx"/>
+      <xi:include href="./summaries/comparing-groups.ptx"/>
+      <xi:include href="./summaries/reading-summaries.ptx"/>
+    </part>
+
+    <!-- Part 2: Probability -->
+    <part xml:id="part-probability">
+      <title>Probability</title>
+      <xi:include href="./prob/intro-to-prob.ptx"/>
+      <xi:include href="./prob/connecting-data-and-probability.ptx"/>
+      <xi:include href="./prob/discrete-probability.ptx"/>
+      <xi:include href="./prob/continuous-probability.ptx"/>
+      <xi:include href="./prob/random-variables.ptx"/>
+      <xi:include href="./prob/sampling-models-and-clt.ptx"/>
+      <xi:include href="./prob/reading-prob.ptx"/>
+    </part>
+
+    <!-- Part 3: Statistical Inference -->
+    <part xml:id="part-statistical-inference">
+      <title>Statistical Inference</title>
+      <xi:include href="./inference/intro-inference.ptx"/>
+      <xi:include href="./inference/estimates-confidence-intervals.ptx"/>
+      <xi:include href="./inference/models.ptx"/>
+      <xi:include href="./inference/bayes.ptx"/>
+      <xi:include href="./inference/hierarchical-models.ptx"/>
+      <xi:include href="./inference/hypothesis-testing.ptx"/>
+      <xi:include href="./inference/bootstrap.ptx"/>
+      <xi:include href="./inference/reading-inference.ptx"/>
+    </part>
+
+    <!-- Part 4: Linear Models -->
+    <part xml:id="part-linear-models">
+      <title>Linear Models</title>
+      <xi:include href="./linear-models/intro-to-linear-models.ptx"/>
+      <xi:include href="./linear-models/regression.ptx"/>
+      <xi:include href="./linear-models/linear-model-framework.ptx"/>
+      <xi:include href="./linear-models/treatment-effect-models.ptx"/>
+      <xi:include href="./linear-models/glm.ptx"/>
+      <xi:include href="./linear-models/association-not-causation.ptx"/>
+      <xi:include href="./linear-models/multivariable-regression.ptx"/>
+      <xi:include href="./linear-models/reading-lm.ptx"/>
+    </part>
+
+    <!-- Part 5: High Dimensional Data -->
+    <part xml:id="part-high-dimensional-data">
+      <title>High Dimensional Data</title>
+      <xi:include href="./highdim/intro-highdim.ptx"/>
+      <xi:include href="./highdim/matrices-in-R.ptx"/>
+      <xi:include href="./highdim/linear-algebra.ptx"/>
+      <xi:include href="./highdim/dimension-reduction.ptx"/>
+      <xi:include href="./highdim/regularization.ptx"/>
+      <xi:include href="./highdim/latent-factor-models.ptx"/>
+      <xi:include href="./highdim/reading-highdim.ptx"/>
+    </part>
+
+    <!-- Part 6: Machine Learning -->
+    <part xml:id="part-machine-learning">
+      <title>Machine Learning</title>
+      <xi:include href="./ml/intro-ml.ptx"/>
+      <xi:include href="./ml/notation-and-terminology.ptx"/>
+      <xi:include href="./ml/evaluation-metrics.ptx"/>
+      <xi:include href="./ml/conditionals-and-smoothing.ptx"/>
+      <xi:include href="./ml/resampling-methods.ptx"/>
+      <xi:include href="./ml/algorithms.ptx"/>
+      <xi:include href="./ml/ml-in-practice.ptx"/>
+      <xi:include href="./ml/clustering.ptx"/>
+      <xi:include href="./ml/reading-ml.ptx"/>
+    </part>
+
+    <!-- Back Matter -->
+    <xi:include href="./backmatter/backmatter.ptx"/>
+
+  </book>
+
+</pretext>

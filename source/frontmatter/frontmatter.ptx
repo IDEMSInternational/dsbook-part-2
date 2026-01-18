@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<frontmatter xmlns:xi="http://www.w3.org/2001/XInclude" xml:id="frontmatter">
+  
+  <titlepage>
+    <author>
+      <personname>Rafael A. Irizarry</personname>
+      <institution>Harvard University</institution>
+    </author>
+    <date><today/></date>
+  </titlepage>
+
+  <preface xml:id="preface">
+    <title>Preface</title>
+    <p>
+      This is the website for the <em>Statistics and Prediction Algorithms Through Case Studies</em>, 
+      the second part of <em>Introduction to Data Science</em>.
+    </p>
+    <p>
+      This book started out as part of the class notes used in the HarvardX Data Science Series.
+    </p>
+  </preface>
+
+  <acknowledgement xml:id="acknowledgement">
+    <title>Acknowledgments</title>
+    <p>
+      A special thanks to Amy Gill, Jorge Cornick, Barry MacLean, and Robert Gentleman for dozens of 
+      comments, edits, and suggestions.
+    </p>
+  </acknowledgement>
+
+</frontmatter>

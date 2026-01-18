@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    This file contains publication-specific settings.
+-->
+<publication>
+  <source>
+    <!-- Path to main.ptx relative to project root -->
+    <directories external="../external" generated="../generated-assets"/>
+  </source>
+  
+  <!-- HTML-specific options -->
+  <html>
+    <css style="default" colors="blue_red"/>
+    <knowl remark="no" example="no" proof="no" definition="no"/>
+    <index-page ref="index-page"/>
+  </html>
+  
+  <!-- PDF/LaTeX-specific options -->
+  <latex print="no" sides="two"/>
+  
+  <!-- Common options -->
+  <common>
+    <exercise-divisional hint="yes" answer="no" solution="no"/>
+  </common>
+</publication>

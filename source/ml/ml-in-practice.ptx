@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<chapter xmlns:xi="http://www.w3.org/2001/XInclude" xml:id="ml-in-practice">
+  <title>Machine Learning in Practice</title>
+  
+  <introduction>
+    <p>
+      This chapter covers machine learning in practice.
+    </p>
+  </introduction>
+
+</chapter>

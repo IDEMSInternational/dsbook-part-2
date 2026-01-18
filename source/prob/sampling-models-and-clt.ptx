@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<chapter xmlns:xi="http://www.w3.org/2001/XInclude" xml:id="sampling-models-and-clt">
+  <title>Sampling Models and Central Limit Theorem</title>
+  
+  <introduction>
+    <p>
+      This chapter covers sampling models and the central limit theorem.
+    </p>
+  </introduction>
+
+</chapter>
