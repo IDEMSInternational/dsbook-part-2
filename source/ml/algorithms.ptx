@@ -8,4 +8,12 @@
     </p>
   </introduction>
 
+  <section xml:id="sec-trees">
+    <title>Classification and regression trees (CART)</title>
+    
+    <p>
+      Classification and regression trees (CART) provide a flexible, intuitive approach to prediction by repeatedly splitting the predictor space into smaller and more homogeneous regions. This section will be populated with content from the algorithms.qmd file.
+    </p>
+  </section>
+
 </chapter>
