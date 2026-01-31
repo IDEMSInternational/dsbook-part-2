@@ -179,7 +179,7 @@ pbinom(40, size = n, prob = 1/2)
         </input>
       </program>
       <p>
-        We can also simnulate the number of heads using a <c>rbinom</c> instead of <c>replicate</c> and <c>sample</c>:
+        We can also simulate the number of heads using a <c>rbinom</c> instead of <c>replicate</c> and <c>sample</c>:
       </p>
       <program language="r">
         <input>
@@ -379,7 +379,7 @@ mean(x)
     </p>
     
     <p>
-      If we shift the random variable by a constant the variability does not change. So it has not effect on the standard error:
+      If we shift the random variable by a constant the variability does not change. So it has no effect on the standard error:
     </p>
     
     <me>
