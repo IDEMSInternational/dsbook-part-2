@@ -47,7 +47,7 @@
     
     <note>
       <p>
-        The p-value of 0.05 as a threshold for statistical significance is conventionally used in many areas of research. A cutoff of 0.01 is also used to define <em>highly significance</em>. The choice of 0.05 is somewhat arbitrary and was popularized by the British statistician Ronald Fisher in the 1920s. We do not recommend using these cutoff without justification and recommend avoiding the phrase <em>statistically significant</em>.
+        The p-value of 0.05 as a threshold for statistical significance is conventionally used in many areas of research. A cutoff of 0.01 is also used to define <em>highly significant</em>. The choice of 0.05 is somewhat arbitrary and was popularized by the British statistician Ronald Fisher in the 1920s. We do not recommend using these cutoffs without justification and recommend avoiding the phrase <em>statistically significant</em>.
       </p>
     </note>
     
@@ -235,7 +235,7 @@ x &lt;- rbinom(N, 1, pi0)
     <exercise>
       <statement>
         <p>
-          Repeat exercise for but for the following values:
+          Repeat exercise 4 but for the following values:
         </p>
         
         <program language="r">
