@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<chapter xmlns:xi="http://www.w3.org/2001/XInclude" xml:id="matrices-in-R">
+  <title>Matrices in R</title>
+  
+  <introduction>
+    <p>
+      This chapter covers matrices in R.
+    </p>
+  </introduction>
+
+</chapter>
