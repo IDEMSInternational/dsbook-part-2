@@ -103,7 +103,7 @@ c(d[1, 2], d[2, 51])
     </p>
 
     <p>
-      Now imagine we <em>rotate</em> the entire point cloud so that the variation that was previously along the diagonal is now aligned with the horizontal axis. In this rotated view, the largest differences between points would show up in the first (horizontal) dimension. This would make it easier to describe the data using just one variables, the one that captures the most meaningful variation.
+      Now imagine we <em>rotate</em> the entire point cloud so that the variation that was previously along the diagonal is now aligned with the horizontal axis. In this rotated view, the largest differences between points would show up in the first (horizontal) dimension. This would make it easier to describe the data using just one variable, the one that captures the most meaningful variation.
     </p>
 
     <p>
@@ -286,7 +286,7 @@ rotate &lt;- function(x, theta){
     </md>
 
     <p>
-      with <m>b_{21} = \cos\theta</m>, <m>b_{21} = \sin\theta</m>, <m>b_{12} = -\sin\theta</m>, and <m>b_{22} = \cos\theta</m>.
+      with <m>b_{11} = \cos\theta</m>, <m>b_{21} = \sin\theta</m>, <m>b_{12} = -\sin\theta</m>, and <m>b_{22} = \cos\theta</m>.
     </p>
 
     <p>
@@ -405,7 +405,7 @@ all.equal(A %*% t(A), diag(2))
     </p>
 
     <me>
-      \sum_{1=1}^n \|\mathbf{z}_i\|^2 = \sum_{i=1}^n \|\mathbf{A}^\top\mathbf{x}_i\|^2 = \sum_{i=1}^n \mathbf{x}_i^\top \mathbf{A}\mathbf{A}^\top  \mathbf{x}_i = \sum_{i=1}^n \mathbf{x}_i^\top\mathbf{x}_i = \sum_{i=1}^n\|\mathbf{x}_i\|^2
+      \sum_{i=1}^n \|\mathbf{z}_i\|^2 = \sum_{i=1}^n \|\mathbf{A}^\top\mathbf{x}_i\|^2 = \sum_{i=1}^n \mathbf{x}_i^\top \mathbf{A}\mathbf{A}^\top  \mathbf{x}_i = \sum_{i=1}^n \mathbf{x}_i^\top\mathbf{x}_i = \sum_{i=1}^n\|\mathbf{x}_i\|^2
     </me>
 
     <p>
