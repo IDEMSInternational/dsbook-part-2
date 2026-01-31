@@ -302,7 +302,7 @@ any(duplicated(bdays))
       <p>
         To estimate the probability of a shared birthday in the group, we repeat this experiment by repeatedly sampling sets of 50 birthdays:
       </p>
-      <program language="r" xml:id="birthday-problem">
+      <program language="r" xml:id="birthday-problem-simulation">
         <input>
 same_birthday &lt;- function(n) any(duplicated(sample(1:365, n, replace = TRUE)))
 results &lt;- replicate(10000, same_birthday(50))
