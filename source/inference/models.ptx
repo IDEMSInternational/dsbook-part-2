@@ -254,7 +254,11 @@ hist(one_poll_per_pollster$spread, breaks = 10)
     </p>
     
     <p>
-      So our new statistical model is that <m>Y_1, \dots, Y_N</m> are a random sample with expected value <m>\theta</m> and standard deviation <m>\sigma</m>. The distribution, for now, is unspecified. But we consider <m>N</m> to be large enough to assume that the sample average <m>\bar{Y} = \frac{1}{N}\sum_{i=1}^N Y_i</m> follows a normal distribution with expected value <m>\theta</m> and standard error <m>\sigma / \sqrt{N}</m>. We write:
+      So our new statistical model is that <m>Y_1, \dots, Y_N</m> are a random sample with expected value <m>\theta</m> and standard deviation <m>\sigma</m>. The distribution, for now, is unspecified. 
+    </p>
+    
+    <p>
+      But we consider <m>N</m> to be large enough to assume that the sample average <m>\bar{Y} = \frac{1}{N}\sum_{i=1}^N Y_i</m> follows a normal distribution with expected value <m>\theta</m> and standard error <m>\sigma / \sqrt{N}</m>. We write:
     </p>
     
     <me>
@@ -378,7 +382,7 @@ round(results*100, 2)
       </me>
       
       <p>
-        This is referred to as a <term>t-statistic</term>. By substituting <m>\sigma</m> with <m>s</m>, we introduce some variability. The theory tells us that <m>t</m> follows a <term>Student's t-distribution</term> with <m>N-1</m> <term>degrees of freedom</term>. The degrees of freedom is a parameter that controls the variability via fatter tails. Here are three examples of t-distributions with three different degrees of freedom:
+        This is referred to as a <term>t-statistic</term>. By substituting <m>\sigma</m> with <m>s</m>, we introduce some variability. The theory tells us that <m>t</m> follows a <term>Student's t-distribution</term> with <m>N-1</m> <term>degrees of freedom</term>. The degrees of freedom is a parameter that controls the variability via fatter tails. Student's t-distribution has heavier tails than the normal distribution, especially for small degrees of freedom, and these tails account for the additional uncertainty from estimating <m>\sigma</m>. Here are three examples of t-distributions with three different degrees of freedom:
       </p>
       
       <program language="r">
