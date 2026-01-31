@@ -201,7 +201,7 @@ cbind(o, e)
       </program>
 
       <p>
-        However, under the null hypothesis these observations are random variables. The Chi-square statistic quantifies how much the observed tables deviates from the expected by:
+        However, under the null hypothesis these observations are random variables. The Chi-square statistic quantifies how much the observed table deviates from the expected by:
       </p>
 
       <ol>
@@ -601,7 +601,7 @@ tidy(fit)$p.value[2]
     </p>
 
     <p>
-      The general strategy is to assumes <m>Y_i</m> follow a known distribution, such as binomial or exponential, and model a <em>transformation</em> of the expected value of the outcome using a linear combination of predictors:
+      The general strategy is to assume <m>Y_i</m> follow a known distribution, such as binomial or exponential, and model a <em>transformation</em> of the expected value of the outcome using a linear combination of predictors:
     </p>
 
     <me>
@@ -860,7 +860,7 @@ c(chisq.test(o)$p.value, chisq.test(ox10)$p.value)
     <exercise xml:id="exercise-glm-8">
       <statement>
         <p>
-          During the 2016 US presidential election, then candidate Donald J. Trump used his twitter account as a way to communicate with potential voters. Todd Vaziri hypothesized that "Every non-hyperbolic tweet is from iPhone (his staff). Every hyperbolic tweet is from Android (from him)." We will test this hypothesis using association tests. The <term>dslabs</term> object <c>sentiment_counts</c> provides a table with the counts for several sentiments from each source (Android or iPhone):
+          During the 2016 US presidential election, then candidate Donald J. Trump used his Twitter account as a way to communicate with potential voters. Todd Vaziri hypothesized that "Every non-hyperbolic tweet is from iPhone (his staff). Every hyperbolic tweet is from Android (from him)." We will test this hypothesis using association tests. The <term>dslabs</term> object <c>sentiment_counts</c> provides a table with the counts for several sentiments from each source (Android or iPhone):
         </p>
 
         <program language="r">
