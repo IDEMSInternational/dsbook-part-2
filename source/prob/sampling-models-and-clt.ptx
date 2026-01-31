@@ -364,7 +364,7 @@ pbinom(n/2 - 1, size = n, prob = 10/19)
           </ol>
         </p>
         <p>
-          Now create a random variable <m>\bar{X}_n</m> that is your average winnings per bet defined as <m>X_n = S_n/n</m>. Keep <m>n</m> = 1,000.
+          Now create a random variable <m>\bar{X}_n</m> that is your average winnings per bet defined as <m>\bar{X}_n = S_n/n</m>. Keep <m>n</m> = 1,000.
         </p>
       </statement>
     </exercise>
