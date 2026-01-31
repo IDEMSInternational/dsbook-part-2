@@ -53,11 +53,11 @@ jobs:
             - name: stage deployment
               run: pretext deploy --stage-only
 
-            - name: Bundle output/stage as artifact
+            - name: Bundle PreTeXt/stage as artifact
               uses: actions/upload-artifact@v4
               with:
                   name: deploy
-                  path: output/stage
+                  path: PreTeXt/stage
 
     deploy-cloudflare:
         runs-on: ubuntu-latest
