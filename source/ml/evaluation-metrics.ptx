@@ -205,7 +205,7 @@ mean(y_hat == test_set$y)
     </program>
     
     <p>
-      We see that it is a bit lower than the accuracy observed for the training set. This is because we used the training set to select the cutoff, so there is some overtraining. However, out cutoff-based approach is still better than guessing. And by testing on a dataset that we did not train on, we know our improvement is not due to overtraining.
+      We see that it is a bit lower than the accuracy observed for the training set. This is because we used the training set to select the cutoff, so there is some overtraining. However, our cutoff-based approach is still better than guessing. And by testing on a dataset that we did not train on, we know our improvement is not due to overtraining.
     </p>
   </section>
 
@@ -514,7 +514,7 @@ specificity(y_hat, test_set$y)
     </p>
     
     <p>
-      The ROC curve plots sensitivity, represented as the TPR, versus 1 - specificity represented as the false positive rate (FPR). Here we compute the TPR and FPR needed for different probabilities of guessing male:
+      The ROC curve plots sensitivity, represented as the TPR, versus 1 - specificity, represented as the false positive rate (FPR). Here we compute the TPR and FPR needed for different probabilities of guessing male:
     </p>
     
     <program language="r">
