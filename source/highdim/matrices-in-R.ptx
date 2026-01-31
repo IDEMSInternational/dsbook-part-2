@@ -277,7 +277,7 @@ ncol(x)
       </program>
       
       <p>
-        We learn that our dataset contains observations (images) and variables (pixels).
+        We learn that our dataset contains 60,000 observations (images) and 784 variables (pixels).
       </p>
       
       <p>
