@@ -12,15 +12,15 @@
     <title>Sampling models</title>
     
     <p>
-      Many data-generating processes can be effectively modeled as <em>draws from an urn</em>. For example, polling likely voters can be viewed as drawing 0s (Republicans) and 1s (Democrats) from an urn containing the preferences of the entire population. In epidemiology, we often assume that individuals in a study are random draws from a larger population, where each draw corresponds to an individual's outcome. Similarly, in experimental research, we treat subjects (worms, flies, mice, or humans, for exmaple) as random draws from a broader population. Randomized experiments follow the same logic: each participant's assignment to treatment or control can be seen as a random draw from an urn.
+      Many data-generating processes can be effectively modeled as <em>draws from an urn</em>. For example, polling likely voters can be viewed as drawing 0s (Republicans) and 1s (Democrats) from an urn containing the preferences of the entire population. In epidemiology, we often assume that individuals in a study are random draws from a larger population, where each draw corresponds to an individual's outcome. Similarly, in experimental research, we treat subjects (worms, flies, mice, or humans, for example) as random draws from a broader population. Randomized experiments follow the same logic: each participant's assignment to treatment or control can be seen as a random draw from an urn.
     </p>
     
     <p>
       Because random sampling and random assignment are fundamental to data analysis, <em>sampling models</em> appear everywhere in statistics. To build intuition, we start with <em>games of chance</em>, where randomness is explicit and the link between probability and real outcomes is perfectly clear. We now define a specific example.
     </p>
     
-    <subsection xml:id="roullete-example">
-      <title>Roullete example</title>
+    <subsection xml:id="roulette-example">
+      <title>Roulette example</title>
       
       <p>
         Suppose a small casino hires you to decide whether it should install roulette wheels. To keep things simple, imagine 1,000 people each place a single bet on black. The casino wants you to estimate how much money it can expect to make, or lose, and, most importantly, the probability of losing money. If that probability is too high, they'll skip installing the wheels.
@@ -287,7 +287,7 @@ pbinom(n/2 - 1, size = n, prob = 10/19)
     <title>How large is large?</title>
     
     <p>
-      The CLT applies when the number of draws is "large", but <em>large</em> depends on context. In many cases, 30 draws are enough for a good approximation, sometimes even fewer. In the roullette example, when the probabilities of success is very small, much larger samples may be required.
+      The CLT applies when the number of draws is "large", but <em>large</em> depends on context. In many cases, 30 draws are enough for a good approximation, sometimes even fewer. In the roulette example, when the probabilities of success are very small, much larger samples may be required.
     </p>
     
     <p>
