@@ -468,7 +468,7 @@ results &lt;- results |&gt;
       </program>
     </subsection>
 
-    <subsection xml:id="sec-monte-carlo-simulation">
+    <subsection xml:id="sec-electoral-monte-carlo">
       <title>Monte Carlo simulation</title>
       
       <p>

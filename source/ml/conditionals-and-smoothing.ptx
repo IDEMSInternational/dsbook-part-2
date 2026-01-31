@@ -8,4 +8,12 @@
     </p>
   </introduction>
 
+  <section xml:id="sec-smoothing">
+    <title>Smoothing</title>
+    
+    <p>
+      This section will cover smoothing techniques.
+    </p>
+  </section>
+
 </chapter>
