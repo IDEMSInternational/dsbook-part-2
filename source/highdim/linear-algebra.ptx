@@ -457,6 +457,7 @@ image(as.matrix(d)[order(y[1:300]), order(y[1:300])])
 
     <p>
       Other machine learning algorithms partition the predictor space into non-overlapping regions and then make different predictions for each region using the data in the region. We will learn about these in <xref ref="sec-trees" />.
+      <!-- sec-trees: Classification and regression trees section in ml/algorithms chapter -->
     </p>
   </section>
 
