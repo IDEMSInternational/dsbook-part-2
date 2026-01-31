@@ -56,7 +56,7 @@
     </p>
     
     <p>
-      We denote vectors with lower case bold letters and represent them as one column matrices, often referred to as <term>column vectors</term>. R follows this convention when converting a vector to a matrix. For example <c>as.matrix(1:n)</c> will have dimensions <c>n</c> <times/> <c>1</c>.
+      We denote vectors with lower case bold letters and represent them as one column matrices, often referred to as <term>column vectors</term>. R follows this convention when converting a vector to a matrix. For example <c>as.matrix(1:n)</c> will have dimensions <c>n × 1</c>.
     </p>
     
     <p>
@@ -253,7 +253,7 @@ as.matrix(df)
       <title>Dimensions of a matrix</title>
       
       <p>
-        The dimension of a matrix is an important characteristic needed to assure that certain linear algebra operations can be performed. The dimension is a two-number summary defined as the number of rows <times/> the number of columns.
+        The dimension of a matrix is an important characteristic needed to assure that certain linear algebra operations can be performed. The dimension is a two-number summary defined as the number of rows × the number of columns.
       </p>
       
       <p>
@@ -474,7 +474,7 @@ sds &lt;- rowSds(x)
       </p>
       
       <p>
-        For other fast implementations of common operation take a look at what is availabe in the <term>matrixStats</term> package.
+        For other fast implementations of common operation take a look at what is available in the <term>matrixStats</term> package.
       </p>
     </subsection>
 
@@ -818,7 +818,7 @@ hist(sds, breaks = 30, main = "SDs")
       </program>
       
       <p>
-        This makes sense since we don't write in some parts of the box. Here is the variance plotted by location after using what we learned in <xref ref="sec-creating-a-matrix"/> to creat a <m>28 \times 28</m> matrix:
+        This makes sense since we don't write in some parts of the box. Here is the variance plotted by location after using what we learned in <xref ref="sec-creating-a-matrix"/> to create a <m>28 \times 28</m> matrix:
       </p>
       
       <program language="r">
