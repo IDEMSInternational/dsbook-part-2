@@ -332,11 +332,11 @@
       </me>
 
       <p>
-        with the slopes for <m>x<em>1</m> changing for different values of <m>x</em>2</m> and the other way around. But is there an easier approach?
+        with the slopes for <m>x_1</m> changing for different values of <m>x_2</m> and the other way around. But is there an easier approach?
       </p>
 
       <p>
-        If we take random variability into account, the slopes in the strata don't appear to change much. If these slopes are in fact the same, this implies that <m>\beta<em>1(x</em>2)</m> and <m>\beta<em>2(x</em>1)</m> are constants. This, in turn, implies that the expectation of runs conditioned on HR and BB can be written as follows:
+        If we take random variability into account, the slopes in the strata don't appear to change much. If these slopes are in fact the same, this implies that <m>\beta_1(x_2)</m> and <m>\beta_2(x_1)</m> are constants. This, in turn, implies that the expectation of runs conditioned on HR and BB can be written as follows:
       </p>
 
       <me>
@@ -344,7 +344,7 @@
       </me>
 
       <p>
-        This model suggests that, if the number of HR is fixed at <m>x<em>2</m>, we observe a linear relationship between runs and BB with an intercept of <m>\beta</em>0 + \beta<em>2 x</em>2</m>. Our exploratory data analysis suggested that this is the case. The model also suggests that as the number of HR grows, the intercept growth is linear as well and determined by <m>\beta<em>1</m>. In this analysis, referred to as <em>multivariable regression</em>, you will often hear people say that the BB slope <m>\beta</em>1</m> is <em>adjusted</em> for the HR effect.
+        This model suggests that, if the number of HR is fixed at <m>x_2</m>, we observe a linear relationship between runs and BB with an intercept of <m>\beta_0 + \beta_2 x_2</m>. Our exploratory data analysis suggested that this is the case. The model also suggests that as the number of HR grows, the intercept growth is linear as well and determined by <m>\beta_1</m>. In this analysis, referred to as <em>multivariable regression</em>, you will often hear people say that the BB slope <m>\beta_1</m> is <em>adjusted</em> for the HR effect.
       </p>
 
       <p>
@@ -356,7 +356,7 @@
       </me>
 
       <p>
-        with <m>Y<em>i</m> runs per game for team <m>i</m>, <m>x</em>{i,1}</m> BB per game, <m>x<em>{i,2}</m> the HR per game, and <m>\varepsilon</em>i</m> assumed to be independent and identically distributed. This fits into our linear model framework, whcih means we can use <c>lm</c> to fit the model.
+        with <m>Y_i</m> runs per game for team <m>i</m>, <m>x_{i,1}</m> BB per game, <m>x_{i,2}</m> the HR per game, and <m>\varepsilon_i</m> assumed to be independent and identically distributed. This fits into our linear model framework, whcih means we can use <c>lm</c> to fit the model.
       </p>
 
       <p>
