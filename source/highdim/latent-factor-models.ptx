@@ -491,7 +491,7 @@ pca$rotation[,2]
       </me>
     </subsection>
 
-    <subsection xml:id="regularization">
+    <subsection xml:id="latent-factor-regularization">
       <title>Regularization</title>
       
       <p>
