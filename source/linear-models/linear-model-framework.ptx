@@ -54,7 +54,7 @@
     </p>
 
     <p>
-      In the linear model framework the <m>x_i</m> are refereed to as the <em>explanatory variables</em>, <em>covariates</em>, or <em>predictors</em>. 
+      In the linear model framework the <m>x_i</m> are referred to as the <em>explanatory variables</em>, <em>covariates</em>, or <em>predictors</em>. 
     </p>
 
     <p>
@@ -330,7 +330,7 @@ names(y_hat)
     </p>
 
     <me>
-      r = y - \hat{y} = y- \left(\hat{\beta}_0 - \hat{\beta}_1 x_i\right),
+      r = y - \hat{y} = y- \left(\hat{\beta}_0 + \hat{\beta}_1 x_i\right),
     </me>
 
     <p>
