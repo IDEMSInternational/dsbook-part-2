@@ -78,7 +78,7 @@
     </p>
     
     <p>
-      Keep in mind that defining our prediction by maximizing the probability is not always optimal in practice and depends on the context. As discussed in <xref ref="sec-evaluation-metrics"/>, sensitivity and specificity may differ in importance. But even in these cases, having a good estimate of the <m>p_k(x), k=1,\dots,K</m> will suffice for us to build optimal prediction models, since we can control the balance between specificity and sensitivity however we wish. For instance, we can simply change the cutoffs used to predict one outcome or the other. In the plane example, we may ground the plane anytime the probability of malfunction is lower than 1 in a million as opposed to the default 1/2 used when error types are equally undesired.
+      Keep in mind that defining our prediction by maximizing the probability is not always optimal in practice and depends on the context. As discussed in <xref ref="evaluation-metrics"/>, sensitivity and specificity may differ in importance. But even in these cases, having a good estimate of the <m>p_k(x), k=1,\dots,K</m> will suffice for us to build optimal prediction models, since we can control the balance between specificity and sensitivity however we wish. For instance, we can simply change the cutoffs used to predict one outcome or the other. In the plane example, we may ground the plane anytime the probability of malfunction is lower than 1 in a million as opposed to the default 1/2 used when error types are equally undesired.
     </p>
     
     <p>
