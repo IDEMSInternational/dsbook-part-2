@@ -22,7 +22,6 @@ linear-models/extra-multivariable-regression.qmd
 jenna_notes.qmd
 
 # PreTeXt build artifacts
-PreTeXt/
 output/
 generated-assets/
 logs/
