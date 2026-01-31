@@ -220,7 +220,7 @@ heights |> filter(sex == "Male") |>
     </program>
 
     <p>
-      The R base <c>hist</c> function also allows us quickly construct a histogram. We can define custom bin intervals which is particularly useful for grouping extreme values and avoiding empty bins:
+      The R base <c>hist</c> function also allows us to quickly construct a histogram. We can define custom bin intervals which is particularly useful for grouping extreme values and avoiding empty bins:
     </p>
 
     <program language="r">
@@ -370,7 +370,7 @@ heights |> filter(sex == "Male") |>
       </p>
 
       <p>
-        By understanding this, we are ready to use the smooth density as a summary. For this dataset, we would feel quite comfortable with the smoothness assumption, and therefore with sharing this aesthetically pleasing figure with ET, which he could use it to understand our male heights data:
+        By understanding this, we are ready to use the smooth density as a summary. For this dataset, we would feel quite comfortable with the smoothness assumption, and therefore with sharing this aesthetically pleasing figure with ET, which he could use to understand our male heights data:
       </p>
 
       <figure xml:id="fig-example-of-smoothed-density">
