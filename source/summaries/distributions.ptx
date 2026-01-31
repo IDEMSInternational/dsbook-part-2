@@ -638,8 +638,8 @@ heights |> filter(sex == "Male") |>
           <ol marker="a">
             <li>It is impossible that they are from the same dataset.</li>
             <li>They are from the same dataset, but the plots are different due to coding errors.</li>
-            <li>They are the same dataset, but the first and second plot under smooth and the third over smooths.</li>
-            <li>They are the same dataset, but the first is not in the log scale, the second under smooths, and the third over smooths.</li>
+            <li>They are the same dataset, but the first and second plot undersmooth and the third oversmooths.</li>
+            <li>They are the same dataset, but the first is not in the log scale, the second undersmooths, and the third oversmooths.</li>
           </ol>
         </p>
       </statement>
