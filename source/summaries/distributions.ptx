@@ -100,7 +100,7 @@ prop.table(table(state.region))
     </figure>
   </section>
 
-  <section xml:id="ecdf-intro">
+  <section xml:id="sec-ecdf-intro">
     <title>Empirical cumulative distribution functions</title>
     
     <p>
