@@ -64,7 +64,7 @@ y &lt;- mnist$train$labels
     </p>
 
     <p>
-      We can define matrix multipicaiton <m>\mathbf{C}= \mathbf{A}\mathbf{B}</m> for any two matrices, say
+      We can define matrix multiplication <m>\mathbf{C}= \mathbf{A}\mathbf{B}</m> for any two matrices, say
     </p>
 
     <program language="r">
@@ -123,7 +123,7 @@ C &lt;- A %*% B
     </me>
 
     <p>
-      Note this definition implies that the multiplication <m>\mathbf{A}\mathbf{B}</m> is only possible when the number of rows of <m>\mathbf{A}</m> matches the number of columns of <m>\mathbf{B}</m>. When this happens we say the two matrices are <em>conformable</em>.
+      Note this definition implies that the multiplication <m>\mathbf{A}\mathbf{B}</m> is only possible when the number of columns of <m>\mathbf{A}</m> matches the number of rows of <m>\mathbf{B}</m>. When this happens we say the two matrices are <em>conformable</em>.
     </p>
 
     <p>
@@ -379,7 +379,7 @@ class(d)
     </program>
 
     <p>
-      This is convenient becasue there are several machine learning related functions in R that take objects of class <c>dist</c> as input.
+      This is convenient because there are several machine learning related functions in R that take objects of class <c>dist</c> as input.
     </p>
 
     <p>
