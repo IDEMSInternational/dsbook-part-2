@@ -205,7 +205,7 @@ rbinom(100000, n, 1/2)
     </p>
     
     <me>
-      \mathrm{E}[X] = \sum_{i=1}^n x_i \,\mathrm{Pr}(X = x_i)
+      \mathrm{E}[X] = \sum_{i=1}^n x_i ,\mathrm{Pr}(X = x_i)
     </me>
     
     <p>
@@ -213,7 +213,7 @@ rbinom(100000, n, 1/2)
     </p>
     
     <me>
-      \mathrm{E}[X] = \int_a^b x f(x)\, dx
+      \mathrm{E}[X] = \int_a^b x f(x), dx
     </me>
     
     <p>
@@ -249,7 +249,7 @@ mean(x)
     </p>
     
     <me>
-      \mathrm{SE}[X] = \sqrt{\sum_{i=1}^n (x_i - \mathrm{E}[X])^2 \,\mathrm{Pr}(X = x_i)}.
+      \mathrm{SE}[X] = \sqrt{\sum_{i=1}^n (x_i - \mathrm{E}[X])^2 ,\mathrm{Pr}(X = x_i)}.
     </me>
     
     <p>
@@ -257,7 +257,7 @@ mean(x)
     </p>
     
     <me>
-      \mathrm{SE}[X] = \sqrt{\int_a^b (x - \mathrm{E}[X])^2 f(x)\, dx}.
+      \mathrm{SE}[X] = \sqrt{\int_a^b (x - \mathrm{E}[X])^2 f(x), dx}.
     </me>
     
     <note>
