@@ -8,4 +8,12 @@
     </p>
   </introduction>
 
+  <section xml:id="sec-mean-var-eqs">
+    <title>The expected value and standard error</title>
+    
+    <p>
+      This section covers the expected value and standard error.
+    </p>
+  </section>
+
 </chapter>
