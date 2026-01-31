@@ -8,4 +8,12 @@
     </p>
   </introduction>
 
+  <section xml:id="sec-lm-function">
+    <title>The <c>lm</c> function</title>
+    
+    <p>
+      This section covers the <c>lm</c> function in R.
+    </p>
+  </section>
+
 </chapter>
