@@ -5,7 +5,7 @@
   <introduction>
     <blockquote>
       <p>
-        "All models are wrong, but some are useful." --George E. P. Box
+        "All models are wrong, but some are useful." —George E. P. Box
       </p>
     </blockquote>
     
@@ -41,6 +41,7 @@
 set.seed(2)
 library(tidyverse)
 library(dslabs)
+# theta is the actual spread from the 2012 Obama vs Romney election (3.9%)
 theta &lt;- 0.039
 Ns &lt;- c(1298, 533, 1342, 897, 774, 254, 812, 324, 1291, 1056, 2172, 516)
 p &lt;- (theta + 1)/2
@@ -253,7 +254,7 @@ hist(one_poll_per_pollster$spread, breaks = 10)
     </p>
     
     <p>
-      So our new statistical model is that <m>Y_1, \dots, Y_N</m> are a random sample with expected <m>\theta</m> and standard deviation <m>\sigma</m>. The distribution, for now, is unspecified. But we consider <m>N</m> to be large enough to assume that the sample average <m>\bar{Y} = \sum_{i=1}^N Y_i</m> follows a normal distribution with expected value <m>\theta</m> and standard error <m>\sigma / \sqrt{N}</m>. We write:
+      So our new statistical model is that <m>Y_1, \dots, Y_N</m> are a random sample with expected value <m>\theta</m> and standard deviation <m>\sigma</m>. The distribution, for now, is unspecified. But we consider <m>N</m> to be large enough to assume that the sample average <m>\bar{Y} = \frac{1}{N}\sum_{i=1}^N Y_i</m> follows a normal distribution with expected value <m>\theta</m> and standard error <m>\sigma / \sqrt{N}</m>. We write:
     </p>
     
     <me>
@@ -339,7 +340,7 @@ round(results*100, 2)
       </aside>
       
       <p>
-        However, if the data in the urn is known to follow a normal distribution, then we actually have mathematical theory that tells us how much bigger we need to make the intervals to account for the estimation of <m>\sigma</m>. Applying this theory, we can construct confidence intervals for any <m>N</m>. But again, this <alert>works only if the data in the urn is known to follow a normal distribution</alert>. So for the 0, 1 data of our previous urn model, this theory definitely does not apply.
+        However, if the data in the urn is known to follow a normal distribution, then we actually have mathematical theory that tells us how much bigger we need to make the intervals to account for the estimation of <m>\sigma</m>. Applying this theory, we can construct confidence intervals for any <m>N</m>. <alert>This works only under the normality assumption.</alert> So for the 0, 1 data of our previous urn model, this theory definitely does not apply.
       </p>
       
       <note>
@@ -377,7 +378,7 @@ round(results*100, 2)
       </me>
       
       <p>
-        This is referred to as a <term>t-statistic</term>. By substituting <m>\sigma</m> with <m>s</m>, we introduce some variability. The theory tells us that <m>t</m> follows a <term>student t-distribution</term> with <m>N-1</m> <term>degrees of freedom</term>. The degrees of freedom is a parameter that controls the variability via fatter tails. Here are three examples of t-distributions with three different degrees of freedom:
+        This is referred to as a <term>t-statistic</term>. By substituting <m>\sigma</m> with <m>s</m>, we introduce some variability. The theory tells us that <m>t</m> follows a <term>Student's t-distribution</term> with <m>N-1</m> <term>degrees of freedom</term>. The degrees of freedom is a parameter that controls the variability via fatter tails. Here are three examples of t-distributions with three different degrees of freedom:
       </p>
       
       <program language="r">
