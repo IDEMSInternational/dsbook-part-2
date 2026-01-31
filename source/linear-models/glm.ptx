@@ -109,7 +109,7 @@ tab
       </me>
 
       <p>
-        The probability of getting 3 or more correct by chance is therefore :
+        The probability of getting 3 or more correct by chance is therefore:
       </p>
 
       <me>
@@ -358,7 +358,7 @@ chisq.test(o)$statistic
       </p>
 
       <p>
-        Her we compute the odds ratio for our funding data and construct a 95% confidence interval:
+        Here we compute the odds ratio for our funding data and construct a 95% confidence interval:
       </p>
 
       <program language="r">
@@ -445,7 +445,7 @@ exp(log(or) + c(-1,1) * qnorm(0.975) * se)
     </note>
 
     <p>
-      Note that we can write the probability <m>p_i = Pr(Y_i = 1)</m> as a function of the paremeters <m>\beta_0+\beta_1x_i</m> for any <m>x_i</m> by using the inverse of the logit transformation:
+      Note that we can write the probability <m>p_i = Pr(Y_i = 1)</m> as a function of the parameters <m>\beta_0+\beta_1x_i</m> for any <m>x_i</m> by using the inverse of the logit transformation:
     </p>
 
     <me>
@@ -557,7 +557,7 @@ exp(confint(fit, 2))
       <title>Relation to earlier methods</title>
 
       <p>
-        We can confirm that logistic regression yields the same odds ratio estimate as the simple two-by-two table (saved in <c>o</c>) calculation: and saved in <c>or</c> and <c>se</c>:
+        We can confirm that logistic regression yields the same odds ratio estimate as the simple two-by-two table calculation (saved in <c>o</c> and in <c>or</c> and <c>se</c>):
       </p>
 
       <program language="r">
@@ -656,7 +656,7 @@ SAheart |&gt;
       </p>
 
       <p>
-        Fitting can fit the model using:
+        We can fit the model using:
       </p>
 
       <program language="r">
@@ -687,7 +687,7 @@ predict(fit, data.frame(age = seq(20, 80, 10)), type = "response")
       </program>
 
       <p>
-        When <c>type = respsone</c> the <c>predict</c> function uses the inverse logistic transformation to convert <m>\hat{\beta}_0 + \hat{\beta}_1 x_i</m> to estimated probabilities.
+        When <c>type = response</c> the <c>predict</c> function uses the inverse logistic transformation to convert <m>\hat{\beta}_0 + \hat{\beta}_1 x_i</m> to estimated probabilities.
       </p>
 
       <p>
@@ -699,7 +699,7 @@ predict(fit, data.frame(age = seq(20, 80, 10)), type = "response")
       <title>Poisson regression example: Effectiveness of insect sprays</title>
 
       <p>
-        The <c>InsectSprays</c>dataset records the number of insects found in agricultural field units after treatment with different sprays:
+        The <c>InsectSprays</c> dataset records the number of insects found in agricultural field units after treatment with different sprays:
       </p>
 
       <program language="r">
@@ -719,7 +719,7 @@ with(InsectSprays, tapply(count, spray, mean))
       </program>
 
       <p>
-        But how do we assess uncertainty? Can we construct confidence inteverals? Note that counts are small (often under 10), and the sample size per group is only 12, so normal approximations may be unreliable.
+        But how do we assess uncertainty? Can we construct confidence intervals? Note that counts are small (often under 10), and the sample size per group is only 12, so normal approximations may be unreliable.
       </p>
 
       <p>
@@ -912,7 +912,7 @@ sentiment_counts
     <exercise xml:id="exercise-glm-13">
       <statement>
         <p>
-          The <c>titanic_train</c> dataset in the <term>titanic</term> package has data for 891 passangers that were on the Titanic:
+          The <c>titanic_train</c> dataset in the <term>titanic</term> package has data for 891 passengers that were on the Titanic:
         </p>
 
         <program language="r">
