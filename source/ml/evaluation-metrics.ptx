@@ -260,7 +260,7 @@ cm$byClass["Prevalence"]
     </p>
   </section>
 
-  <section xml:id="sec-senistivity-and-specificity">
+  <section xml:id="sec-sensitivity-and-specificity">
     <title>Sensitivity and specificity</title>
     
     <p>
@@ -762,13 +762,13 @@ titanic &lt;- titanic_train |&gt; select(Survived, Pclass, Sex, Age, Fare) |&gt;
     </program>
     
     <p>
-      Note that we defined the levels to be <c>c(1,0)</c> to avoid the defailt behaviou of making 0 (first alphabetically) the first level given that <term>caret</term> defines positives <m>Y=1</m> as the first level.
+      Note that we defined the levels to be <c>c(1,0)</c> to avoid the default behavior of making 0 (first alphabetically) the first level given that <term>caret</term> defines positives <m>Y=1</m> as the first level.
     </p>
     
     <exercise>
       <statement>
         <p>
-          Split the <c>titanic</c> datset into to <c>train_set</c> with 80% of the data and <c>test_set</c> with the remaining 20%.
+          Split the <c>titanic</c> dataset into <c>train_set</c> with 80% of the data and <c>test_set</c> with the remaining 20%.
         </p>
       </statement>
     </exercise>
@@ -816,7 +816,7 @@ cutoffs &lt;- quantile(train_set$Fare, probs = seq(0.05, 0.95, 0.1))
     <exercise>
       <statement>
         <p>
-          Using the results from exercise 5, best cutoff and compare accuracy with the rule chose on exercise 4 on both <c>train_set</c> and <c>test_set</c>.
+          Using the results from exercise 5, choose the best cutoff and compare accuracy with the rule chosen in exercise 4 on both <c>train_set</c> and <c>test_set</c>.
         </p>
       </statement>
     </exercise>
@@ -824,7 +824,7 @@ cutoffs &lt;- quantile(train_set$Fare, probs = seq(0.05, 0.95, 0.1))
     <exercise>
       <statement>
         <p>
-          Generate an ROC curve based on the specificity and sensitivity computed on the test_set. For each point on the curve show the corresponding cutoff associated with that point. Briefly describe the trade-off you see as you move the cutoff: what happens to sensitivity and specificity when you increase the cutoff, and why does this make sense in terms of who tends to buy expensive tickets on the Titanic?
+          Generate an ROC curve based on the specificity and sensitivity computed on the <c>test_set</c>. For each point on the curve show the corresponding cutoff associated with that point. Briefly describe the trade-off you see as you move the cutoff: what happens to sensitivity and specificity when you increase the cutoff, and why does this make sense in terms of who tends to buy expensive tickets on the Titanic?
         </p>
       </statement>
     </exercise>
@@ -857,7 +857,7 @@ p_hat_test &lt;- predict(fit, newdata = test_set, type = "response")
     <exercise>
       <statement>
         <p>
-          Consider different cutoffs for <c>cutofs &lt;- seq(0.05, 0.95, 0.05)</c> for this probability and generate an ROC curve based in the test set. Based on this ROC curve and the one computed in exercise 7, which method would you say performs better?
+          Consider different cutoffs for <c>cutoffs &lt;- seq(0.05, 0.95, 0.05)</c> for this probability and generate an ROC curve based on the test set. Based on this ROC curve and the one computed in exercise 7, which method would you say performs better?
         </p>
       </statement>
     </exercise>
