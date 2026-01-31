@@ -398,11 +398,9 @@
           To address this, we will first fit the model at the <em>team level</em>, where such individual-level nuances average out and do not affect overall results. Once the model is validated for teams, we will apply it to estimate contributions at the player level.
         </p>
 
-        <note>
-          <p>
-            Teams are divided into two leagues, American and National. Since they had slightly different rules during the period in question, we will fit the model only to the American League (AL), where the Oakland A's played.
-          </p>
-        </note>
+        <p>
+          :::{.callout-note} Teams are divided into two leagues, American and National. Since they had slightly different rules during the period in question, we will fit the model only to the American League (AL), where the Oakland A's played. :::
+        </p>
 
         <p>
           Since teams accumulate significantly more plate appearances than individual players, we will model <em>per plate appearance (PA) rates</em>. This allows us to generalize the model fit to teams and apply it to players. Additionally, since triples are relatively rare, we will combine them with doubles into a single category, <em>extra bases (XB)</em>, to simplify the model. Stolen bases will be excluded because prior analyses suggest they do not reliably correlate with increased scoring. As a result, the predictors in the model will include: base on balls (BB), singles, extra bases (XB) and home runs (HR). The data preparation step for this model is shown below:
@@ -427,7 +425,7 @@
         </me>
 
         <p>
-          where  <m>Y_i</m> represents <em>runs produced per plate appearance</em>, and  <m>x_{i1}, x_{i2}, x_{i3}, x_{i4}</m> represent BB, singles, extra bases, and HR per plate appearance, respectively.
+          where  <m>Y<em>i</m> represents <em>runs produced per plate appearance</em>, and  <m>x</em>{i1}, x<em>{i2}, x</em>{i3}, x_{i4}</m> represent BB, singles, extra bases, and HR per plate appearance, respectively.
         </p>
 
         <p>
