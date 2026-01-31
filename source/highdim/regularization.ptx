@@ -198,14 +198,15 @@ test_set &lt;- test_set[movieId %in% train_set$movieId]
         To describe our models and their estimates, we use the array representation introduced in an earlier chapter. We denote the rating given by user <m>i</m> to movie <m>j</m> as <m>y_{ij}</m>.
       </p>
 
-      <warning>
+      <assemblage>
+        <title>Important</title>
         <p>
           Although the notation <m>y_{ij}</m> suggests a full <m>I \times J</m> matrix of ratings, in practice we do not observe most of these values. If there are <m>I</m> users and <m>J</m> movies, the complete rating matrix would contain <m>I \times J</m> entries. However, the number of observed ratings, which we denote by <m>N</m>, is much smaller because most users rate only a small subset of all movies. In what follows, a summation written as <m>\sum_{i,j}</m> is understood to run over the <m>N</m> observed pairs <m>(i,j)</m>, not over all possible combinations.
         </p>
         <p>
           Note that we store the data in a <c>data.table</c> rather than a matrix, since the full matrix representation would be almost entirely <c>NA</c>s.
         </p>
-      </warning>
+      </assemblage>
 
       <p>
         The Netflix challenge defined the winning entry as the one that minimized the root mean squared error (RMSE) on a test set. If <m>y_{ij}</m> is the observed rating in the test set and <m>\hat{y}_{ij}</m> is the corresponding prediction made using only the training set, the RMSE is:
@@ -917,6 +918,7 @@ schools &lt;- schools |&gt; mutate(score = sapply(scores, mean))
       </input>
     </program>
 
+    <exercises>
     <exercise>
       <statement>
         <p>
@@ -1145,5 +1147,6 @@ schools &lt;- mutate(schools, theta = score - mean(score))
         </p>
       </statement>
     </exercise>
+    </exercises>
   </section>
 </chapter>
