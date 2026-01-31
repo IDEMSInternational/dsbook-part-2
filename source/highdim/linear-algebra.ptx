@@ -8,4 +8,12 @@
     </p>
   </introduction>
 
+  <section xml:id="sec-matrix-mult">
+    <title>Matrix multiplication</title>
+    
+    <p>
+      A commonly used operation in data analysis is matrix multiplication. This section will be populated with content from the linear-algebra.qmd file.
+    </p>
+  </section>
+
 </chapter>
