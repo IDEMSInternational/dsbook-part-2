@@ -391,7 +391,7 @@
         At the individual player level, distinguishing between <em>runs scored</em> and <em>runs produced</em> is crucial for accurately assessing offensive contributions. While <em>runs scored</em> are directly recorded, they don't fully capture the extent of a player's impact. For instance, if player X hits a single and later scores on a teammate's home run, the run is attributed to player X, but the teammate's effort was essential in making it happen. This overlap highlights the shared nature of offensive production, complicating individual performance analysis.
       </p>
 
-        <subsection xml:id="modeling-team-run-production">
+        <subsection xml:id="sec-run-production-model">
           <title>Modeling team run production</title>
 
         <p>
@@ -654,7 +654,7 @@
 
     </section>
 
-  <section xml:id="exercises">
+  <section xml:id="multivariable-regression-exercises">
     <title>Exercises</title>
 
       <p>
