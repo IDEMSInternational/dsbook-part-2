@@ -8,4 +8,12 @@
     </p>
   </introduction>
 
+  <section xml:id="sec-caret">
+    <title>The caret package</title>
+    
+    <p>
+      This section covers the caret package.
+    </p>
+  </section>
+
 </chapter>
