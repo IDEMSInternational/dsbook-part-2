@@ -8,4 +8,12 @@
     </p>
   </introduction>
 
+  <section xml:id="sec-clt-prob">
+    <title>The Central Limit Theorem</title>
+    
+    <p>
+      This section covers the Central Limit Theorem.
+    </p>
+  </section>
+
 </chapter>
