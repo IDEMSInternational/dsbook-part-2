@@ -31,7 +31,7 @@ library(dslabs)
     </me>
 
     <p>
-      But you don't need to memorize the formula to use the normal distribution in practice. The most important characteristic is that it is completely defined by just two parameters: <m>\mu</m> and <m>\sigma</m>. The rest of the symbols in the formula represent the interval ends, <m>a</m> and <m>b</m>, and known mathematical constants <m>\pi</m> and <m>e</m>. These two parameters, <m>\mu</m> and <m>\sigma</m>, are referred to as the <em>mean</em> and the <em>standard deviation</em> (SD) of the distribution, respectively (<m>\mu</m> and <m>\sigma</m> are the Greek letters for <m>m</m> and <m>s</m>). In R the function <c>pnorm</c> lets us compute the <m>\mathrm{Pr}(x \leq a)</m> for any <m>a, \mu,</m> and <m>\sigma</m>:
+      But you don't need to memorize the formula to use the normal distribution in practice. The most important characteristic is that it is completely defined by just two parameters: <m>\mu</m> and <m>\sigma</m>. The rest of the symbols in the formula represent the interval ends, <m>a</m> and <m>b</m>, and known mathematical constants <m>\pi</m> and <m>e</m>. These two parameters, <m>\mu</m> and <m>\sigma</m>, are referred to as the <em>mean</em> and the <em>standard deviation</em> (SD) of the distribution, respectively (<m>\mu</m> and <m>\sigma</m> are the Greek letters for <m>m</m> and <m>s</m>). In R the function <c>pnorm</c> lets us compute the <m>\mathrm{Pr}(x \leq a)</m> for any <m>a, \mu</m>, and <m>\sigma</m>:
     </p>
 
     <program language="r">
@@ -173,7 +173,7 @@ mean(x &gt; 62.1 &amp; x &lt;= 76.5)
 
     <note>
       <p>
-        When using the normal approximation with discrete data (for example, when heights are rounded to the nearest inch), note that <c>mean(x &lt; a)</c> and <c>mean(x &lt;= a)</c> may differ. In such cases, it's common to apply a <em>continuity correction</em>, using <c>pnorm(a + delta/2, m, s)</c> to approximate <c>mean(x &lt;= a)</c>, where <c>delta</c> is the bin width (in our example, 1 inch). In our dataset, however, some students reported more precise measurements, so the degree of discretization varies. As a result, the normal approximation should be applied with care.
+        When using the normal approximation with discrete data (for example, when heights are rounded to the nearest inch), note that <c>mean(x &lt; a)</c> and <c>mean(x &lt;= a)</c> may differ. In such cases, it's common to apply a <em>continuity correction</em>, using <c>pnorm(a + delta/2, m, s)</c> to approximate <c>mean(x &lt;= a)</c>, where <c>delta</c> is the bin width (in our example, 1 inch). In our dataset, however, some students reported more precise measurements, so the degree of discretization varies. As a result, care should be taken when applying the normal approximation.
       </p>
     </note>
   </section>
