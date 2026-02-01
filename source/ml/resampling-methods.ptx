@@ -12,7 +12,7 @@
     <title>Motivation with k-nearest neighbors</title>
     
     <p>
-      This section will be populated with content on k-nearest neighbors from the resampling-methods.qmd file.
+      This section introduces k-nearest neighbors (kNN) and motivates the need for cross-validation.
     </p>
   </section>
 
