@@ -129,7 +129,6 @@
     </part>
 
     <!-- Back Matter -->
-    <xi:include href="./backmatter/backmatter.ptx"/>
 
   </book>
 
