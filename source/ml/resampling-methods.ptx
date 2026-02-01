@@ -251,7 +251,7 @@ grid.arrange(p1, p2, nrow = 1)
     <title>Tuning parameters</title>
     
     <p>
-      It is very common for machine learning algorithms to require that we set one or more values <em>before</em> fitting the model. A simple example is the choice of <m>k</m> in k-Nearest Neighbors (kNN). In <xref ref="algorithms"/>, we will see additional examples. These values are referred to as <term>tuning parameters</term>, and an important part of applying machine learning in practice is choosing them, often called <term>tuning the model</term>.
+      It is very common for machine learning algorithms to require that we set one or more values <em>before</em> fitting the model. A simple example is the choice of <m>k</m> in k-Nearest Neighbors (kNN). In <xref ref="sec-example-algorithms"/>, we will see additional examples. These values are referred to as <term>tuning parameters</term>, and an important part of applying machine learning in practice is choosing them, often called <term>tuning the model</term>.
     </p>
     
     <p>
@@ -521,7 +521,7 @@ data.frame(k = ks, train = accuracy["train",], test = accuracy["test",]) |&gt;
     <title>Boostrap resampling</title>
     
     <p>
-      Typically, cross-validation involves partitioning the original dataset into a training set to train the model and a testing set to evaluate it. With the bootstrap approach, based on the ideas described in <xref ref="bootstrap"/>, you can create multiple different training datasets via bootstrapping. This method is sometimes called bootstrap aggregating or bagging.
+      Typically, cross-validation involves partitioning the original dataset into a training set to train the model and a testing set to evaluate it. With the bootstrap approach, based on the ideas described in <xref ref="sec-bootstrap"/>, you can create multiple different training datasets via bootstrapping. This method is sometimes called bootstrap aggregating or bagging.
     </p>
     
     <p>
