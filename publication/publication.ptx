@@ -10,6 +10,7 @@
   
   <!-- HTML-specific options -->
   <html>
+    <platform host="web"/>
     <css style="default" colors="blue_red"/>
     <knowl remark="no" example="no" proof="no" definition="no"/>
     <index-page ref="index-page"/>
