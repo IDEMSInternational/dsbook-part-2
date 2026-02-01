@@ -8,6 +8,22 @@
     </p>
   </introduction>
 
+  <section xml:id="sec-example-algorithms">
+    <title>Supervised Learning Methods</title>
+    
+    <p>
+      This section will be populated with content on supervised learning methods from the algorithms.qmd file.
+    </p>
+    
+    <subsection xml:id="sec-variable-importance">
+      <title>Variable importance</title>
+      
+      <p>
+        This subsection will be populated with content on variable importance from the algorithms.qmd file.
+      </p>
+    </subsection>
+  </section>
+
   <section xml:id="sec-trees">
     <title>Classification and regression trees (CART)</title>
     

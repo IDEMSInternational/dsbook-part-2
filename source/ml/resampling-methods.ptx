@@ -8,4 +8,12 @@
     </p>
   </introduction>
 
+  <section xml:id="sec-knn-cv-intro">
+    <title>Motivation with k-nearest neighbors</title>
+    
+    <p>
+      This section will be populated with content on k-nearest neighbors from the resampling-methods.qmd file.
+    </p>
+  </section>
+
 </chapter>
