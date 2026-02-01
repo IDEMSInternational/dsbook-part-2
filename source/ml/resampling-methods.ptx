@@ -8,4 +8,12 @@
     </p>
   </introduction>
 
+  <section xml:id="sec-knn-cv-intro">
+    <title>Motivation with k-nearest neighbors</title>
+    
+    <p>
+      This section introduces k-nearest neighbors (kNN) and motivates the need for cross-validation.
+    </p>
+  </section>
+
 </chapter>
