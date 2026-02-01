@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<chapter xmlns:xi="http://www.w3.org/2001/XInclude" xml:id="sec-cross-validation">
+<chapter xmlns:xi="http://www.w3.org/2001/XInclude" xml:id="sec-resampling-methods">
   <title>Resampling and Model Assessment</title>
   
   <introduction>
     <p>
-      In this chapter, we introduce resampling, one of the most important ideas in machine learning. Here we focus on the conceptual and mathematical aspects. We will describe how to implement resampling methods in practice with the <term>caret</term> package later in <xref ref="sec-caret"/>. To motivate the concept, we will use the two predictor digits data presented in <xref ref="sec-two-or-seven"/> and introduce k-nearest neighbors (kNN), to demonstrate the ideas.
+      In this chapter, we introduce resampling, one of the most important ideas in machine learning. Here we focus on the conceptual and mathematical aspects. We will describe how to implement resampling methods in practice with the <term>caret</term> package later in <xref ref="sec-caret"/>. To motivate the concept, we will use the two predictor digits data presented in <xref ref="sec-ml-conditionals"/> and introduce k-nearest neighbors (kNN), to demonstrate the ideas.
     </p>
   </introduction>
 
@@ -20,7 +20,7 @@
     </me>
     
     <p>
-      as defined in <xref ref="sec-smoothing-ml-connection"/>.
+      as defined in <xref ref="sec-ml-conditionals"/>.
     </p>
     
     <p>
@@ -251,7 +251,7 @@ grid.arrange(p1, p2, nrow = 1)
     <title>Tuning parameters</title>
     
     <p>
-      It is very common for machine learning algorithms to require that we set one or more values <em>before</em> fitting the model. A simple example is the choice of <m>k</m> in k-Nearest Neighbors (kNN). In <xref ref="sec-example-algorithms"/>, we will see additional examples. These values are referred to as <term>tuning parameters</term>, and an important part of applying machine learning in practice is choosing them, often called <term>tuning the model</term>.
+      It is very common for machine learning algorithms to require that we set one or more values <em>before</em> fitting the model. A simple example is the choice of <m>k</m> in k-Nearest Neighbors (kNN). In <xref ref="algorithms"/>, we will see additional examples. These values are referred to as <term>tuning parameters</term>, and an important part of applying machine learning in practice is choosing them, often called <term>tuning the model</term>.
     </p>
     
     <p>
@@ -521,7 +521,7 @@ data.frame(k = ks, train = accuracy["train",], test = accuracy["test",]) |&gt;
     <title>Boostrap resampling</title>
     
     <p>
-      Typically, cross-validation involves partitioning the original dataset into a training set to train the model and a testing set to evaluate it. With the bootstrap approach, based on the ideas described in <xref ref="sec-bootstrap"/>, you can create multiple different training datasets via bootstrapping. This method is sometimes called bootstrap aggregating or bagging.
+      Typically, cross-validation involves partitioning the original dataset into a training set to train the model and a testing set to evaluate it. With the bootstrap approach, based on the ideas described in <xref ref="bootstrap"/>, you can create multiple different training datasets via bootstrapping. This method is sometimes called bootstrap aggregating or bagging.
     </p>
     
     <p>
@@ -533,7 +533,7 @@ data.frame(k = ks, train = accuracy["train",], test = accuracy["test",]) |&gt;
     </p>
     
     <p>
-      This approach is actually the default approach in the <term>caret</term> package. We describe how to implement resampling methods with the <term>caret</term> package in <xref ref="sec-ml-in-practice"/>.
+      This approach is actually the default approach in the <term>caret</term> package. We describe how to implement resampling methods with the <term>caret</term> package in <xref ref="ml-in-practice"/>.
     </p>
   </section>
 
