@@ -439,7 +439,7 @@ admissions |&gt; ggplot(aes(major, admitted, col = gender, size = applicants)) +
         The case we have just covered is an example of Simpson's paradox. It is called a paradox because we see the sign of the correlation flip when comparing the entire publication to specific strata. As an illustrative example, suppose you have three random variables <m>X</m>, <m>Y</m>, and <m>Z</m>, and we observe realizations of these. Here is a plot of simulated observations for <m>X</m> and <m>Y</m> along with the sample correlation:
       </p>
 
-      <figure xml:id="simpsons-paradox">
+      <figure xml:id="simpsons-paradox-figure">
         <caption>Simpson's paradox illustration</caption>
         <image source="linear-models/association-not-causation-simpsons-paradox.png" width="50%">
           <description>Scatterplot showing negative overall correlation between X and Y</description>
@@ -520,7 +520,7 @@ dat |&gt; ggplot(aes(x, y, color = z)) +
     </p>
   </section>
 
-  <section xml:id="exercises">
+  <section xml:id="sec-association-exercises">
     <title>Exercises</title>
 
     <p>
