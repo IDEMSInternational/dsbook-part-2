@@ -111,11 +111,9 @@ prop.table(table(state.region))
       Here are the relative frequencies of US state populations, no longer rounded:
     </p>
 
-<p> test 123 </p>
-
     <figure xml:id="fig-relative-frequencies-of-US">
       <caption>Relative frequencies of exact US state populations</caption>
-      <image source="relative-frequencies-of-US.png" width="70%">
+      <image source="images/relative-frequencies-of-US.png" width="70%">
         <description>A bar chart showing the relative frequency for each US state's exact population. Since there are 50 states, each with a unique population value, every bar has the same height of 0.02 (1/50). This demonstrates that relative frequency distributions are not effective for continuous data.</description>
       </image>
     </figure>
