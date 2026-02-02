@@ -89,8 +89,12 @@ git push origin gh-pages --force
 If you encounter an error about Runestone services, create a cache file:
 
 ```bash
-mkdir -p ~/.ptx/2.36.0/rs_cache
-cat > ~/.ptx/2.36.0/rs_cache/rs_services.xml << 'EOF'
+# Get your PreTeXt version
+PTX_VERSION=$(pretext --version | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1)
+
+# Create the cache directory and file
+mkdir -p ~/.ptx/${PTX_VERSION}/rs_cache
+cat > ~/.ptx/${PTX_VERSION}/rs_cache/rs_services.xml << 'EOF'
 <?xml version="1.0" ?>
 <all>
   <js type="list">
@@ -108,7 +112,7 @@ cat > ~/.ptx/2.36.0/rs_cache/rs_services.xml << 'EOF'
 EOF
 ```
 
-This workaround is already included in the `.github/workflows/pretext.yml` workflow.
+This workaround is already included in the `.github/workflows/pretext.yml` and `.github/workflows/init-gh-pages.yml` workflows.
 
 ## More Information
 
