@@ -1,0 +1,89 @@
+name: Initialize gh-pages branch
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  initialize-gh-pages:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Check if gh-pages branch exists
+        id: check-branch
+        run: |
+          if git ls-remote --heads origin gh-pages | grep gh-pages; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+            echo "gh-pages branch already exists"
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "gh-pages branch does not exist"
+          fi
+      
+      - name: Set up Python
+        if: steps.check-branch.outputs.exists == 'false'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install PreTeXt CLI
+        if: steps.check-branch.outputs.exists == 'false'
+        run: pip install -r requirements.txt
+      
+      - name: Initialize PreTeXt system resources
+        if: steps.check-branch.outputs.exists == 'false'
+        run: pretext init --system
+      
+      - name: Create Runestone cache workaround
+        if: steps.check-branch.outputs.exists == 'false'
+        run: |
+          # Get PreTeXt version dynamically
+          PTX_VERSION=$(pretext --version | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1)
+          mkdir -p ~/.ptx/${PTX_VERSION}/rs_cache
+          cat > ~/.ptx/${PTX_VERSION}/rs_cache/rs_services.xml << 'EOF'
+          <?xml version="1.0" ?>
+          <all>
+            <js type="list">
+              <item type="str">prefix-runtime.f91c1a4dc12163f2.bundle.js</item>
+              <item type="str">prefix-723.3e6434f80549315a.bundle.js</item>
+              <item type="str">prefix-runestone.fe35e59c546f8d19.bundle.js</item>
+            </js>
+            <css type="list">
+              <item type="str">prefix-723.3bccd435914aa0ff.css</item>
+              <item type="str">prefix-runestone.557d81b04b3ec0e4.css</item>
+            </css>
+            <cdn-url type="str">https://runestone.academy/cdn/runestone/</cdn-url>
+            <version type="str">7.10.0</version>
+          </all>
+          EOF
+      
+      - name: Configure git
+        if: steps.check-branch.outputs.exists == 'false'
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+      
+      - name: Build and deploy to gh-pages
+        if: steps.check-branch.outputs.exists == 'false'
+        run: |
+          # Build the deploy targets
+          pretext build --deploys
+          
+          # Deploy to gh-pages branch (this creates the branch)
+          pretext deploy --no-push
+          
+          # Push the gh-pages branch
+          git push origin gh-pages --force
+      
+      - name: Branch already exists
+        if: steps.check-branch.outputs.exists == 'true'
+        run: |
+          echo "The gh-pages branch already exists. No initialization needed."
+          echo "You can use the 'Build and Deploy' workflow to update it."
