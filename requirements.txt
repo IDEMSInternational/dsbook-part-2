@@ -1,2 +1,5 @@
 # This file was automatically generated with PreTeXt 2.32.0.
+# Intentionally using 2.32.0 instead of newer versions (2.35.0, 2.36.0)
+# due to a bug in those versions where rs_services.xml cache is not properly handled.
+# See .github/PRETEXT_BUILD_FIX.md for details.
 pretext == 2.32.0

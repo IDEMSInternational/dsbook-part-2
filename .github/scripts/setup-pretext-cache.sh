@@ -26,6 +26,11 @@ if [ -f "$CACHE_DIR/runestone_services.xml" ]; then
 fi
 
 # Create a minimal fallback cache file if neither exists
+# Note: These values are from Runestone 7.10.0 (circa 2024) and were
+# extracted from a working PreTeXt installation. They provide basic
+# Runestone functionality but may need updating if Runestone changes
+# its file structure significantly. The CDN URL and file hashes should
+# still work as they reference a specific versioned release.
 echo "Creating minimal fallback cache file"
 cat > "$CACHE_DIR/rs_services.xml" << 'EOF'
 <?xml version="1.0" ?>
