@@ -11,9 +11,9 @@
   <!-- HTML-specific options -->
   <html>
     <platform host="web"/>
-    <css style="default" colors="blue_red"/>
+    <css theme="default-modern" colors="blue_red"/>
     <knowl remark="no" example="no" proof="no" definition="no"/>
-    <index-page ref="index-page"/>
+    <index-page ref="frontmatter"/>
   </html>
   
   <!-- PDF/LaTeX-specific options -->
