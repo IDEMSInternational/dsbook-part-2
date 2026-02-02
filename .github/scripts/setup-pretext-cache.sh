@@ -5,7 +5,7 @@
 set -e
 
 # Get PreTeXt version
-PTX_VERSION=$(pretext --version | grep -oP '\d+\.\d+\.\d+')
+PTX_VERSION=$(pretext --version | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')
 echo "PreTeXt version: $PTX_VERSION"
 
 # Create cache directory
