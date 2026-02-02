@@ -1,7 +1,7 @@
 # PreTeXt Build Error Fix
 
 ## Problem
-PreTeXt versions 2.35.0 and 2.36.0 have a bug where the build fails with the error:
+PreTeXt versions 2.32.0 through 2.36.0 have a bug where the build fails with the error:
 ```
 critical: cannot access local variable 'services_xml' where it is not associated with a value
 ```
