@@ -47,9 +47,25 @@ The project is configured in `project.ptx`:
 
 ## GitHub Pages Settings
 
-To view the deployed site:
-1. Go to repository Settings → Pages
-2. The site should be deployed from GitHub Pages Actions
+**CRITICAL**: For the PreTeXt book to render correctly, GitHub Pages **MUST** be configured to use "GitHub Actions" as the source.
+
+### Required Configuration Steps:
+
+1. Go to repository **Settings** → **Pages**
+2. Under **Build and deployment** → **Source**:
+   - Select **"GitHub Actions"**
+   - **DO NOT** select "Deploy from a branch" (this would serve the old Quarto book from `/docs`)
+3. Save the setting
+
+### Why This Is Important:
+
+This repository contains two books:
+- **Quarto book** in `/docs` folder (legacy)
+- **PreTeXt book** deployed via GitHub Actions (current/active)
+
+If Pages is configured to deploy from the `/docs` folder, you will see the Quarto book or repository README instead of the PreTeXt book.
+
+See `GITHUB_PAGES_SETUP.md` for detailed troubleshooting information.
 
 ## Local Development
 
