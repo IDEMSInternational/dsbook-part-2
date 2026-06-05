@@ -7,9 +7,9 @@
       This chapter introduces high dimensional data. For the foundational material, see
       <xref ref="matrices-in-R"/>, <xref ref="linear-algebra"/>, <xref ref="dimension-reduction"/>,
       <xref ref="sec-latent-factor-models"/>, and <xref ref="sec-regularization"/>. For background on the
-      linear algebra and matrix factorization used here, see <url href="http://joshua.smcvt.edu/linearalgebra/">Hefferon's
-      Linear Algebra</url> and the BellKor
-      <url href="https://www.netflixprize.com/assets/GrandPrize2009_BPC_BellKor.pdf">Netflix Prize paper</url>.
+      linear algebra and matrix factorization used here, see <fn><url href="http://joshua.smcvt.edu/linearalgebra/">Hefferon's
+      Linear Algebra</url></fn> and the BellKor
+      <fn><url href="https://www.netflixprize.com/assets/GrandPrize2009_BPC_BellKor.pdf">Netflix Prize paper</url></fn>.
     </p>
   </introduction>
 
