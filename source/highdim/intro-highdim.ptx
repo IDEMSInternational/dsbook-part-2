@@ -4,7 +4,9 @@
   
   <introduction>
     <p>
-      This chapter introduces high dimensional data.
+      This chapter introduces high dimensional data. For background on the linear algebra and matrix
+      factorization used here, see <url href="http://joshua.smcvt.edu/linearalgebra/">Hefferon's Linear
+      Algebra</url> and the BellKor <url href="https://www.netflixprize.com/assets/GrandPrize2009_BPC_BellKor.pdf">Netflix Prize paper</url>.
     </p>
   </introduction>
 

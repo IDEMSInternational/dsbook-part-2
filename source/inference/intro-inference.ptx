@@ -4,7 +4,9 @@
   
   <introduction>
     <p>
-      This chapter introduces statistical inference.
+      This chapter introduces statistical inference. For an applied example of uncertainty quantification in
+      public forecasting, see FiveThirtyEight's explanation of its election forecast
+      <url href="https://fivethirtyeight.com/features/how-fivethirtyeights-election-forecast-works/">online</url>.
     </p>
   </introduction>
 
