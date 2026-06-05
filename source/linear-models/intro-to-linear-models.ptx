@@ -4,8 +4,10 @@
   
   <introduction>
     <p>
-      This chapter introduces linear models. For a reminder that association is not causation, see Tyler Vigen's
-      <url href="https://www.tylervigen.com/spurious-correlations">Spurious Correlations</url>.
+      This chapter introduces linear models. For the main case studies, see <xref ref="sec-regression"/>,
+      <xref ref="sec-treatment-effect-models"/>, <xref ref="sec-association-tests"/>, and
+      <xref ref="sec-multivariable-regression"/>. For a reminder that association is not causation, see Tyler
+      Vigen's <url href="https://www.tylervigen.com/spurious-correlations">Spurious Correlations</url>.
     </p>
   </introduction>
 

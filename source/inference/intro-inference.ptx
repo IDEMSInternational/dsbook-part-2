@@ -4,9 +4,11 @@
   
   <introduction>
     <p>
-      This chapter introduces statistical inference. For an applied example of uncertainty quantification in
-      public forecasting, see FiveThirtyEight's explanation of its election forecast
-      <url href="https://fivethirtyeight.com/features/how-fivethirtyeights-election-forecast-works/">online</url>.
+      This chapter introduces statistical inference. For the main ideas, see
+      <xref ref="sec-parameters-and-estimates"/>, <xref ref="sec-bayesian-statistics"/>,
+      <xref ref="sec-election-forecasting"/>, and <xref ref="sec-bootstrap"/>. For an applied example of
+      uncertainty quantification in public forecasting, see FiveThirtyEight's explanation of its election
+      forecast <url href="https://fivethirtyeight.com/features/how-fivethirtyeights-election-forecast-works/">online</url>.
     </p>
   </introduction>
 
