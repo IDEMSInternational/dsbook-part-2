@@ -85,7 +85,7 @@
 
       <program language="r">
         <input>
-rafalib::mypar()
+par(mfrow = c(1, 1))
 library(dslabs)
 f &lt;- with(heights, height[sex == "Female"])
 m &lt;- with(heights, height[sex == "Male"])
@@ -93,6 +93,13 @@ qqplot(f - mean(f), m - mean(m))
 abline(0,1)
         </input>
       </program>
+
+      <figure xml:id="fig-comparing-groups-female-male-qqplot">
+        <caption>QQ plot comparing centered female and male height distributions</caption>
+        <image source="images/comparing-groups-female-male-qqplot.png" width="70%">
+          <description>A quantile-quantile plot comparing centered female and male heights. The points track the identity line through the middle and bend away in the tails, showing similar central shape with tail differences.</description>
+        </image>
+      </figure>
 
       <p>
         We see that in the middle of the plot the points are on the identity line, confirming the distributions are similar except for the shift. However, for the smaller and larger quantiles we see a deviation from the line. We come back to this observation in <xref ref="sec-stratification"/>.
@@ -119,42 +126,55 @@ abline(0,1)
       The cumulative distribution function (CDF) of the standard normal is written as <m>\Phi(x)</m>, giving the probability that a normal random variable is less than <m>x</m>. For example, <m>\Phi(-1.96) = 0.025</m> and <m>\Phi(1.96) = 0.975</m>. In R, this is computed with <c>pnorm</c>:
     </p>
 
-    <program language="r">
+    <console>
       <input>
 pnorm(-1.96)
       </input>
-    </program>
+      <output>
+[1] 0.0249979
+      </output>
+    </console>
 
     <p>
       The inverse of <m>\Phi</m>, denoted <m>\Phi^{-1}(p)</m>, provides the <em>theoretical quantiles</em>. For instance, <m>\Phi^{-1}(0.975) = 1.96</m> which we compute with <c>qnorm</c>:
     </p>
 
-    <program language="r">
+    <console>
       <input>
 qnorm(0.975)
       </input>
-    </program>
+      <output>
+[1] 1.959964
+      </output>
+    </console>
 
     <p>
       By default, <c>pnorm</c> and <c>qnorm</c> assume the <em>standard normal</em> distribution (mean 0, SD 1). You can specify different parameters with the <c>mean</c> and <c>sd</c> arguments:
     </p>
 
-    <program language="r">
+    <console>
       <input>
 qnorm(0.975, mean = 69, sd = 3)
       </input>
-    </program>
+      <output>
+[1] 74.87989
+      </output>
+    </console>
 
     <p>
       For observed data, we can compute sample quantiles using the <c>quantile</c> function. For example, here are the quartiles of male heights:
     </p>
 
-    <program language="r">
+    <console>
       <input>
 x &lt;- with(heights, height[sex == "Male"])
 quantile(x, c(0.25, 0.50, 0.75))
       </input>
-    </program>
+      <output>
+25% 50% 75% 
+ 67  69  72 
+      </output>
+    </console>
 
     <p>
       To check whether these data are approximately normal, we can construct a QQ plot following these steps:
@@ -175,7 +195,7 @@ quantile(x, c(0.25, 0.50, 0.75))
 
     <program language="r">
       <input>
-rafalib::mypar(1,1)
+par(mfrow = c(1, 1))
 p &lt;- seq(0.05, 0.95, 0.05)
 sample_quantiles &lt;- quantile(x, p)
 theoretical_quantiles &lt;- qnorm(p, mean = mean(x), sd = sd(x))
@@ -183,6 +203,13 @@ plot(theoretical_quantiles, sample_quantiles)
 abline(0, 1)
       </input>
     </program>
+
+    <figure xml:id="fig-comparing-groups-manual-normal-qqplot">
+      <caption>QQ plot of male heights against normal quantiles</caption>
+      <image source="images/comparing-groups-manual-normal-qqplot.png" width="70%">
+        <description>A quantile-quantile plot comparing male height quantiles with theoretical normal quantiles using matched mean and standard deviation. The points stay close to the identity line, supporting the normal approximation.</description>
+      </image>
+    </figure>
 
     <p>
       Because the points fall close to the identity line, we conclude that the normal distribution provides a good approximation for this dataset.
@@ -198,6 +225,13 @@ plot(quantile(scale(x), p), qnorm(p))
       </input>
     </program>
 
+    <figure xml:id="fig-comparing-groups-standardized-qqplot">
+      <caption>QQ plot of standardized male heights</caption>
+      <image source="images/comparing-groups-standardized-qqplot.png" width="70%">
+        <description>A QQ plot comparing standardized male heights to standard normal quantiles. The points align closely with a straight line, showing that the standardized data are near normal.</description>
+      </image>
+    </figure>
+
     <p>
       R provides built-in functions for generating qqplots that compare observed data to a normal distribution:
     </p>
@@ -208,6 +242,13 @@ qqnorm(x)
 qqline(x)
       </input>
     </program>
+
+    <figure xml:id="fig-comparing-groups-base-qqnorm">
+      <caption>Base R QQ plot for male heights</caption>
+      <image source="images/comparing-groups-base-qqnorm.png" width="70%">
+        <description>A base R normal QQ plot for male heights with a reference line. Most points lie near the line, with modest departures in the tails.</description>
+      </image>
+    </figure>
 
     <p>
       These functions use the average and standard deviation of the data <c>x</c> to define the theoretical normal distribution used for the x-axis values. In other words, the plotted line represents what we would expect if the data were normally distributed with the same mean and spread as the observed sample.
@@ -220,12 +261,21 @@ qqline(x)
     <program language="r">
       <input>
 library(ggplot2)
+library(dplyr)
+library(dslabs)
 heights |> filter(sex == "Male") |>
   ggplot(aes(sample = scale(height))) + 
   geom_qq() +
   geom_abline()
       </input>
     </program>
+
+    <figure xml:id="fig-comparing-groups-ggplot-qqnorm">
+      <caption>ggplot2 QQ plot for standardized male heights</caption>
+      <image source="images/comparing-groups-ggplot-qqnorm.png" width="70%">
+        <description>A ggplot2 QQ plot of standardized male heights with a diagonal reference line. The points cluster near the line, again indicating an approximately normal distribution.</description>
+      </image>
+    </figure>
 
     <note>
       <p>
@@ -261,6 +311,13 @@ heights |> ggplot(aes(sex, height, fill = sex)) + geom_boxplot()
       </input>
     </program>
 
+    <figure xml:id="fig-comparing-groups-height-boxplots">
+      <caption>Boxplots of student heights by sex</caption>
+      <image source="images/comparing-groups-height-boxplots.png" width="70%">
+        <description>Side-by-side boxplots comparing female and male student heights. The male distribution is shifted upward, while the spreads appear similar.</description>
+      </image>
+    </figure>
+
     <p>
       The plot immediately reveals that males are, on average, taller than females. The standard deviations appear to be similar. But does the normal approximation also work for the female height data collected by the survey? We expect that they will follow a normal distribution, just like males. However, exploratory plots reveal that the approximation is not as useful:
     </p>
@@ -277,6 +334,13 @@ gridExtra::grid.arrange(p1, p2, ncol = 2)
       </input>
     </program>
 
+    <figure xml:id="fig-comparing-groups-female-density-qq">
+      <caption>Female height density plot and QQ plot</caption>
+      <image source="images/comparing-groups-female-density-qq.png" width="100%">
+        <description>Two panels for female heights: a density plot with a visible secondary bump and a QQ plot with tail departures from the normal reference line. Together they show why a normal approximation is less convincing for the female data.</description>
+      </image>
+    </figure>
+
     <p>
       We see something we did not see for the males: the density plot has a second <em>bump</em>. Also, the qqplot shows that the highest points tend to be taller than expected by the normal distribution. Finally, we also see five points in the qqplot that suggest shorter than expected heights for a normal distribution. When reporting back to ET, we might need to provide a histogram rather than just the average and standard deviation for the female heights.
     </p>
@@ -289,13 +353,16 @@ gridExtra::grid.arrange(p1, p2, ncol = 2)
       Regarding the five smallest values, note that these are:
     </p>
 
-    <program language="r">
+    <console>
       <input>
 heights |> filter(sex == "Female") |> 
   top_n(5, desc(height)) |>
   pull(height)
       </input>
-    </program>
+      <output>
+[1] 51 53 55 52 52
+      </output>
+    </console>
 
     <p>
       Because these are reported heights, a possibility is that the student meant to enter <c>5'1"</c>, <c>5'2"</c>, <c>5'3"</c> or <c>5'5"</c>.

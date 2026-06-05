@@ -110,11 +110,14 @@ y_hat &lt;- factor(sample(c("Female", "Male"), nrow(test_set), replace = TRUE))
       The <term>overall accuracy</term> is simply defined as the overall proportion that is predicted correctly:
     </p>
     
-    <program language="r">
+    <console>
       <input>
 mean(y_hat == test_set$y)
       </input>
-    </program>
+      <output>
+[1] 0.482
+      </output>
+    </console>
     
     <p>
       Not surprisingly, our accuracy is about 50%. We are guessing!
@@ -135,11 +138,14 @@ y_hat &lt;- factor(ifelse(test_set$x &lt;= cutoff, "Female", "Male"))
       The accuracy goes up from 0.5 to about 0.8:
     </p>
     
-    <program language="r">
+    <console>
       <input>
 mean(test_set$y == y_hat)
       </input>
-    </program>
+      <output>
+[1] 0.771
+      </output>
+    </console>
     
     <p>
       But can we do even better? In the example above, we used a cutoff of 62, but we can examine the accuracy obtained for other cutoffs and then pick the value that provides the best results. But remember, <term>it is important that we optimize the cutoff using only the training set</term>: the test set is only for evaluation. Although for this simplistic example it is not much of a problem, later we will learn that evaluating an algorithm on the training set can lead to <term>overfitting</term>, which often results in over-optimistic assessments.
@@ -172,37 +178,53 @@ data.frame(cutoff = cutoffs, accuracy) |&gt;
       </input>
     </program>
     
+    <figure xml:id="fig-evaluation-metrics-accuracy-vs-cutoff">
+      <caption>Training accuracy as a function of the height cutoff</caption>
+      <image source="images/evaluation-metrics-accuracy-vs-cutoff.png" width="70%">
+        <description>A line plot with points showing training accuracy versus height cutoff. Accuracy rises from the low 0.7 range, peaks near a cutoff of 64 inches at about 0.83, and then gradually declines for larger cutoffs.</description>
+      </image>
+    </figure>
+    
     <p>
       We see that the maximum value is:
     </p>
     
-    <program language="r">
+    <console>
       <input>
 max(accuracy)
       </input>
-    </program>
+      <output>
+[1] 0.832
+      </output>
+    </console>
     
     <p>
       which is much higher than 0.5. The cutoff resulting in this accuracy is:
     </p>
     
-    <program language="r">
+    <console>
       <input>
 best_cutoff &lt;- cutoffs[which.max(accuracy)]
 best_cutoff
       </input>
-    </program>
+      <output>
+[1] 64
+      </output>
+    </console>
     
     <p>
       We can now test this cutoff on our test set to make sure our accuracy is not overly optimistic:
     </p>
     
-    <program language="r">
+    <console>
       <input>
 y_hat &lt;- factor(ifelse(test_set$x &lt;= best_cutoff, "Female", "Male"))
 mean(y_hat == test_set$y)
       </input>
-    </program>
+      <output>
+[1] 0.821
+      </output>
+    </console>
     
     <p>
       We see that it is a bit lower than the accuracy observed for the training set. This is because we used the training set to select the cutoff, so there is some overtraining. However, our cutoff-based approach is still better than guessing. And by testing on a dataset that we did not train on, we know our improvement is not due to overtraining.
@@ -220,32 +242,46 @@ mean(y_hat == test_set$y)
       Generally speaking, overall accuracy can be misleading. To understand why, we begin by constructing a <term>confusion matrix</term>, a table that counts how often each combination of prediction and true outcome occurs. In R, we could create this table with <c>table</c>, but the <term>caret</term> package provides a convenient function, <c>confusionMatrix</c>, that not only computes the confusion matrix but also reports several additional performance metrics that we will use later:
     </p>
     
-    <program language="r">
+    <console>
       <input>
 cm &lt;- confusionMatrix(data = y_hat, reference = test_set$y)
 cm$table
       </input>
-    </program>
+      <output>
+          Reference
+Prediction Female Male
+    Female     54   29
+    Male       65  377
+      </output>
+    </console>
     
     <p>
       If we study this table closely, it reveals a problem. If we compute the accuracy separately for each sex (in the next section, we explain that, in this context, <term>sensitivity</term> and <term>specificity</term> are equivalent to accuracy for females and males, respectively) we get:
     </p>
     
-    <program language="r">
+    <console>
       <input>
 cm$byClass[c("Sensitivity", "Specificity")]
       </input>
-    </program>
+      <output>
+Sensitivity Specificity 
+      0.454       0.929
+      </output>
+    </console>
     
     <p>
       We notice an imbalance: too many females are predicted to be male. We are calling almost half of the females male! How can our overall accuracy be so high then? This is because the <term>prevalence</term>, defined as the proportion of <m>Y=1</m> in our data, is low. These heights were collected from three data sciences courses, two of which had higher male enrollment:
     </p>
     
-    <program language="r">
+    <console>
       <input>
 cm$byClass["Prevalence"]
       </input>
-    </program>
+      <output>
+Prevalence 
+     0.227
+      </output>
+    </console>
     
     <p>
       So when computing overall accuracy, the high percentage of mistakes made for females is outweighed by the gains in correct calls for men.
@@ -373,7 +409,7 @@ cm$byClass["Prevalence"]
     
     <program language="r">
       <input>
-cm &lt;- confusionMatrix(data = y_hat, reference = test_set$sex)
+cm &lt;- confusionMatrix(data = y_hat, reference = test_set$y)
 print(cm)
       </input>
     </program>
@@ -386,12 +422,18 @@ print(cm)
       You can access these directly, for example, like this:
     </p>
     
-    <program language="r">
+    <console>
       <input>
 cm$overall["Accuracy"]
 cm$byClass[c("Sensitivity","Specificity", "Prevalence", "Pos Pred Value")]
       </input>
-    </program>
+      <output>
+ Accuracy 
+   0.821
+   Sensitivity    Specificity     Prevalence Pos Pred Value 
+         0.454          0.929          0.227          0.651
+      </output>
+    </console>
     
     <p>
       We can see that the high overall accuracy is possible despite relatively low sensitivity. As we hinted at above, the reason this happens is because of the low prevalence (0.23): the proportion of females is low. Because prevalence is low, failing to predict females correctly (low sensitivity) does not lower the overall accuracy as much as failing to predict males correctly (low specificity). This is an example of why it is important to examine sensitivity and specificity and not just accuracy.
@@ -460,38 +502,55 @@ data.frame(cutoff = cutoffs, F_1 = F_1) |&gt;
       </input>
     </program>
     
+    <figure xml:id="fig-evaluation-metrics-f1-vs-cutoff">
+      <caption><m>F_1</m> score as a function of the height cutoff</caption>
+      <image source="images/evaluation-metrics-f1-vs-cutoff.png" width="70%">
+        <description>A line plot with points showing the F1 score versus height cutoff. The score increases as the cutoff moves into the mid-60s, peaks near 66 inches at about 0.62, and then drops for larger cutoffs.</description>
+      </image>
+    </figure>
+    
     <p>
       We see that it is maximized at <m>F_1</m> value of:
     </p>
     
-    <program language="r">
+    <console>
       <input>
 max(F_1)
       </input>
-    </program>
+      <output>
+[1] 0.617
+      </output>
+    </console>
     
     <p>
       This maximum is achieved when we use the following cutoff:
     </p>
     
-    <program language="r">
+    <console>
       <input>
 best_cutoff &lt;- cutoffs[which.max(F_1)]
 best_cutoff
       </input>
-    </program>
+      <output>
+[1] 66
+      </output>
+    </console>
     
     <p>
       A cutoff of 66 makes more sense than 64 because it falls closer to the midpoint between the average heights of males and females. Additionally, it provides a better balance between sensitivity and specificity in the resulting confusion matrix.
     </p>
     
-    <program language="r">
+    <console>
       <input>
 y_hat &lt;- factor(ifelse(test_set$x &lt;= best_cutoff, "Female", "Male"))
 sensitivity(y_hat, test_set$y)
 specificity(y_hat, test_set$y)
       </input>
-    </program>
+      <output>
+[1] 0.672
+[1] 0.837
+      </output>
+    </console>
     
     <p>
       We now see that we do much better than guessing, that both sensitivity and specificity are relatively high.
@@ -574,6 +633,13 @@ rbind(tmp_1, tmp_2) |&gt;
       </input>
     </program>
     
+    <figure xml:id="fig-evaluation-metrics-roc-curve">
+      <caption>ROC curves for guessing and the height-cutoff rule</caption>
+      <image source="images/evaluation-metrics-roc-curve.png" width="70%">
+        <description>A receiver operating characteristic plot comparing two methods. The x-axis shows false positive rate and the y-axis shows true positive rate. The height-cutoff curve lies above the guessing curve, and labeled points indicate the cutoff used at each point.</description>
+      </image>
+    </figure>
+    
     <p>
       We see that we obtain higher sensitivity with the cutoff approach for all values of specificity, which implies it is in fact a better method than guessing. Keep in mind that ROC curves for guessing always fall on the identity line. Also, note that when making ROC curves, it is often nice to add the cutoff associated with each point.
     </p>
@@ -635,6 +701,13 @@ bind_rows(tmp_1, tmp_2) |&gt;
       </input>
     </program>
     
+    <figure xml:id="fig-evaluation-metrics-precision-recall-curve">
+      <caption>Precision-recall curves under two definitions of the positive class</caption>
+      <image source="images/evaluation-metrics-precision-recall-curve.png" width="70%">
+        <description>A faceted precision-recall plot comparing guessing with the height-cutoff method. One panel treats females as the positive class and the other treats males as positive, showing that precision depends on prevalence even when the ROC behavior is unchanged.</description>
+      </image>
+    </figure>
+    
     <p>
       From the plot on the left, we immediately see that the precision of guessing is not high. This is because the prevalence is low. From the plot on the right, we see that if we change <m>Y=1</m> to mean <c>Male</c> instead of <c>Female</c>, the precision increases. Note that the ROC curve would remain the same.
     </p>
@@ -678,6 +751,13 @@ data.frame(Prevalence = prevalence,
   labs(title = "Precision as a function of prevalence", subtitle = "when TPR = 0.99 and TNR = 0.99")
       </input>
     </program>
+    
+    <figure xml:id="fig-evaluation-metrics-precision-vs-prevalence">
+      <caption>Precision as a function of prevalence</caption>
+      <image source="images/evaluation-metrics-precision-vs-prevalence.png" width="70%">
+        <description>A line plot showing precision versus prevalence when the true positive rate is 0.99 and the true negative rate is 0.99. Precision is low when prevalence is rare and rises sharply toward 1 as prevalence increases.</description>
+      </image>
+    </figure>
     
     <p>
       Although your algorithm achieves a precision of about 99% on the balanced training data (with 50% prevalence), its precision would drop to roughly 33% when applied to the general population, where the disease prevalence is only 0.5%. A doctor cannot rely on a test for which two-thirds of positive results are false positives. Even with perfect sensitivity, the precision would still be about 33% under these conditions. To make the algorithm clinically useful, you would need to drastically reduce the false positive rate (FPR).

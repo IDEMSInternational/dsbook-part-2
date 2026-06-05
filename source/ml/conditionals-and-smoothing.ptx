@@ -145,9 +145,12 @@
       To motivate the idea, consider a plot where noise obscures the trend, but it does not destroy it. Our task is to uncover the trend from the noisy data.
     </p>
     
-    <p>
-      [Figure: Signal + noise example showing trend, noise, and data = trend + noise]
-    </p>
+    <figure xml:id="fig-conditionals-signal-noise">
+      <caption>Signal, noise, and observed data</caption>
+      <image source="images/conditionals-and-smoothing-signal-noise.png" width="70%">
+        <description>Three side-by-side line plots showing the underlying trend, the random noise, and the observed data formed by adding the noise to the trend.</description>
+      </image>
+    </figure>
     
     <p>
       In the next sections, we explore how smoothing techniques accomplish this, starting with a simple case study that illustrates the challenges and the intuition behind the methods.
@@ -179,9 +182,12 @@
         To illustrate how to interpret <m>X_1</m> and <m>X_2</m>, we include four example images. On the left are the original images of the two digits with the largest and smallest values for <m>X_1</m> and on the right we have the images corresponding to the largest and smallest values of <m>X_2</m>.
       </p>
       
-      <p>
-        [Figure: Example images showing largest and smallest values of x_1 and x_2]
-      </p>
+      <figure xml:id="fig-conditionals-mnist-extremes">
+        <caption>Digits with extreme <m>x_1</m> and <m>x_2</m> values</caption>
+        <image source="images/conditionals-and-smoothing-mnist-extremes.png" width="70%">
+          <description>Two panels of digit images showing the training examples with the smallest and largest values of x_1 and x_2, with quadrant boundaries drawn on each image.</description>
+        </image>
+      </figure>
       
       <p>
         Here is a plot of the observed <m>X_2</m> versus observed <m>X_1</m> with color determining if <m>y</m> is 2 (red) or 7 (blue):
@@ -195,9 +201,12 @@ mnist_27$train |&gt; ggplot(aes(x_1, x_2, color = y)) + geom_point()
         </input>
       </program>
       
-      <p>
-        [Figure: Scatter plot of x_1 vs x_2 colored by digit class]
-      </p>
+      <figure xml:id="fig-conditionals-mnist-scatter">
+        <caption>Scatterplot of <m>x_1</m> versus <m>x_2</m> for digits 2 and 7</caption>
+        <image source="images/conditionals-and-smoothing-mnist-scatter.png" width="70%">
+          <description>A scatterplot of x_1 versus x_2 for the training set, with points colored by whether the digit is a 2 or a 7.</description>
+        </image>
+      </figure>
       
       <p>
         We can immediately see some patterns. For example, if <m>x_1</m> is large (there was a lot of ink in the upper-left part of the image), then the digit is probably a 7. Also, for smaller values of <m>x_1</m>, the 2s appear to be in the mid range values of <m>x_2</m>.
@@ -239,9 +248,12 @@ y_hat &lt;- factor(ifelse(p_hat &gt; 0.5, 7, 2))
         We have stored the true <m>p(\mathbf{x})</m> in the <c>mnist_27</c> and can plot it as an image. We draw a curve that separates values of <m>\mathbf{x}</m> for which <m>p(\mathbf{x}) &gt; 0.5</m> and those for which <m>p(\mathbf{x}) &lt; 0.5</m>:
       </p>
       
-      <p>
-        [Figure: True probability surface with decision boundary at p=0.5]
-      </p>
+      <figure xml:id="fig-conditionals-true-probability">
+        <caption>True conditional probability surface with decision boundary at <m>p=0.5</m></caption>
+        <image source="images/conditionals-and-smoothing-true-probability.png" width="50%">
+          <description>A heat map of the true conditional probability for classifying digits, with a contour line marking the p = 0.5 decision boundary.</description>
+        </image>
+      </figure>
       
       <p>
         To start understanding the limitations of regression, first note that, because <m>p(\mathbf{x}) = 0.5 \iff \log p(\mathbf{x})/(1-p(\mathbf{x})) = 0</m>, with GLM <m>\hat{p}(\mathbf{x})</m>, the boundary defined by <m>p(\mathbf{x}) = 0.5</m> must satisfy:
@@ -260,9 +272,12 @@ y_hat &lt;- factor(ifelse(p_hat &gt; 0.5, 7, 2))
         This suggests that our GLM approach has no chance of capturing the non-linear nature of the true <m>p(\mathbf{x})</m>. A visual representation of <m>\hat{p}(\mathbf{x})</m> clearly shows how it fails to capture the shape of <m>p(\mathbf{x})</m>.
       </p>
       
-      <p>
-        [Figure: GLM estimated probability surface showing linear decision boundary]
-      </p>
+      <figure xml:id="fig-conditionals-glm-surface">
+        <caption>GLM estimated probability surface with a linear decision boundary</caption>
+        <image source="images/conditionals-and-smoothing-glm-surface.png" width="50%">
+          <description>A heat map of the GLM estimate of the conditional probability, with a straight contour line showing the linear decision boundary.</description>
+        </image>
+      </figure>
       
       <p>
         We need something more flexible: a method that permits estimates with shapes other than a plane. Smoothing techniques permit this flexibility. We will start by describing nearest neighbor and kernel approaches. To understand why we cover this topic, remember that the concepts behind smoothing techniques are extremely useful in machine learning because conditional expectations/probabilities can be thought of as <em>trends</em> of unknown shapes that we need to estimate in the presence of uncertainty.
@@ -283,9 +298,12 @@ polls_2008 |&gt; ggplot(aes(day, margin)) + geom_point()
       </input>
     </program>
     
-    <p>
-      [Figure: Scatter plot of polling data over time]
-    </p>
+    <figure xml:id="fig-conditionals-polls-scatter">
+      <caption>Scatterplot of polling margins over time</caption>
+      <image source="images/conditionals-and-smoothing-polls-scatter.png" width="70%">
+        <description>A scatterplot of 2008 polling margins against day, showing substantial variability around an underlying time trend.</description>
+      </image>
+    </figure>
     
     <p>
       Later we will learn how to extend smoothing ideas to higher dimensions.
@@ -311,9 +329,12 @@ polls_2008 |&gt; ggplot(aes(day, margin)) + geom_point()
       Let's start by using regression, since it is the only method we have learned up to now for this type of data. The estimate we obtain shows that the fitted regression line does not appear to describe the trend very well.
     </p>
     
-    <p>
-      [Figure: Linear regression fit showing poor fit with residuals]
-    </p>
+    <figure xml:id="fig-conditionals-linear-regression-fit">
+      <caption>Linear regression fit showing lack of fit</caption>
+      <image source="images/conditionals-and-smoothing-linear-regression-fit.png" width="70%">
+        <description>A scatterplot of polling margins with a fitted regression line, where points above and below the line are colored differently to show systematic lack of fit.</description>
+      </image>
+    </figure>
     
     <p>
       For example, on September 4 (day -62), the Republican Convention was held and the data suggest that it gave John McCain a boost in the polls. However, the regression line does not capture this potential trend. To see the <em>lack of fit</em> more clearly, we note that points above the fitted line (blue) and those below (red) are not evenly distributed across days. We therefore need an alternative, more flexible approach.
@@ -372,17 +393,23 @@ polls_2008 |&gt; ggplot(aes(day, margin)) + geom_point()
         In the poll example, for each day, we would compute the average of the values within a week with that day in the center. Here are two examples: <m>x_0 = -125</m> and <m>x_0 = -55</m>. The blue segment represents the resulting average.
       </p>
       
-      <p>
-        [Figure: Bin smoother illustrated at two different centers]
-      </p>
+      <figure xml:id="fig-conditionals-bin-centers">
+        <caption>Bin smoother illustrated at two different centers</caption>
+        <image source="images/conditionals-and-smoothing-bin-centers.png" width="70%">
+          <description>Two panels showing the local averaging window for the bin smoother at two center values, with the fitted local mean drawn in blue.</description>
+        </image>
+      </figure>
       
       <p>
         By computing this mean for every point, we form an estimate of the underlying curve <m>f(x)</m>. At each value of <m>x_0</m>, we keep the estimate <m>\hat{f}(x_0)</m> and move on to the next point.
       </p>
       
-      <p>
-        [Figure: Animation/sequence showing bin smoother moving across the data]
-      </p>
+      <figure xml:id="fig-conditionals-bin-sequence">
+        <caption>Sequence showing the bin smoother moving across the data</caption>
+        <image source="images/conditionals-and-smoothing-bin-sequence.png" width="100%">
+          <description>A six-panel sequence showing the bin smoother as the center moves across the polling data and the fitted curve is built up progressively.</description>
+        </image>
+      </figure>
       
       <p>
         The final code and resulting estimate look like this:
@@ -400,9 +427,12 @@ polls_2008 |&gt; mutate(fit = fit$y) |&gt;
         </input>
       </program>
       
-      <p>
-        [Figure: Final bin smoother estimate]
-      </p>
+      <figure xml:id="fig-conditionals-bin-final">
+        <caption>Final bin smoother estimate</caption>
+        <image source="images/conditionals-and-smoothing-bin-final.png" width="70%">
+          <description>A scatterplot of polling margins with the final bin smoother estimate drawn as a red line.</description>
+        </image>
+      </figure>
     </subsection>
     
     <subsection xml:id="sec-kernel-smoothers">
@@ -436,9 +466,12 @@ polls_2008 |&gt; mutate(fit = fit$y) |&gt;
         Below we visualize the box and normal kernels for <m>x_0 = -125</m> and <m>h = 3.5</m>, showing how the boxcar kernel weighs all in-bin points equally, while the normal kernel downweights points near the edges.
       </p>
       
-      <p>
-        [Figure: Comparison of box and normal kernel weights]
-      </p>
+      <figure xml:id="fig-conditionals-kernel-weights">
+        <caption>Comparison of box and normal kernel weights</caption>
+        <image source="images/conditionals-and-smoothing-kernel-weights.png" width="80%">
+          <description>Two panels comparing the box kernel and the normal kernel, showing how the normal kernel smoothly downweights points farther from the center.</description>
+        </image>
+      </figure>
       
       <p>
         The final code and resulting plot for the normal kernel look like this:
@@ -455,9 +488,12 @@ polls_2008 |&gt; mutate(smooth = fit$y) |&gt;
         </input>
       </program>
       
-      <p>
-        [Figure: Kernel smoother with normal kernel]
-      </p>
+      <figure xml:id="fig-conditionals-kernel-final">
+        <caption>Kernel smoother with a normal kernel</caption>
+        <image source="images/conditionals-and-smoothing-kernel-final.png" width="70%">
+          <description>A scatterplot of polling margins with the kernel smoother estimate using a normal kernel drawn as a red line.</description>
+        </image>
+      </figure>
       
       <p>
         Notice that this version looks smoother.
@@ -495,17 +531,23 @@ polls_2008 |&gt; mutate(smooth = fit$y) |&gt;
         For every point <m>x_0</m>, loess defines a window and fits a line within that window. Here is an example showing the fits for <m>x_0=-125</m> and <m>x_0 = -55</m>:
       </p>
       
-      <p>
-        [Figure: Loess fits at two different centers]
-      </p>
+      <figure xml:id="fig-conditionals-loess-centers">
+        <caption>Loess fits at two different centers</caption>
+        <image source="images/conditionals-and-smoothing-loess-centers.png" width="70%">
+          <description>Two panels showing local weighted linear fits at two center values, with point sizes reflecting loess weights.</description>
+        </image>
+      </figure>
       
       <p>
         The fitted value at <m>x_0</m> becomes our estimate <m>\hat{f}(x_0)</m>. By repeating this procedure as we move across the data, we build up the complete smoothed curve.
       </p>
       
-      <p>
-        [Figure: Animation/sequence showing loess moving across the data]
-      </p>
+      <figure xml:id="fig-conditionals-loess-sequence">
+        <caption>Sequence showing loess moving across the data</caption>
+        <image source="images/conditionals-and-smoothing-loess-sequence.png" width="100%">
+          <description>A six-panel sequence showing the loess fit as the center moves across the polling data and the fitted curve is built up progressively.</description>
+        </image>
+      </figure>
       
       <p>
         The final result is a smoother fit than the bin smoother since we use larger sample sizes to estimate our local parameters:
@@ -523,17 +565,23 @@ polls_2008 |&gt; mutate(smooth = fit$fitted) |&gt;
         </input>
       </program>
       
-      <p>
-        [Figure: Final loess fit]
-      </p>
+      <figure xml:id="fig-conditionals-loess-final">
+        <caption>Final loess fit</caption>
+        <image source="images/conditionals-and-smoothing-loess-final.png" width="70%">
+          <description>A scatterplot of polling margins with the final loess estimate drawn as a red line.</description>
+        </image>
+      </figure>
       
       <p>
         Different spans give us different estimates. We can see how different window sizes lead to different estimates.
       </p>
       
-      <p>
-        [Figure: Loess fits with multiple span values]
-      </p>
+      <figure xml:id="fig-conditionals-loess-multi-span">
+        <caption>Loess fits with multiple span values</caption>
+        <image source="images/conditionals-and-smoothing-loess-multi-span.png" width="70%">
+          <description>Four panels showing loess fits for several span values, illustrating how the amount of smoothing changes with the span.</description>
+        </image>
+      </figure>
       
       <p>
         There are three other differences between <c>loess</c> and the typical bin smoother:
@@ -567,9 +615,12 @@ polls_2008 |&gt; mutate(smooth = fit$fitted) |&gt;
         This kernel differs from the Gaussian kernel in that more points get values closer to the max:
       </p>
       
-      <p>
-        [Figure: Comparison of normal and tri-weight kernels]
-      </p>
+      <figure xml:id="fig-conditionals-triweight-kernel">
+        <caption>Comparison of normal and tri-weight kernels</caption>
+        <image source="images/conditionals-and-smoothing-triweight-kernel.png" width="80%">
+          <description>Two panels comparing the normal kernel and the tri-weight kernel used by loess, showing their different weight profiles.</description>
+        </image>
+      </figure>
       
       <p>
         4. <c>loess</c> has the option of fitting the local model <em>robustly</em>. An iterative algorithm is implemented in which, after fitting a model in one iteration, outliers are detected and down-weighted for the next iteration. To use this option, we use the argument <c>family="symmetric"</c>.
@@ -602,9 +653,12 @@ polls_2008 |&gt; mutate(smooth_1 = fit_1$fitted, smooth_2 = fit_2$fitted) |&gt;
         </input>
       </program>
       
-      <p>
-        [Figure: Comparison of degree=1 and degree=2 loess fits]
-      </p>
+      <figure xml:id="fig-conditionals-loess-degree-comparison">
+        <caption>Comparison of degree 1 and degree 2 loess fits</caption>
+        <image source="images/conditionals-and-smoothing-loess-degree-comparison.png" width="70%">
+          <description>A scatterplot of polling margins with a dashed red loess fit of degree 1 and a solid orange loess fit of degree 2.</description>
+        </image>
+      </figure>
       
       <p>
         The <c>degree = 2</c> gives us more wiggly results. In general, we actually prefer <c>degree = 1</c> as it is less prone to this kind of noise.
@@ -626,9 +680,12 @@ polls_2008 |&gt; ggplot(aes(day, margin)) +
         </input>
       </program>
       
-      <p>
-        [Figure: ggplot2 geom_smooth with default parameters]
-      </p>
+      <figure xml:id="fig-conditionals-geom-smooth-default">
+        <caption><c>geom_smooth</c> with default parameters</caption>
+        <image source="images/conditionals-and-smoothing-geom-smooth-default.png" width="70%">
+          <description>A scatterplot of polling margins with the default ggplot2 smoothing curve and confidence band.</description>
+        </image>
+      </figure>
       
       <p>
         But be careful with default parameters as they are rarely optimal. However, you can conveniently change them. For example, with <c>loess</c> you can use the following code:
@@ -642,9 +699,12 @@ polls_2008 |&gt; ggplot(aes(day, margin)) +
         </input>
       </program>
       
-      <p>
-        [Figure: ggplot2 geom_smooth with custom parameters]
-      </p>
+      <figure xml:id="fig-conditionals-geom-smooth-custom">
+        <caption><c>geom_smooth</c> with custom loess parameters</caption>
+        <image source="images/conditionals-and-smoothing-geom-smooth-custom.png" width="70%">
+          <description>A scatterplot of polling margins with a loess smoothing curve produced using custom span and degree settings.</description>
+        </image>
+      </figure>
     </subsection>
   </section>
 

@@ -129,11 +129,14 @@ mean(s &lt;= a)
       For instance, the probability of losing money is:
     </p>
     
-    <program language="r">
+    <console>
       <input>
 mean(s &lt; 0)
       </input>
-    </program>
+      <output>
+[1] 0.04432
+      </output>
+    </console>
     
     <p>
       A histogram and qqplot of <m>S_n</m> shows that the distribution is approximately normal, an observation that the <term>Central Limit Theorem</term> will soon explain.
@@ -162,6 +165,13 @@ p2 &lt;- data.frame(S_n = qq_sample) |&gt;
 gridExtra::grid.arrange(p1, p2, ncol = 2)
       </input>
     </program>
+
+    <figure xml:id="fig-sampling-models-clt-hist-qq">
+      <caption>Histogram and QQ plot of simulated roulette winnings</caption>
+      <image source="images/sampling-models-clt-hist-qq.png" width="100%">
+        <description>A two-panel figure showing the simulated distribution of roulette winnings after 1,000 bets. The left panel is a histogram of S_n with a blue normal density curve overlaid. The right panel is a QQ plot comparing sampled S_n values to theoretical normal quantiles, with points lying close to a straight blue line.</description>
+      </image>
+    </figure>
   </section>
 
   <section xml:id="sec-clt-prob">
@@ -211,11 +221,14 @@ gridExtra::grid.arrange(p1, p2, ncol = 2)
       In the roulette example we obtain:
     </p>
     
-    <program language="r">
+    <console>
       <input>
 2*sqrt(90)/19
       </input>
-    </program>
+      <output>
+[1] 0.998614
+      </output>
+    </console>
     
     <p>
       Thus, the standard error of the sum is:
@@ -229,53 +242,69 @@ gridExtra::grid.arrange(p1, p2, ncol = 2)
       which in this case is:
     </p>
     
-    <program language="r">
+    <console>
       <input>
 sqrt(n)*2*sqrt(90)/19
       </input>
-    </program>
+      <output>
+[1] 31.57895
+      </output>
+    </console>
     
     <p>
       These theoretical values agree closely with the Monte Carlo results:
     </p>
     
-    <program language="r">
+    <console>
       <input>
 mean(s)
 sd(s)
       </input>
-    </program>
+      <output>
+[1] 52.6455
+[1] 31.53624
+      </output>
+    </console>
     
     <p>
       Using the CLT, we can now compute the probability that the casino loses money without simulation:
     </p>
     
-    <program language="r">
+    <console>
       <input>
 pnorm(0, n*(20 - 18)/38, sqrt(n)*2*sqrt(90)/19)
       </input>
-    </program>
+      <output>
+[1] 0.04779035
+      </output>
+    </console>
     
     <p>
       which matches our earlier estimate:
     </p>
     
-    <program language="r">
+    <console>
       <input>
 mean(s &lt; 0)
       </input>
-    </program>
+      <output>
+[1] 0.04432
+      </output>
+    </console>
     
     <note>
       <p>
         The quantity <m>(S_n + n)/2</m> represents the number of wins for the casino and follows a <em>binomial distribution</em>. Thus, the probability <m>\mathrm{Pr}(S_n &lt; 0)</m> can also be computed directly:
       </p>
       
-      <program language="r">
+      <console>
         <input>
 pbinom(n/2 - 1, size = n, prob = 10/19)
         </input>
-      </program>
+        <output>
+[1] 0.04479591
+        </output>
+      </console>
       
       <p>
         However, the binomial result applies only to Bernoulli trials. In many real-world settings, data are not binomial, yet we still want to approximate the distribution of sums or averages. For those cases, the CLT provides a general framework that extends far beyond Bernoulli trials.

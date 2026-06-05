@@ -37,11 +37,14 @@ F &lt;- function(a) mean(x &lt;= a)
     <p>
       To connect the eCDF to probability, imagine randomly selecting one of the male students. What is the chance that he is taller than 70.5 inches? Because each student is equally likely to be chosen, this probability is simply the proportion of students taller than 70.5 inches. Using the eCDF, we can compute it as:
     </p>
-    <program language="r">
+    <console>
       <input>
 1 - F(70.5)
       </input>
-    </program>
+      <output>
+[1] 0.3633005
+      </output>
+    </console>
     <p>
       The cumulative distribution function (CDF) is the theoretical counterpart of the eCDF. Rather than relying on observed data, it assigns probabilities to ranges of values for a random outcome <m>X</m>. Specifically, the CDF gives, for any number <m>a</m>, the probability that <m>X</m> is less than or equal to <m>a</m>:
     </p>
@@ -90,6 +93,12 @@ ggplot(mapping = aes(x, y)) +
   scale_fill_manual(values = c("grey70", "grey40"))
       </input>
     </program>
+    <figure xml:id="fig-continuous-probability-gamma-bars">
+      <caption>Approximating interval probability with bars under a gamma density</caption>
+      <image source="images/continuous-probability-gamma-bars.png" width="70%">
+        <description>A plot showing a smooth gamma density curve overlaid on narrow bars that approximate the density. Bars between 0.5 and 1.5 are shaded darker to highlight the interval whose probability is being approximated.</description>
+      </image>
+    </figure>
     <p>
       The probability of the outcome falling within an interval, for example, <m>x \in [0.5, 1.5]</m>, can be approximated by adding the heights of the bars within that range and dividing by the total height of all bars. As the measurement becomes more precise and the bar widths become narrower, this sum approaches the area under the curve of the continuous function <m>f(x)</m>.
     </p>
@@ -150,6 +159,12 @@ ggplot(df, aes(x, f)) +
   )
       </input>
     </program>
+    <figure xml:id="fig-continuous-probability-normal-pdf">
+      <caption>Probability density function of a normal distribution</caption>
+      <image source="images/continuous-probability-normal-pdf.png" width="80%">
+        <description>A bell-shaped normal density centered at mu with dashed vertical reference lines at mu plus or minus one, two, and three standard deviations.</description>
+      </image>
+    </figure>
     <p>
       In R, this function this PDF is given by <c>dnorm</c> and the corresponding CDF by <c>pnorm</c>.
     </p>
@@ -164,13 +179,16 @@ F(a) &lt;- pnorm(a, mean = m, sd = s)
     <p>
       This is particularly useful in practice. If we are willing to assume that a variable, such as height follows a normal distribution, we can answer probability questions without needing the full dataset. For example, to find the probability that a randomly selected student is taller than 70.5 inches, we only need the sample mean and standard deviation:
     </p>
-    <program language="r">
+    <console>
       <input>
 m &lt;- mean(x)
 s &lt;- sd(x)
 1 - pnorm(70.5, m, s)
       </input>
-    </program>
+      <output>
+[1] 0.371369
+      </output>
+    </console>
   </section>
 
   <section xml:id="theoretical-distributions-practical-models">
@@ -221,6 +239,12 @@ data.frame(simulated_heights = simulated_heights) |&gt;
   geom_histogram(color = "black", binwidth = 2)
         </input>
       </program>
+      <figure xml:id="fig-continuous-probability-simulated-heights">
+        <caption>Histogram of heights simulated from a normal model</caption>
+        <image source="images/continuous-probability-simulated-heights.png" width="70%">
+          <description>A histogram of simulated male heights generated from a normal distribution, with a bell-shaped pattern centered near 69 to 70 inches.</description>
+        </image>
+      </figure>
       <p>
         This is one of the most useful functions in R because it lets us generate data that mimic natural variation and explore what outcomes might occur by chance through Monte Carlo simulations.
       </p>
@@ -239,11 +263,14 @@ tallest &lt;- replicate(10000, max(rnorm(800, m, s)))
       <p>
         Having a seven-footer is quite rare:
       </p>
-      <program language="r">
+      <console>
         <input>
 mean(tallest &gt;= 7*12)
         </input>
-      </program>
+        <output>
+[1] 0.0177
+        </output>
+      </console>
       <p>
         Here is the resulting distribution of the tallest person's height:
       </p>
@@ -253,6 +280,12 @@ data.frame(tallest = tallest) |&gt; ggplot(aes(tallest)) +
   geom_histogram(color = "black", binwidth = 1)
         </input>
       </program>
+      <figure xml:id="fig-continuous-probability-tallest-height">
+        <caption>Distribution of the tallest height in samples of 800 men</caption>
+        <image source="images/continuous-probability-tallest-height.png" width="70%">
+          <description>A histogram showing the simulated distribution of the maximum height in repeated samples of 800 men, concentrated in the upper 70s and low 80s inches.</description>
+        </image>
+      </figure>
       <p>
         Although deriving this distribution analytically is possible, it is not straightforward. Once derived, it provides a faster way to evaluate probabilities than simulation. However, when analytic derivations are too complex or infeasible, Monte Carlo simulation offers a practical alternative. By repeatedly generating random samples, we can approximate the distribution of almost any statistic and obtain reliable estimates even when theoretical results are unavailable.
       </p>

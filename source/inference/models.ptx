@@ -65,6 +65,13 @@ ggplot(polls, aes(poll, estimate, ymin = low, ymax = high)) +
   geom_hline(yintercept = 2*p - 1, lty = 2)
         </input>
       </program>
+
+      <figure xml:id="fig-models-simulated-polls">
+        <caption>Simulated poll estimates with 95% confidence intervals</caption>
+        <image source="images/models-simulated-polls.png" width="70%">
+          <description>A horizontal interval plot showing 12 simulated polls. Each point marks a poll estimate for the spread, the solid vertical line marks a tie at 0, and the dashed vertical line marks the true 2012 spread of about 3.9%.</description>
+        </image>
+      </figure>
       
       <p>
         Not surprisingly, all 12 polls report confidence intervals that include the result we eventually saw on election night (vertical dashed line). However, all 12 polls also include 0 (vertical solid line). Therefore, if asked individually for a prediction, the pollsters would have to say: it's a toss-up.
@@ -105,6 +112,13 @@ polls2 |>
   geom_hline(yintercept = 2*p - 1, lty = 2)
         </input>
       </program>
+
+      <figure xml:id="fig-models-simulated-polls-avg">
+        <caption>Combined confidence interval from the simulated polls</caption>
+        <image source="images/models-simulated-polls-avg.png" width="70%">
+          <description>A horizontal interval plot of the 12 simulated polls plus an additional row labeled Avg. The average interval is narrower than the individual poll intervals and remains above zero while still covering the true spread shown by the dashed vertical line.</description>
+        </image>
+      </figure>
       
       <p>
         However, this example was just a simplified simulation to illustrate the basic idea. In real-world settings, combining data from multiple polls is more complicated than treating them as one large random sample. Differences in methodology, timing, question wording, and even sampling biases can all affect the results. We will later explore how these factors make real poll aggregation more challenging and how statistical models can account for them.
@@ -175,6 +189,13 @@ moe &lt;- 2*1.96*sqrt(p_hat*(1 - p_hat)/sum(polls$samplesize))
 polls |> ggplot(aes(spread)) + geom_histogram(color = "black", binwidth = .01)
         </input>
       </program>
+
+      <figure xml:id="fig-models-national-spread-histogram">
+        <caption>Histogram of reported spreads in 2016 national polls</caption>
+        <image source="images/models-national-spread-histogram.png" width="70%">
+          <description>A histogram of spread estimates from national likely-voter polls conducted during the final week of the 2016 election. The bars are not perfectly bell-shaped, suggesting the simple sampling model does not fully explain the variation in the poll results.</description>
+        </image>
+      </figure>
       
       <p>
         The estimates do not appear to be normally distributed, and the standard error appears to be larger than 0.007. The theory is not working here.
@@ -189,11 +210,19 @@ polls |> ggplot(aes(spread)) + geom_histogram(color = "black", binwidth = .01)
       Notice that data come from various pollsters, and some are taking several polls a week:
     </p>
     
-    <program language="r">
+    <console>
       <input>
 polls |> count(pollster) |> arrange(desc(n)) |> head(5)
       </input>
-    </program>
+      <output>
+                  pollster n
+1                 IBD/TIPP 6
+2 The Times-Picayune/Lucid 6
+3    USC Dornsife/LA Times 6
+4 ABC News/Washington Post 5
+5     CVOTER International 5
+      </output>
+    </console>
     
     <p>
       Let's visualize the data for the pollsters that are regularly polling:
@@ -208,17 +237,34 @@ polls |> group_by(pollster) |>
   coord_flip()
       </input>
     </program>
+
+    <figure xml:id="fig-models-pollster-spreads">
+      <caption>Reported spreads for pollsters that released at least five polls</caption>
+      <image source="images/models-pollster-spreads.png" width="70%">
+        <description>A jitter plot of spread estimates by pollster for organizations that released at least five national likely-voter polls during the final week of the 2016 election. The points reveal noticeable differences in the centers of the pollsters' results, illustrating pollster-specific bias or house effects.</description>
+      </image>
+    </figure>
     
     <p>
       This plot reveals an unexpected result. First, consider that the standard error predicted by theory for each poll is between 0.018 and 0.033:
     </p>
     
-    <program language="r">
+    <console>
       <input>
 polls |> group_by(pollster) |> filter(n() >= 5) |>
   summarize(se = 2*sqrt(p_hat*(1 - p_hat)/median(samplesize)))
       </input>
-    </program>
+      <output>
+# A tibble: 5 × 2
+  pollster                     se
+  &lt;fct&gt;                     &lt;dbl&gt;
+1 ABC News/Washington Post 0.0243
+2 CVOTER International     0.0260
+3 IBD/TIPP                 0.0333
+4 The Times-Picayune/Lucid 0.0197
+5 USC Dornsife/LA Times    0.0183
+      </output>
+    </console>
     
     <p>
       This agrees with the within-poll variation we see. However, there appear to be differences <em>across the polls</em>. Observe, for example, how the USC Dornsife/LA Times pollster is predicting a 4% lead for Trump, while Ipsos is predicting a lead larger than 5% for Clinton. The theory we learned says nothing about different pollsters producing polls with different expected values, instead it assumes all the polls have the same expected value. FiveThirtyEight refers to these differences as <em>house effects</em>. We also call them <em>pollster bias</em>. Nothing in our simple urn model provides an explanation for these pollster-to-pollster differences.
@@ -244,6 +290,13 @@ one_poll_per_pollster &lt;- polls |> group_by(pollster) |>
 hist(one_poll_per_pollster$spread, breaks = 10)
       </input>
     </program>
+
+    <figure xml:id="fig-models-pollster-final-histogram">
+      <caption>Histogram of the final spread reported by each pollster</caption>
+      <image source="images/models-pollster-final-histogram.png" width="70%">
+        <description>A histogram of the spread values from the final national likely-voter poll reported by each pollster. The distribution summarizes the between-pollster variation that the data-driven model uses to estimate uncertainty.</description>
+      </image>
+    </figure>
     
     <p>
       Although we are no longer using a model with red (Republicans) and blue (Democrats) beads in an urn, our new model can also be thought of as an urn model, but containing poll results from all possible pollsters. Think of our <m>N=15</m> data points <m>Y_1,\dots Y_N</m> as a random sample from this urn. To develop a useful model, we <em>assume</em> that the expected value of our urn is the actual spread <m>\theta = 2p - 1</m>, which implies that the sample average has expected value <m>\theta</m>.
@@ -302,11 +355,14 @@ hist(one_poll_per_pollster$spread, breaks = 10)
         The <c>sd</c> function in R computes the sample standard deviation:
       </p>
       
-      <program language="r">
+      <console>
         <input>
 sd(one_poll_per_pollster$spread)
         </input>
-      </program>
+        <output>
+[1] 0.02219169
+        </output>
+      </console>
     </subsection>
 
     <subsection xml:id="sec-computing-confidence-interval">
@@ -316,14 +372,18 @@ sd(one_poll_per_pollster$spread)
         We are now ready to form a new confidence interval based on our new data-driven model:
       </p>
       
-      <program language="r">
+      <console>
         <input>
 results &lt;- one_poll_per_pollster |> 
   summarize(avg = mean(spread), se = sd(spread)/sqrt(length(spread))) |> 
   mutate(start = avg - 1.96*se, end = avg + 1.96*se) 
 round(results*100, 2)
         </input>
-      </program>
+        <output>
+   avg  se start end
+1 3.03 0.5  2.06   4
+        </output>
+      </console>
       
       <p>
         Our confidence interval is wider now since it incorporates the pollster variability. It does include the election night result of 2.1%. Also, note that it was small enough not to include 0, which means we were confident Clinton would win the popular vote.
@@ -391,6 +451,13 @@ x &lt;- seq(-5, 5, len = 100)
 data.frame(x = x, Normal = dnorm(x, 0, 1), t_03 = dt(x, 3), t_05 = dt(x, 5), t_15 = dt(x, 15)) |> pivot_longer(-x, names_to = "distribution", values_to = "f") |> ggplot(aes(x, f, color = distribution)) + geom_line() + ylab("f(x)")
         </input>
       </program>
+
+      <figure xml:id="fig-models-t-distributions">
+        <caption>Normal and t-distribution densities</caption>
+        <image source="images/models-t-distributions.png" width="70%">
+          <description>A line plot comparing the standard normal density with t-distributions having 3, 5, and 15 degrees of freedom. The t-distributions have heavier tails than the normal, especially when the degrees of freedom are small.</description>
+        </image>
+      </figure>
       
       <p>
         If we are willing to assume the pollster effect data is normally distributed, based on the sample data <m>Y_1, \dots, Y_N</m>,
@@ -401,12 +468,19 @@ data.frame(x = x, Normal = dnorm(x, 0, 1), t_03 = dt(x, 3), t_05 = dt(x, 5), t_1
 one_poll_per_pollster |> ggplot(aes(sample = spread)) + stat_qq()
         </input>
       </program>
+
+      <figure xml:id="fig-models-pollster-qqplot">
+        <caption>QQ plot of the final pollster spreads</caption>
+        <image source="images/models-pollster-qqplot.png" width="70%">
+          <description>A normal QQ plot for the final spread reported by each pollster. The points lie roughly along a straight line, providing a visual check of whether the pollster-level spreads are reasonably close to a normal distribution.</description>
+        </image>
+      </figure>
       
       <p>
         then <m>t</m> follows a t-distribution with <m>N-1</m> degrees of freedom. To construct a 95% confidence interval we simply use <c>qt</c> instead of <c>qnorm</c>: This results in a slightly larger confidence interval than we obtained before:
       </p>
       
-      <program language="r">
+      <console>
         <input>
 n &lt;- length(one_poll_per_pollster$spread)
 ttest_ci &lt;- one_poll_per_pollster |> 
@@ -415,27 +489,37 @@ ttest_ci &lt;- one_poll_per_pollster |>
   select(start, end)
 round(ttest_ci*100, 2)
         </input>
-      </program>
+        <output>
+  start  end
+1  1.99 4.07
+        </output>
+      </console>
       
       <p>
         This interval is a bit larger than the one using normal because the t-distribution has large tails, as seen in the densities. Specifically, the 97.5-th quantile value for the t distribution
       </p>
       
-      <program language="r">
+      <console>
         <input>
 qt(0.975, n - 1)
         </input>
-      </program>
+        <output>
+[1] 2.093024
+        </output>
+      </console>
       
       <p>
         is larger than that for the normal distribution
       </p>
       
-      <program language="r">
+      <console>
         <input>
 qnorm(0.975)
         </input>
-      </program>
+        <output>
+[1] 1.959964
+        </output>
+      </console>
       
       <note>
         <p>
@@ -447,7 +531,7 @@ qnorm(0.975)
         The t-distribution can also be used to model errors in bigger deviations that are more likely than with the normal distribution. In their Monte Carlo simulations, FiveThirtyEight uses the t-distribution to generate errors that better model the deviations we see in election data. For example, in Wisconsin, the average of six high quality polls was 7% in favor of Clinton with a standard deviation of 3%, but Trump won by 0.8%. Even after taking into account the overall bias, this 7.7% residual is more in line with t-distributed data than the normal distribution.
       </p>
       
-      <program language="r">
+      <console>
         <input>
 polls_us_election_2016 |>
   filter(state == "Wisconsin" &amp; enddate > "2016-11-01" &amp; 
@@ -456,7 +540,11 @@ polls_us_election_2016 |>
   mutate(spread = rawpoll_clinton - rawpoll_trump, actual = clinton - trump) |>
   summarize(actual = first(actual), estimate = mean(spread), sd = sd(spread))
         </input>
-      </program>
+        <output>
+      actual estimate       sd
+1 -0.7643432 7.043333 2.998151
+        </output>
+      </console>
     </subsection>
   </section>
 

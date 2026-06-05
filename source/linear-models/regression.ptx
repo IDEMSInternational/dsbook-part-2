@@ -31,11 +31,15 @@ galton &lt;- galton[, .(father, son = childHeight)]
       Suppose we were asked to summarize the father and son data. Since both distributions are well approximated by the normal distribution, we could use the two averages and two standard deviations as summaries:
     </p>
 
-    <program language="r">
+    <console>
       <input>
 galton[, .(f_avg=mean(father), f_sd=sd(father), s_avg=mean(son), s_sd=sd(son))]
       </input>
-    </program>
+      <output>
+      f_avg     f_sd   s_avg     s_sd
+1: 69.09888 2.546555 69.1933 2.716917
+      </output>
+    </console>
 
     <p>
       However, this summary fails to describe an important characteristic of the data: the trend that the taller the father, the taller the son.
@@ -43,14 +47,9 @@ galton[, .(f_avg=mean(father), f_sd=sd(father), s_avg=mean(son), s_sd=sd(son))]
 
     <figure xml:id="scatterplot">
       <caption>Scatterplot of father and son heights</caption>
-      <image source="linear-models/regression-scatterplot.png" width="40%">
+      <image source="images/regression-scatterplot.png" width="40%">
         <description>Scatterplot showing the relationship between father and son heights</description>
       </image>
-      <program language="r">
-        <input>
-galton |&gt; ggplot(aes(father, son)) + geom_point(alpha = 0.5)
-        </input>
-      </program>
     </figure>
 
     <p>
@@ -95,11 +94,14 @@ rho &lt;- mean(scale(x) * scale(y))
       For other pairs, the correlation is between -1 and 1. The correlation, computed with the function <c>cor</c>, between father and son's heights is about 0.5:
     </p>
 
-    <program language="r">
+    <console>
       <input>
 galton[, cor(father, son)]
       </input>
-    </program>
+      <output>
+[1] 0.4303697
+      </output>
+    </console>
 
     <warning>
       <p>
@@ -113,25 +115,9 @@ galton[, cor(father, son)]
 
     <figure xml:id="what-correlation-looks-like">
       <caption>Examples of data with different correlation coefficients</caption>
-      <image source="linear-models/regression-what-correlation-looks-like.png" width="100%">
+      <image source="images/regression-what-correlation-looks-like.png" width="100%">
         <description>Six panels showing scatterplots with correlations ranging from -0.9 to 0.99</description>
       </image>
-      <program language="r">
-        <input>
-n &lt;- 250
-cors &lt;- c(-0.9,-0.5,0,0.5,0.9,0.99)
-sim_data &lt;- lapply(cors,function(r) MASS::mvrnorm(n,c(0,0), matrix(c(1,r,r,1),2,2)))
-sim_data &lt;- Reduce(rbind, sim_data)
-sim_data &lt;- cbind( rep(cors, each = n), sim_data)
-colnames(sim_data) &lt;- c("r","x","y")
-as.data.frame(sim_data) |&gt; 
-  ggplot(aes(x,y)) + 
-  facet_wrap(~r) + 
-  geom_point(alpha = 0.5) +
-  geom_vline(xintercept = 0,lty = 2) + 
-  geom_hline(yintercept = 0,lty = 2)
-        </input>
-      </program>
     </figure>
 
     <subsection xml:id="sample-correlation-is-a-random-variable">
@@ -161,37 +147,36 @@ r &lt;- galton[sample(.N, 25, replace = TRUE), cor(father, son)]
 
       <figure xml:id="sample-correlation-distribution">
         <caption>Distribution of sample correlation</caption>
-        <image source="linear-models/regression-sample-correlation-distribution.png" width="60%">
+        <image source="images/regression-sample-correlation-distribution.png" width="60%">
           <description>Histogram showing the distribution of sample correlation from Monte Carlo simulation</description>
         </image>
-        <program language="r">
-          <input>
-N &lt;- 25
-r &lt;- replicate(1000, galton[sample(.N, N, replace = TRUE), cor(father, son)])
-hist(r, breaks = 20)
-          </input>
-        </program>
       </figure>
 
       <p>
         We see that the expected value of <c>r</c> is the population correlation:
       </p>
 
-      <program language="r">
+      <console>
         <input>
 mean(r)
         </input>
-      </program>
+        <output>
+[1] 0.4273407
+        </output>
+      </console>
 
       <p>
         and that it has a relatively high standard error relative to the range of values <c>r</c> can take:
       </p>
 
-      <program language="r">
+      <console>
         <input>
 sd(r)
         </input>
-      </program>
+        <output>
+[1] 0.1607791
+        </output>
+      </console>
 
       <p>
         So, when interpreting correlations, remember that correlations derived from samples are estimates containing uncertainty.
@@ -207,16 +192,9 @@ sd(r)
 
       <figure xml:id="small-sample-correlation-not-normal">
         <caption>QQ plot showing sample correlation distribution for N=25</caption>
-        <image source="linear-models/regression-small-sample-correlation-not-normal.png" width="60%">
+        <image source="images/regression-small-sample-correlation-not-normal.png" width="60%">
           <description>QQ plot demonstrating that N=25 is too small for normal approximation</description>
         </image>
-        <program language="r">
-          <input>
-ggplot(aes(sample = r), data = data.frame(r)) + 
-  stat_qq() + 
-  geom_abline(intercept = mean(r), slope = (1 - mean(r)^2)/sqrt(N))
-          </input>
-        </program>
       </figure>
 
       <p>
@@ -233,23 +211,9 @@ ggplot(aes(sample = r), data = data.frame(r)) +
 
       <figure xml:id="ascombe-quartet">
         <caption>Anscombe's quartet</caption>
-        <image source="linear-models/regression-ascombe-quartet.png" width="80%">
+        <image source="images/regression-ascombe-quartet.png" width="80%">
           <description>Four panels showing different data patterns all with correlation 0.82</description>
         </image>
-        <program language="r">
-          <input>
-dt &lt;- as.data.table(anscombe)
-dt_long &lt;- melt(dt[, row := .I], id.vars = "row",
-                variable.name = "name", value.name = "value")
-
-dt_long[, c("axis", "group") := tstrsplit(name, "", fixed = TRUE)]
-dcast(dt_long, row + group ~ axis, value.var = "value")[, row := NULL] |&gt;
-  ggplot(aes(x,y)) +
-  facet_wrap(~group)  +
-  geom_smooth(formula = "y ~ x", method = "lm", fill = NA, fullrange = TRUE) + 
-  geom_point()
-          </input>
-        </program>
       </figure>
 
       <p>
@@ -321,31 +285,40 @@ dcast(dt_long, row + group ~ axis, value.var = "value")[, row := NULL] |&gt;
       So to obtain a prediction we want to estimate <m>E[Y|X=72]</m> using the sample collected by Galton. When using continuous data we often have the challenge that there are not that many data points where <m>X = 72</m>:
     </p>
 
-    <program language="r">
+    <console>
       <input>
 sum(galton$father == 72)
       </input>
-    </program>
+      <output>
+[1] 8
+      </output>
+    </console>
 
     <p>
       If we change the number to 72.5, we get even fewer data points:
     </p>
 
-    <program language="r">
+    <console>
       <input>
 sum(galton$father == 72.5)
       </input>
-    </program>
+      <output>
+[1] 1
+      </output>
+    </console>
 
     <p>
       A practical way to improve estimates of the conditional expectations is to define strata of observations with similar value of <m>x</m>. In our example, we can round father heights to the nearest inch and assume that they are all 72 inches. If we do this, we end up with the following prediction for the son of a father that is 72 inches tall:
     </p>
 
-    <program language="r">
+    <console>
       <input>
 mean(galton[round(father) == 72]$son)
       </input>
-    </program>
+      <output>
+[1] 70.5
+      </output>
+    </console>
 
     <p>
       Note that a 72 inch father is taller than average, specifically standard deviations taller than the average father. Our prediction is also taller than average, but only standard deviations larger than the average son. The predicted height for sons of 72 inch fathers have <em>regressed</em> some to the average height. We notice that the reduction in how many SDs taller is about 0.5, which happens to be close to the sample correlation. As we will see in a later section, this is not a coincidence.
@@ -357,17 +330,9 @@ mean(galton[round(father) == 72]$son)
 
     <figure xml:id="boxplot-1">
       <caption>Boxplot of son heights by father height strata</caption>
-      <image source="linear-models/regression-boxplot-1.png" width="40%">
+      <image source="images/regression-boxplot-1.png" width="40%">
         <description>Boxplot showing son heights grouped by rounded father heights</description>
       </image>
-      <program language="r">
-        <input>
-galton[, .(father_strata = factor(round(father)), son)] |&gt;
-ggplot(aes(father_strata, son)) + 
-  geom_boxplot() + 
-  geom_point()
-        </input>
-      </program>
     </figure>
 
     <p>
@@ -376,16 +341,9 @@ ggplot(aes(father_strata, son)) +
 
     <figure xml:id="conditional-averages-follow-line">
       <caption>Conditional averages follow a line</caption>
-      <image source="linear-models/regression-conditional-averages-follow-line.png" width="40%">
+      <image source="images/regression-conditional-averages-follow-line.png" width="40%">
         <description>Plot showing conditional averages of son heights forming a linear pattern</description>
       </image>
-      <program language="r">
-        <input>
-galton[, .(father= factor(round(father)), son)][, .(avg = mean(son)), by = father] |&gt;
-ggplot(aes(father, avg)) + 
-  geom_point() + labs(y = "conditional average for sons")
-        </input>
-      </program>
     </figure>
 
     <p>
@@ -436,21 +394,9 @@ ggplot(aes(father, avg)) +
 
     <figure xml:id="regression-line">
       <caption>Regression line</caption>
-      <image source="linear-models/regression-regression-line.png" width="40%">
+      <image source="images/regression-regression-line.png" width="40%">
         <description>Scatterplot with regression line overlaid</description>
       </image>
-      <program language="r">
-        <input>
-params &lt;- galton[, .(mu_x = mean(father), mu_y = mean(son),
-                             s_x  = sd(father), s_y  = sd(son),
-                             r    = cor(father, son))]
-
-galton |&gt; ggplot(aes(father, son)) + 
-  geom_point(alpha = 0.5) +
-  geom_abline(slope = with(params, r*s_y/s_x), 
-              intercept = with(params, mu_y - r*s_y/s_x*mu_x))
-        </input>
-      </program>
     </figure>
 
     <note>
@@ -458,11 +404,12 @@ galton |&gt; ggplot(aes(father, son)) +
         With <c>ggplot</c> we don't need to calculate all these summaries and can easily add a regression line using the <c>geom_smooth</c> function:
       </p>
 
-      <program language="r">
-        <input>
-galton |&gt; ggplot(aes(father, son)) + geom_point() + geom_smooth(method = "lm")
-        </input>
-      </program>
+      <figure xml:id="geom-smooth-regression-line">
+        <caption>Regression line added with <c>geom_smooth</c></caption>
+        <image source="images/regression-geom-smooth-line.png" width="40%">
+          <description>Scatterplot of father and son heights with a fitted linear regression line and confidence band added using geom_smooth.</description>
+        </image>
+      </figure>
 
       <p>
         In <xref ref="sec-lm-function" /> we explain what <c>lm</c> means here.
@@ -473,13 +420,12 @@ galton |&gt; ggplot(aes(father, son)) + geom_point() + geom_smooth(method = "lm"
       Note that the regression formula implies that if we first standardize the variables, that is subtract the average and divide by the standard deviation, then the regression line has intercept 0 and slope equal to the correlation <m>\rho</m>. You can make same plot, but using standard units like this:
     </p>
 
-    <program language="r">
-      <input>
-galton |&gt; ggplot(aes(scale(father), scale(son))) + 
-  geom_point(alpha = 0.5) +
-  geom_abline(intercept = 0, slope = r)
-      </input>
-    </program>
+    <figure xml:id="regression-line-standard-units">
+      <caption>Regression line in standard units</caption>
+      <image source="images/regression-standardized-regression-line.png" width="40%">
+        <description>Scatterplot of standardized father and son heights with a regression line through the origin whose slope equals the correlation.</description>
+      </image>
+    </figure>
 
     <subsection xml:id="linear-regression-improves-precision">
       <title>Linear regression improves precision</title>
@@ -520,23 +466,31 @@ linear_regression_prediction &lt;- replicate(B, {
         Although the expected values from both methods are nearly the same:
       </p>
 
-      <program language="r">
+      <console>
         <input>
 mean(conditional_avg, na.rm = TRUE)
 mean(linear_regression_prediction)
         </input>
-      </program>
+        <output>
+[1] 70.47253
+[1] 70.43207
+        </output>
+      </console>
 
       <p>
         the standard error for the linear regression prediction is much smaller:
       </p>
 
-      <program language="r">
+      <console>
         <input>
 sd(conditional_avg, na.rm = TRUE)
 sd(linear_regression_prediction)
         </input>
-      </program>
+        <output>
+[1] 1.075993
+[1] 0.5344485
+        </output>
+      </console>
 
       <p>
         This means that the linear-regression-based prediction is far more stable across repeated samples. The reason is intuitive: the conditional average is based on a relatively small subset of data, the fathers whose heights are about 72 inches, so its estimate is more variable. In some samples, we may even have very few or no observations in that group, which is why we use <c>na.rm=TRUE</c>. The regression line, on the other hand, is estimated using information from the entire dataset, which makes its predictions much more precise.
@@ -588,17 +542,9 @@ sd(linear_regression_prediction)
 
       <figure xml:id="qqnorm-of-strata">
         <caption>QQ plots of son heights by father height strata</caption>
-        <image source="linear-models/regression-qqnorm-of-strata.png" width="80%">
+        <image source="images/regression-qqnorm-of-strata.png" width="80%">
           <description>Multiple QQ plots showing normality within each stratum</description>
         </image>
-        <program language="r">
-          <input>
-galton[, .(son, z = round((father - mean(father))/sd(father)))][z %in% -2:2] |&gt;
-  ggplot() +  
-  stat_qq(aes(sample = son)) +
-  facet_wrap( ~ z)
-          </input>
-        </program>
       </figure>
 
       <p>
@@ -697,18 +643,9 @@ b_2 &lt;- with(params, mu_x - m_2*mu_y)
 
       <figure xml:id="two-regression-lines">
         <caption>Two regression lines</caption>
-        <image source="linear-models/regression-two-regression-lines.png" width="40%">
+        <image source="images/regression-two-regression-lines.png" width="40%">
           <description>Scatterplot showing both regression lines</description>
         </image>
-        <program language="r">
-          <input>
-galton |&gt; 
-  ggplot(aes(father, son)) + 
-  geom_point(alpha = 0.5) + 
-  geom_abline(intercept = b_1, slope = m_1, col = "blue") +
-  geom_abline(intercept = -b_2/m_2, slope = 1/m_2, col = "red")
-          </input>
-        </program>
       </figure>
     </subsection>
   </section>
@@ -766,19 +703,24 @@ ROY &lt;- ROY[, .(playerID, rookie_year, rookie, nameFirst, nameLast, AVG)]
 ## Wide layout: one column for rookie and sophomore AVG
 ROY &lt;- dcast(ROY, playerID + nameFirst + nameLast + rookie_year ~ rookie, value.var = "AVG")
 
-## Order by rookie AVG (descending) and take a small display subset
+## Order by rookie AVG (descending)
 setorder(ROY, -rookie)
-tmp &lt;- ROY[1:5, .(nameFirst, nameLast, rookie_year, rookie, sophomore)]
-if(knitr::is_html_output()){
-  knitr::kable(tmp, "html") |&gt;
-    kableExtra::kable_styling(bootstrap_options = "striped", 
-                              full_width = FALSE)
-} else{
-  knitr::kable(tmp, "latex", booktabs = TRUE) |&gt;
-    kableExtra::kable_styling(font_size = 8)
-}
       </input>
     </program>
+
+    <console>
+      <input>
+ROY[1:5, .(nameFirst, nameLast, rookie_year, rookie, sophomore)]
+      </input>
+      <output>
+   nameFirst nameLast rookie_year    rookie sophomore
+1:    Willie  McCovey        1959 0.3541667 0.2384615
+2:    Ichiro   Suzuki        2001 0.3497110 0.3214838
+3:        Al   Bumbry        1973 0.3370787 0.2333333
+4:      Fred     Lynn        1975 0.3314394 0.3136095
+5:    Albert   Pujols        2001 0.3288136 0.3135593
+      </output>
+    </console>
 
     <p>
       So is it "jitters" or a "jinx"? To answer this question, let's turn our attention to all the players that played the 2013 and 2014 seasons and batted more than 130 times (minimum to win Rookie of the Year).
@@ -800,35 +742,37 @@ two_years &lt;- merge(two_years, playerInfo, all.x = TRUE)[POS != "P"][, .(nameF
       The same pattern arises when we look at the top performers: batting averages go down for most of the top performers.
     </p>
 
-    <program language="r">
+    <console>
       <input>
-tmp &lt;- two_years[1:5]
-if(knitr::is_html_output()){
-  knitr::kable(tmp, "html") |&gt;
-    kableExtra::kable_styling(bootstrap_options = "striped", full_width = FALSE)
-} else{
-  knitr::kable(tmp, "latex", booktabs = TRUE) |&gt;
-    kableExtra::kable_styling(font_size = 8)
-}
+two_years[1:5]
       </input>
-    </program>
+      <output>
+   nameFirst nameLast      2013      2014
+1:    Miguel  Cabrera 0.3477477 0.3126023
+2:    Hanley  Ramirez 0.3453947 0.2828508
+3:   Michael  Cuddyer 0.3312883 0.3315789
+4:   Scooter  Gennett 0.3239437 0.2886364
+5:       Joe    Mauer 0.3235955 0.2769231
+      </output>
+    </console>
 
     <p>
       But these are not rookies! Also, look at what happens to the worst performers of 2013:
     </p>
 
-    <program language="r">
+    <console>
       <input>
-tmp &lt;- two_years[order(`2013`)][1:5]
-if(knitr::is_html_output()){
-  knitr::kable(tmp, "html") |&gt;
-    kableExtra::kable_styling(bootstrap_options = "striped", full_width = FALSE)
-} else{
-  knitr::kable(tmp, "latex", booktabs = TRUE) |&gt;
-    kableExtra::kable_styling(font_size = 8)
-}
+two_years[order(`2013`)][1:5]
       </input>
-    </program>
+      <output>
+   nameFirst nameLast      2013      2014
+1:     Danny Espinosa 0.1582278 0.2192192
+2:       Dan    Uggla 0.1785714 0.1489362
+3:      Jeff   Mathis 0.1810345 0.2000000
+4:     B. J.    Upton 0.1841432 0.2080925
+5:      Adam  Rosales 0.1904762 0.2621951
+      </output>
+    </console>
 
     <p>
       Their batting averages mostly go up! Is this some sort of reverse sophomore slump? It is not. There is no such thing as a sophomore slump. This is all explained with a simple statistical fact: the correlation for performance in two separate years is high, but not perfect:
@@ -836,14 +780,9 @@ if(knitr::is_html_output()){
 
     <figure xml:id="regression-fallacy">
       <caption>Batting average in 2013 vs 2014</caption>
-      <image source="linear-models/regression-regression-fallacy.png" width="40%">
+      <image source="images/regression-regression-fallacy.png" width="40%">
         <description>Scatterplot of batting averages showing regression to the mean</description>
       </image>
-      <program language="r">
-        <input>
-two_years |&gt; ggplot(aes(`2013`, `2014`)) + geom_point()
-        </input>
-      </program>
     </figure>
 
     <p>
@@ -884,14 +823,17 @@ two_years |&gt; ggplot(aes(`2013`, `2014`)) + geom_point()
           We performed a Monte Carlo simulation and found that with <m>N=25</m> and the CLT was not a great approximation for the distribution of the sample correlation. Generate correlated data using the <c>mvrnorm</c> function from the <c>MASS</c> package:
         </p>
 
-        <program language="r">
+        <console>
           <input>
 library(MASS)
 N &lt;- 25
 dat &lt;- mvrnorm(N, c(0, 0), matrix(c(1, 0.9, 0.9, 1), 2, 2))
 cor(dat[,1], dat[,2])
           </input>
-        </program>
+          <output>
+[1] 0.9437435
+          </output>
+        </console>
 
         <p>
           Perform 10,000 Monte Carlo simulations for <c>N &lt;- c(25, 50, 100, 250, 500, 1000)</c> to determine when the CLT starts becoming a useful approximation.

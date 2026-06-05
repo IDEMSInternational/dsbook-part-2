@@ -44,9 +44,17 @@ pnorm(a, mu, sigma)
       The distribution is symmetric, centered at <m>\mu</m>, and most values (about 95%) are within <m>2\sigma</m> from <m>\mu</m>. Here is what the normal distribution looks like when the <m>\mu = 0</m> and <m>\sigma = 1</m>:
     </p>
 
+    <program language="r">
+      <input>
+        tibble(x = seq(-4, 4, length.out = 1000)) |>
+          ggplot(aes(x, dnorm(x))) +
+          geom_line(linewidth = 1)
+      </input>
+    </program>
+
     <figure xml:id="fig-normal-distribution-density">
       <caption>Normal distribution with mean 0 and standard deviation 1</caption>
-      <image source="images/summaries-normal-distribution-density.png" width="70%">
+      <image source="images/numerical-summaries-normal-distribution-density.png" width="70%">
         <description>A smooth bell-shaped curve showing the standard normal distribution. The curve is symmetric around 0, with the peak at 0. The curve extends from approximately -4 to 4 on the x-axis, with most of the density concentrated between -2 and 2.</description>
       </image>
     </figure>
@@ -90,7 +98,6 @@ pnorm(a, mu, sigma)
     <program language="r">
       <input>
 library(tidyverse)
-library(rafalib)
 x &lt;- with(heights, height[sex == "Male"])
       </input>
     </program>
@@ -120,9 +127,18 @@ s &lt;- sd(x)
       The plot below shows the smooth density of the observed data (blue) and the corresponding normal approximation (black line):
     </p>
 
+    <program language="r">
+      <input>
+        tibble(height = x) |>
+          ggplot(aes(height)) +
+          geom_density(fill = "#56B4E9", alpha = 0.45, color = "#56B4E9") +
+          stat_function(fun = dnorm, args = list(mean = m, sd = s), color = "black", linewidth = 1)
+      </input>
+    </program>
+
     <figure xml:id="fig-data-and-normal-densities">
       <caption>Observed height density (blue) and normal approximation (black)</caption>
-      <image source="images/summaries-data-and-normal-densities.png" width="70%">
+      <image source="images/numerical-summaries-data-and-normal-densities.png" width="70%">
         <description>A density plot showing male height distribution. The blue filled area represents the actual data density, while the black line shows a normal distribution curve fitted to the data. The two curves closely overlap, indicating that the normal distribution provides a good approximation.</description>
       </image>
     </figure>
@@ -153,23 +169,31 @@ mean(x &gt; a &amp; x &lt;= b)
       The probability of being shorter than the average student:
     </p>
 
-    <program language="r">
+    <console>
       <input>
 pnorm(m, m, s)
 mean(x &lt;= m)
       </input>
-    </program>
+      <output>
+[1] 0.5
+[1] 0.5147783
+      </output>
+    </console>
 
     <p>
       The probability of being within two standard deviations of the mean:
     </p>
 
-    <program language="r">
+    <console>
       <input>
 pnorm(76.5, m, s) - pnorm(62.1, m, s)
 mean(x &gt; 62.1 &amp; x &lt;= 76.5)
       </input>
-    </program>
+      <output>
+[1] 0.9538346
+[1] 0.9495074
+      </output>
+    </console>
 
     <note>
       <p>
@@ -203,11 +227,14 @@ z &lt;- scale(x)
       To see how many males are within 2 SDs from the average, we simply type:
     </p>
 
-    <program language="r">
+    <console>
       <input>
 mean(abs(z) &lt; 2)
       </input>
-    </program>
+      <output>
+[1] 0.9495074
+      </output>
+    </console>
 
     <p>
       The proportion is about 95%, which is what the normal distribution predicts!
@@ -246,40 +273,57 @@ mean(abs(z) &lt; 2)
         Suppose a colleague is charged with collecting demography data for a group of males. The data report height in feet and are stored in the object:
       </p>
 
-      <program language="r">
+      <console>
         <input>
 library(dslabs)
 str(outlier_example)
         </input>
-      </program>
+        <output>
+ num [1:500] 5.59 5.8 5.54 6.15 5.83 5.54 5.87 5.93 5.89 5.67 ...
+        </output>
+      </console>
 
       <p>
         Our colleague uses the fact that heights are usually well approximated by a normal distribution and summarizes the data with average and standard deviation:
       </p>
 
-      <program language="r">
+      <console>
         <input>
 mean(outlier_example)
         </input>
-      </program>
+        <output>
+[1] 6.10382
+        </output>
+      </console>
 
       <p>
         Our colleague writes a report on the interesting fact that this group of males is much taller than usual. The average height is over six feet tall! However, using your data analysis skills you notice something else that is unexpected: the standard deviation is over 7 feet.
       </p>
 
-      <program language="r">
+      <console>
         <input>
 sd(outlier_example)
         </input>
-      </program>
+        <output>
+[1] 7.796558
+        </output>
+      </console>
 
       <p>
         Adding and subtracting two standard deviations, you note that 95% of this population will have heights between approximately -8 and 21 feet, which does not make sense. A quick plot reveals the problem:
       </p>
 
+      <program language="r">
+        <input>
+          tibble(height = outlier_example) |>
+            ggplot(aes(x = "", y = height)) +
+            geom_boxplot(outlier.color = "red")
+        </input>
+      </program>
+
       <figure xml:id="fig-boxplot-reveals-outliers">
         <caption>Boxplot revealing an outlier in height data</caption>
-        <image source="images/boxplot-reveals-outliers.png" width="50%">
+        <image source="images/numerical-summaries-boxplot-reveals-outliers.png" width="50%">
           <description>A boxplot showing height measurements in feet. The box and whiskers show most data clustered around 5-7 feet, but there is a single point far above, around 180 feet, clearly visible as an outlier.</description>
         </image>
       </figure>
@@ -300,11 +344,14 @@ sd(outlier_example)
         The median of our example data is:
       </p>
 
-      <program language="r">
+      <console>
         <input>
 median(outlier_example)
         </input>
-      </program>
+        <output>
+[1] 5.74
+        </output>
+      </console>
 
       <p>
         which corresponds to about 5 feet and 10 inches. The median is often a better measure of <em>typical</em> value when the data contain outliers.
@@ -326,11 +373,14 @@ median(outlier_example)
         For our height data, the MAD is:
       </p>
 
-      <program language="r">
+      <console>
         <input>
 mad(outlier_example)
         </input>
-      </program>
+        <output>
+[1] 0.237216
+        </output>
+      </console>
 
       <p>
         which corresponds to about 4 inches.
@@ -356,11 +406,14 @@ mad(outlier_example)
         In our example, this approximation works well. The IQR-based estimate of the standard deviation is:
       </p>
 
-      <program language="r">
+      <console>
         <input>
 IQR(outlier_example)/1.349
         </input>
-      </program>
+        <output>
+[1] 0.2446256
+        </output>
+      </console>
 
       <p>
         which corresponds to about 3 inches.
@@ -390,23 +443,29 @@ IQR(outlier_example)/1.349
         When the data follow a <term>standard normal distribution</term>, this range is:
       </p>
 
-      <program language="r">
+      <console>
         <input>
 q3 &lt;- qnorm(0.75); q1 &lt;- qnorm(0.25); iqr &lt;- q3 - q1
 c(q1 - 1.5*iqr, q3 + 1.5*iqr)
         </input>
-      </program>
+        <output>
+[1] -2.697959  2.697959
+        </output>
+      </console>
 
       <p>
         Using <c>pnorm</c>, we can compute the proportion of data expected to fall within this range:
       </p>
 
-      <program language="r">
+      <console>
         <input>
 r &lt;- c(q1 - 1.5*iqr, q3 + 1.5*iqr)
 round((pnorm(r[2]) - pnorm(r[1]))*100, 3)
         </input>
-      </program>
+        <output>
+[1] 99.302
+        </output>
+      </console>
 
       <p>
         Thus, about 99.3% of the data lie inside this interval for a normal distribution. In other words, we expect roughly 7 out of every 1,000 observations from a perfectly normal dataset to fall outside this range, not because they are erroneous, but simply due to random variation.
@@ -416,12 +475,15 @@ round((pnorm(r[2]) - pnorm(r[1]))*100, 3)
         To make the definition stricter, Tukey proposed using a wider multiplier, such as 3 instead of 1.5, to flag <em>far-out outliers</em>. For normally distributed data, the range
       </p>
 
-      <program language="r">
+      <console>
         <input>
 r &lt;- c(q1 - 3*iqr , q3 + 3*iqr)
 round((pnorm(r[2]) - pnorm(r[1]))*100, 4)
         </input>
-      </program>
+        <output>
+[1] 99.9998
+        </output>
+      </console>
 
       <p>
         captures about 99.9999% of all values, meaning that only about two in a million observations would fall outside it. In <term>ggplot</term> <c>geom_boxplot()</c> function, this multiplier is controlled by the <c>coef</c> argument, which defaults to 1.5.
@@ -431,21 +493,34 @@ round((pnorm(r[2]) - pnorm(r[1]))*100, 4)
         Let's apply Tukey's rule to our height data. The extreme 180-foot measurement is well beyond the range defined by <m>Q_3 + 3 \times \text{IQR}</m>:
       </p>
 
-      <program language="r">
+      <console>
         <input>
 max_height &lt;- quantile(outlier_example, 0.75) + 3*IQR(outlier_example)
 max_height
         </input>
-      </program>
+        <output>
+ 75% 
+6.91 
+        </output>
+      </console>
 
       <p>
         If we remove this value, the remaining data follow an approximately normal distribution, as expected:
       </p>
 
+      <program language="r">
+        <input>
+          tibble(height = outlier_example[outlier_example &lt;= max_height]) |>
+            ggplot(aes(sample = height)) +
+            stat_qq() +
+            stat_qq_line()
+        </input>
+      </program>
+
       <figure xml:id="fig-outlier-qqnorm">
-        <caption>Distribution after removing outlier</caption>
-        <image source="images/outlier-qqnorm.png" width="70%">
-          <description>A histogram showing the distribution of height data after removing the 180-foot outlier. The data now shows a bell-shaped distribution centered around 5.8 feet, with most values between 5 and 7 feet.</description>
+        <caption>Normal Q-Q plot after removing the extreme outlier</caption>
+        <image source="images/numerical-summaries-outlier-qqnorm.png" width="70%">
+          <description>A normal Q-Q plot of the height data after removing the 180-foot outlier. The points closely follow the reference line, showing that the remaining values are approximately normally distributed.</description>
         </image>
       </figure>
 
@@ -462,9 +537,18 @@ max_height
       To introduce boxplots, we will use a dataset of U.S. murders by state. Suppose we want to summarize the distribution of murder rates. A histogram quickly reveals that the data are right-skewed, indicating that the normal approximation does not apply:
     </p>
 
+    <program language="r">
+      <input>
+        murders |>
+          mutate(rate = total / population * 100000) |>
+          ggplot(aes(rate)) +
+          geom_histogram(binwidth = 1, color = "black", fill = "grey70", boundary = 0)
+      </input>
+    </program>
+
     <figure xml:id="fig-hist-qqplot-non-normal-data">
       <caption>Histogram of U.S. murder rates</caption>
-      <image source="images/summaries-hist-qqplot-non-normal-data.png" width="70%">
+      <image source="images/numerical-summaries-hist-qqplot-non-normal-data.png" width="70%">
         <description>A histogram showing the distribution of murder rates per 100,000 people across U.S. states. The distribution is right-skewed, with most states having rates between 1 and 4, but a long tail extending to higher values around 10-17.</description>
       </image>
     </figure>
@@ -481,9 +565,18 @@ max_height
       Here's the boxplot for the murder rate data:
     </p>
 
+    <program language="r">
+      <input>
+        murders |>
+          mutate(rate = total / population * 100000) |>
+          ggplot(aes(x = "", y = rate)) +
+          geom_boxplot(outlier.color = "red")
+      </input>
+    </program>
+
     <figure xml:id="fig-first-boxplot">
       <caption>Boxplot of U.S. murder rates</caption>
-      <image source="images/summaries-first-boxplot.png" width="70%">
+      <image source="images/numerical-summaries-first-boxplot.png" width="70%">
         <description>A boxplot showing the five-number summary of murder rates. The box extends from Q1 to Q3, with a line at the median. Whiskers extend to the minimum and maximum non-outlier values. Several points beyond the upper whisker are shown as individual outlier points.</description>
       </image>
     </figure>
@@ -701,13 +794,20 @@ x_with_error[1] &lt;- x_with_error[1]*10
           The heights we have been looking at in the <c>heights</c> data frame are not the original heights reported by students. The original reported heights are also included in the <term>dslabs</term> package in the object <c>reported_heights</c>. Note that the <c>height</c> column in this data frame is a character, and if we try to create a new column with the numeric version:
         </p>
 
-        <program language="r">
+        <console>
           <input>
 library(tidyverse)  
 reported_heights &lt;- reported_heights |&gt;
   mutate(original_heights = height, height = as.numeric(height))
           </input>
-        </program>
+          <output>
+Warning message:
+There was 1 warning in `mutate()`.
+ℹ In argument: `height = as.numeric(height)`.
+Caused by warning:
+! NAs introduced by coercion
+          </output>
+        </console>
 
         <p>
           we get a warnings about NAs. Examine the rows that result in NAs and describe why this is happening.
