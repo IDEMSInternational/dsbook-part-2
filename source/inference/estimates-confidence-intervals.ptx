@@ -35,12 +35,11 @@
       Real Clear Politics<fn>http://www.realclearpolitics.com</fn> is an example of a news aggregator that organizes and publishes poll results. For example, they present the following poll results, reporting estimates of the popular vote for the 2016 presidential election<fn>http://www.realclearpolitics.com/epolls/2016/president/us/general_election_trump_vs_clinton-5491.html</fn>:
     </p>
     
-    <program language="r">
+    <console>
       <input>
-# R code to fetch and display polling data
 library(tidyverse)
-url &lt;- "https://web.archive.org/web/20161108012231/https://www.realclearpolitics.com/epolls/2016/president/us/general_election_trump_vs_clinton-5491.html"
 library(rvest)
+url &lt;- "https://web.archive.org/web/20161108012231/https://www.realclearpolitics.com/epolls/2016/president/us/general_election_trump_vs_clinton-5491.html"
 tab &lt;- read_html(url) |> html_node("table") |> html_table()
 tab &lt;- tab |> mutate(Poll = stringr::str_remove(Poll, "\\/.*")) |>
   mutate(Poll = case_when(
@@ -49,16 +48,27 @@ tab &lt;- tab |> mutate(Poll = stringr::str_remove(Poll, "\\/.*")) |>
     Poll == "MonmouthMonmouth"  ~ "Monmouth",  
     Poll == "CBS NewsCBS News" ~ "CBS News",
     TRUE ~ Poll))
-names(tab) &lt;- stringr::str_remove_all(names(tab), "\\s(.*)")    
-if (knitr::is_html_output()) {
-  knitr::kable(tab, "html") |>
-    kableExtra::kable_styling(bootstrap_options = "striped", full_width = FALSE)
-} else{
-  knitr::kable(tab, "latex", booktabs = TRUE) |>
-    kableExtra::kable_styling(font_size = 8)
-}
+names(tab) &lt;- stringr::str_remove_all(names(tab), "\\s(.*)")
+tab
       </input>
-    </program>
+      <output>
+         Poll          Date   Sample MoE Clinton Trump       Spread
+  RCP Average  10/31 - 11/7       --  --    47.2  44.3 Clinton +2.9
+    Bloomberg   11/4 - 11/6   799 LV 3.5    46.0  43.0   Clinton +3
+    Economist   11/4 - 11/7  3669 LV  --    49.0  45.0   Clinton +4
+          IBD   11/3 - 11/6  1026 LV 3.1    43.0  42.0   Clinton +1
+          ABC   11/3 - 11/6  2220 LV 2.5    49.0  46.0   Clinton +3
+     FOX News   11/3 - 11/6  1295 LV 2.5    48.0  44.0   Clinton +4
+     Monmouth   11/3 - 11/6   748 LV 3.6    50.0  44.0   Clinton +6
+     CBS News   11/2 - 11/6  1426 LV 3.0    47.0  43.0   Clinton +4
+     LA Times  10/31 - 11/6  2935 LV 4.5    43.0  48.0     Trump +5
+     NBC News   11/3 - 11/5  1282 LV 2.7    48.0  43.0   Clinton +5
+     NBC News  10/31 - 11/6 30145 LV 1.0    51.0  44.0   Clinton +7
+    McClatchy   11/1 - 11/3   940 LV 3.2    46.0  44.0   Clinton +2
+      Reuters  10/31 - 11/4  2244 LV 2.2    44.0  40.0   Clinton +4
+ GravisGravis 10/31 - 10/31  5360 RV 1.3    50.0  50.0          Tie
+      </output>
+    </console>
     
     <p>
       Let's make some observations about the table above. First, observe that different polls, all conducted days before the election, report different <em>spreads</em>: the estimated difference between support for the two candidates. Notice that the reported spreads hover around what eventually became the actual result: Clinton won the popular vote by 2.1%. Additionally, we see a column titled <term>MoE</term> which stands for <em>margin of error</em>. We will learn what this means.
@@ -93,6 +103,13 @@ rafalib::mypar()
 take_poll(25)
         </input>
       </program>
+      
+      <figure xml:id="fig-estimates-ci-take-poll">
+        <caption>Example of a simulated poll from the urn model</caption>
+        <image source="images/estimates-ci-take-poll.png" width="70%">
+          <description>A plot showing one simulated poll of 25 beads from the urn model, with red and blue beads representing voter preferences and the sample proportion summarized in the display.</description>
+        </image>
+      </figure>
       
       <p>
         Think about how you would construct your interval based on the data shown above.
@@ -129,6 +146,13 @@ par(mfrow = c(2,2), mar = c(3, 1, 3, 0), mgp = c(1.5, 0.5, 0))
 take_poll(25); take_poll(25); take_poll(25); take_poll(25)
       </input>
     </program>
+    
+    <figure xml:id="fig-estimates-ci-four-polls">
+      <caption>Four simulated polls of size 25 from the urn model</caption>
+      <image source="images/estimates-ci-four-polls.png" width="80%">
+        <description>A four-panel display of repeated simulated polls, each showing 25 sampled beads from the urn model and illustrating how the observed sample proportion varies from poll to poll.</description>
+      </image>
+    </figure>
     
     <p>
       Observe that in the four random samples shown above, the sample proportions range from 0.44 to 0.60. By describing the distribution of this random variable, we will be able to gain insights into how good this estimate is and how we can improve it.
@@ -228,15 +252,25 @@ data.frame(N = N, SE = sqrt(p*(1 - p)/N)) |> ggplot(aes(N, SE)) + geom_line() + 
       </input>
     </program>
     
+    <figure xml:id="fig-estimates-ci-se-vs-n">
+      <caption>Standard error as a function of sample size</caption>
+      <image source="images/estimates-ci-se-vs-n.png" width="70%">
+        <description>A line plot of the standard error for a sample proportion with p = 0.51 versus sample size on a log-scaled x-axis, showing the standard error shrinking as the poll size increases.</description>
+      </image>
+    </figure>
+    
     <p>
       The plot shows that we would need a poll of over 10,000 people to achieve a standard error that low. We rarely see polls of this size due in part to the associated costs. According to the Real Clear Politics table, sample sizes in opinion polls range from 500-3,500 people. For a sample size of 1,000 and <m>p=0.51</m>, the standard error is:
     </p>
     
-    <program language="r">
+    <console>
       <input>
 sqrt(p*(1 - p))/sqrt(1000)
       </input>
-    </program>
+      <output>
+[1] 0.01580823
+      </output>
+    </console>
     
     <p>
       or 1.5 percentage points. So even with large polls, for close elections, <m>\bar{X}</m> can lead us astray if we don't realize it is a random variable. Nonetheless, we can actually say more about how close we get to <m>p</m> and we do that in <xref ref="sec-clt"/>.
@@ -335,23 +369,29 @@ sqrt(p*(1 - p))/sqrt(1000)
         Using our earlier poll with <m>\bar{X} = 0.48</m> and <m>N = 25</m>, we obtain:
       </p>
       
-      <program language="r">
+      <console>
         <input>
 x_hat &lt;- 0.48
 se &lt;- sqrt(x_hat*(1 - x_hat)/25)
 se
         </input>
-      </program>
+        <output>
+[1] 0.09991997
+        </output>
+      </console>
       
       <p>
         Now we can compute the probability that our estimate is within 2% of the true value:
       </p>
       
-      <program language="r">
+      <console>
         <input>
 pnorm(0.02/se) - pnorm(-0.02/se)
         </input>
-      </program>
+        <output>
+[1] 0.1586447
+        </output>
+      </console>
       
       <p>
         There is only a small chance of being this close when <m>N = 25</m>.
@@ -397,7 +437,7 @@ pnorm(0.02/se) - pnorm(-0.02/se)
         The endpoints of this interval are not fixed numbers—they depend on the data. Each time we take a new sample, we obtain a new <m>\bar{X}</m> and therefore a new confidence interval. To see this, we can repeat the sampling process using the same parameters as before:
       </p>
       
-      <program language="r">
+      <console>
         <input>
 p &lt;- 0.45
 N &lt;- 1000
@@ -406,7 +446,10 @@ x_hat &lt;- mean(x)
 se_hat &lt;- sqrt(x_hat*(1 - x_hat)/N)
 c(x_hat - 1.96*se_hat, x_hat + 1.96*se_hat)
         </input>
-      </program>
+        <output>
+[1] 0.4012976 0.4627024
+        </output>
+      </console>
       
       <p>
         If you run this code several times, you'll see that the interval changes from run to run due to random sampling variation.
@@ -461,7 +504,7 @@ z &lt;- qnorm(1 - alpha/2)
         We can verify that the intervals we construct have the desired probability of including <m>p</m> using a Monte Carlo simulation. By repeatedly drawing samples and constructing confidence intervals, we can check how often the intervals actually contain the true value of <m>p</m>.
       </p>
       
-      <program language="r">
+      <console>
         <input>
 set.seed(1)
 N &lt;- 1000
@@ -475,7 +518,10 @@ inside &lt;- replicate(B, {
 })
 mean(inside)
         </input>
-      </program>
+        <output>
+[1] 0.9482
+        </output>
+      </console>
       
       <p>
         As expected, the interval covers <m>p</m> about 95% of the time.
@@ -507,6 +553,13 @@ ggplot(tab, aes(poll, estimate, ymin = low, ymax = high, col = p_inside)) +
   geom_hline(yintercept = p)
         </input>
       </program>
+      
+      <figure xml:id="fig-estimates-ci-monte-carlo-intervals">
+        <caption>First 100 simulated confidence intervals</caption>
+        <image source="images/estimates-ci-monte-carlo-intervals.png" width="70%">
+          <description>A horizontal interval plot showing the first 100 simulated 95 percent confidence intervals, with a reference line marking the true proportion and colors distinguishing intervals that do and do not contain it.</description>
+        </image>
+      </figure>
       
       <note>
         <p>
@@ -684,12 +737,27 @@ ggplot(tab, aes(poll, estimate, ymin = low, ymax = high, col = p_inside)) +
           The vector <c>errors</c> contains, for each simulated sample, the difference between the our estimate <m>\bar{X}</m> and the actual <m>p</m>. We refer to this difference as the <em>error</em>. Compute the average and make a histogram of the errors generated in the Monte Carlo simulation,
         </p>
         
-        <program language="r">
+        <console>
           <input>
 mean(errors)
+          </input>
+          <output>
+[1] 4.9e-05
+          </output>
+        </console>
+        
+        <program language="r">
+          <input>
 hist(errors)
           </input>
         </program>
+        
+        <figure xml:id="fig-estimates-ci-errors-histogram">
+          <caption>Histogram of Monte Carlo estimation errors</caption>
+          <image source="images/estimates-ci-errors-histogram.png" width="70%">
+            <description>A histogram of the simulated errors x-bar minus p from repeated polls, showing an approximately symmetric distribution centered near zero.</description>
+          </image>
+        </figure>
         
         <p>
           and select which of the following best describes their distributions:

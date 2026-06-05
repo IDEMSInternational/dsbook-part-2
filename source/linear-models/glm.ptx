@@ -52,7 +52,7 @@ library(dslabs)
         The main evidence supporting this conclusion is based on a comparison of the percentages which we can compute using the data presented in the paper:
       </p>
 
-      <program language="r">
+      <console>
         <input>
 library(tidyverse)
 library(dslabs)
@@ -66,7 +66,11 @@ totals &lt;- research_funding_rates |&gt; select(-discipline) |&gt;
 totals |&gt; summarize(percent_men = yes_men/(yes_men + no_men),
                     percent_women = yes_women/(yes_women + no_women))
         </input>
-      </program>
+        <output>
+  percent_men percent_women
+1     0.17737     0.1489899
+        </output>
+      </console>
 
       <p>
         But could this be due just to random variability? Here we learn how to perform inference for this type of data.
@@ -88,13 +92,19 @@ totals |&gt; summarize(percent_men = yes_men/(yes_men + no_men),
         As an example, suppose she correctly identified 3 out of 4 cups:
       </p>
 
-      <program language="r">
+      <console>
         <input>
 tab &lt;- table(guess =  c("m", "t", "m", "t", "t", "m", "t", "m"),
              actual = c("m", "t", "m", "t", "t", "t", "m", "m"))
 tab
         </input>
-      </program>
+        <output>
+     actual
+guess m t
+    m 3 1
+    t 1 3
+        </output>
+      </console>
 
       <p>
         To evaluate whether this provides evidence of real ability, we consider the <em>null hypothesis</em> that she is guessing. Because she knows there are four of each type, guessing corresponds to randomly drawing 4 cups from an urn containing 4 <em>milk-first</em> and 4 <em>tea-first</em> cups.
@@ -124,11 +134,14 @@ tab
         This calculation is what <em>Fisher's exact test</em> performs. In R we can type:
       </p>
 
-      <program language="r">
+      <console>
         <input>
 fisher.test(tab, alternative = "greater")$p.value
         </input>
-      </program>
+        <output>
+[1] 0.2428571
+        </output>
+      </console>
 
       <note>
         <p>
@@ -194,11 +207,16 @@ e &lt;- with(totals, data.frame(men = (no_men + yes_men)*c(1 - rate, rate),
         We can see that more men than expected and fewer women than expected received funding:
       </p>
 
-      <program language="r">
+      <console>
         <input>
 cbind(o, e)
         </input>
-      </program>
+        <output>
+     men women       men    women
+no  1345  1011 1364.5271 991.4729
+yes  290   177  270.4729 196.5271
+        </output>
+      </console>
 
       <p>
         However, under the null hypothesis these observations are random variables. The Chi-square statistic quantifies how much the observed table deviates from the expected by:
@@ -211,11 +229,14 @@ cbind(o, e)
         <li><p>Summing all these values together to get the final statistic.</p></li>
       </ol>
 
-      <program language="r">
+      <console>
         <input>
 sum((o - e)^2/e)
         </input>
-      </program>
+        <output>
+[1] 4.01404
+        </output>
+      </console>
 
       <p>
         We use this summary statistic because its sampling distribution can be approximated by a known parametric distribution: the Chi-square distribution.
@@ -235,32 +256,42 @@ chisq_test &lt;- chisq.test(o, correct = FALSE)
         We see that the p-value is 0.045:
       </p>
 
-      <program language="r">
+      <console>
         <input>
 chisq_test$p.value
         </input>
-      </program>
+        <output>
+[1] 0.0451229
+        </output>
+      </console>
 
       <note>
         <p>
           By default, the <c>chisq.test</c> function applies a <em>continuity correction</em>. This correction subtracts 0.5 from the absolute deviation between observed and expected counts:
         </p>
 
-        <program language="r">
+        <console>
           <input>
 sum((abs(o - e) - 0.5)^2 / e)
           </input>
-        </program>
+          <output>
+[1] 3.811109
+          </output>
+        </console>
 
         <p>
           and this matches the default behavior of:
         </p>
 
-        <program language="r">
+        <console>
           <input>
 chisq.test(o)$statistic
           </input>
-        </program>
+          <output>
+X-squared 
+ 3.811109 
+          </output>
+        </console>
 
         <p>
           The reason for this adjustment is that the chi-square test is based on a <em>continuous</em> probability distribution, while the two-by-two table counts are <em>discrete</em>. When sample sizes are small, the difference between a continuous approximation and the discrete distribution can be noticeable. The continuity correction slightly reduces the test statistic to account for this mismatch, making the approximation more conservative (that is, less likely to produce small p-values by chance).
@@ -361,13 +392,16 @@ chisq.test(o)$statistic
         Here we compute the odds ratio for our funding data and construct a 95% confidence interval:
       </p>
 
-      <program language="r">
+      <console>
         <input>
 or &lt;- o[1,1]*o[2,2]/(o[2,1]*o[1,2])
 se &lt;- sqrt(sum(1/o))
 exp(log(or) + c(-1,1) * qnorm(0.975) * se)
         </input>
-      </program>
+        <output>
+[1] 0.6621581 0.9957060
+        </output>
+      </console>
 
       <p>
         This allows us to assess both the magnitude of the association and the uncertainty around it. The estimated odds ratio is less than 1, indicating that women have lower odds of being funded than men in this dataset. The 95% confidence interval does not include 1, which implies the p-value is less than 0.05.
@@ -517,22 +551,31 @@ x &lt;- factor(c("men", "women"))
         We then fit the model with <c>glm</c>:
       </p>
 
-      <program language="r">
+      <console>
         <input>
 fit &lt;- glm(y ~ x, family = binomial)
 coefficients(summary(fit))
         </input>
-      </program>
+        <output>
+              Estimate Std. Error    z value      Pr(&gt;|z|)
+(Intercept) -1.5342684 0.06474387 -23.697508 3.825454e-124
+xwomen      -0.2082771 0.10407015  -2.001315  4.535850e-02
+        </output>
+      </console>
 
       <p>
         To obtain the estimated odds ratio, we exponentiate the coefficient:
       </p>
 
-      <program language="r">
+      <console>
         <input>
 exp(fit$coef[2])
         </input>
-      </program>
+        <output>
+  xwomen 
+0.811982 
+        </output>
+      </console>
 
       <p>
         This value represents the multiplicative change in the odds of being funded for women compared to men.
@@ -542,11 +585,16 @@ exp(fit$coef[2])
         A 95% confidence interval for this odds ratio is obtained by exponentiating the corresponding confidence interval for <m>\beta_1</m>:
       </p>
 
-      <program language="r">
+      <console>
         <input>
 exp(confint(fit, 2))
         </input>
-      </program>
+        <output>
+Waiting for profiling to be done...
+    2.5 %    97.5 % 
+0.6613153 0.9946601 
+        </output>
+      </console>
 
       <p>
         This interval provides both an effect size and a measure of uncertainty.
@@ -560,7 +608,7 @@ exp(confint(fit, 2))
         We can confirm that logistic regression yields the same odds ratio estimate as the simple two-by-two table calculation (saved in <c>o</c> and in <c>or</c> and <c>se</c>):
       </p>
 
-      <program language="r">
+      <console>
         <input>
 or &lt;- o[1,1]*o[2,2]/(o[2,1]*o[1,2])
 se &lt;- sqrt(sum(1/o))
@@ -568,19 +616,27 @@ c(log(or),se)
 
 c(tidy(fit)$estimate[2], tidy(fit)$std.error[2])
         </input>
-      </program>
+        <output>
+[1] -0.2082771  0.1040702
+[1] -0.2082771  0.1040702
+        </output>
+      </console>
 
       <warning>
         <p>
           The p-values obtained from <c>chisq.test</c> and from logistic regression
         </p>
 
-        <program language="r">
+        <console>
           <input>
 chisq.test(o, correct = FALSE)$p.value
 tidy(fit)$p.value[2]
           </input>
-        </program>
+          <output>
+[1] 0.0451229
+[1] 0.0453585
+          </output>
+        </console>
 
         <p>
           differ slightly because they are based on different approximations.
@@ -643,6 +699,13 @@ SAheart |&gt;
         </input>
       </program>
 
+      <figure xml:id="fig-glm-heart-study-eda">
+        <caption>Log-odds of coronary heart disease by age</caption>
+        <image source="images/glm-heart-study-eda.png" width="70%">
+          <description>A scatter plot of age versus the log-odds of coronary heart disease. The points show an approximately increasing linear trend across ages, supporting a logistic regression model with age as a predictor.</description>
+        </image>
+      </figure>
+
       <p>
         This suggests the logistic regression model:
       </p>
@@ -659,32 +722,47 @@ SAheart |&gt;
         We can fit the model using:
       </p>
 
-      <program language="r">
+      <console>
         <input>
 fit &lt;- glm(chd ~ age, family = binomial, data = SAheart)
 tidy(fit)[2,]
         </input>
-      </program>
+        <output>
+# A tibble: 1 × 5
+  term  estimate std.error statistic  p.value
+  &lt;chr&gt;    &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+1 age     0.0641   0.00853      7.51 5.76e-14
+        </output>
+      </console>
 
       <p>
         We can then use GLM theory to construct a 95% confidence interval for the odds ratio:
       </p>
 
-      <program language="r">
+      <console>
         <input>
 exp(confint(fit))[2, ]
         </input>
-      </program>
+        <output>
+Waiting for profiling to be done...
+ 2.5 % 97.5 % 
+  1.05   1.08 
+        </output>
+      </console>
 
       <p>
         We can also use the fitted model to compute predicted probabilities for specific ages:
       </p>
 
-      <program language="r">
+      <console>
         <input>
 predict(fit, data.frame(age = seq(20, 80, 10)), type = "response")
         </input>
-      </program>
+        <output>
+     1      2      3      4      5      6      7 
+0.0963 0.1682 0.2774 0.4216 0.5805 0.7243 0.8330
+        </output>
+      </console>
 
       <p>
         When <c>type = response</c> the <c>predict</c> function uses the inverse logistic transformation to convert <m>\hat{\beta}_0 + \hat{\beta}_1 x_i</m> to estimated probabilities.
@@ -708,15 +786,26 @@ InsectSprays |&gt;  ggplot(aes(spray, count)) + geom_boxplot() + geom_jitter()
         </input>
       </program>
 
+      <figure xml:id="fig-glm-insect-spray-boxplot">
+        <caption>Insect counts by spray type</caption>
+        <image source="images/glm-insect-spray-boxplot.png" width="70%">
+          <description>A boxplot with jittered points showing insect counts for spray types A through F. Spray C has the lowest counts overall, indicating greater effectiveness than the other sprays.</description>
+        </image>
+      </figure>
+
       <p>
         Spray C appears most effective. We could compare mean insect counts across sprays:
       </p>
 
-      <program language="r">
+      <console>
         <input>
 with(InsectSprays, tapply(count, spray, mean))
         </input>
-      </program>
+        <output>
+        A         B         C         D         E         F 
+14.500000 15.333333  2.083333  4.916667  3.500000 16.666667 
+        </output>
+      </console>
 
       <p>
         But how do we assess uncertainty? Can we construct confidence intervals? Note that counts are small (often under 10), and the sample size per group is only 12, so normal approximations may be unreliable.
@@ -726,13 +815,24 @@ with(InsectSprays, tapply(count, spray, mean))
         A Poisson regression provides an alternative. First we choose C as the reference group and then we fit the model:
       </p>
 
-      <program language="r">
+      <console>
         <input>
 InsectSprays$spray &lt;- relevel(InsectSprays$spray, ref = "C") 
 fit &lt;- glm(count ~ spray, family = poisson, data = InsectSprays)
 tidy(fit, conf.int = TRUE)
         </input>
-      </program>
+        <output>
+# A tibble: 6 × 7
+  term        estimate std.error statistic  p.value conf.low conf.high
+  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+1 (Intercept)    0.734     0.200      3.67 2.43e- 4   0.315       1.10
+2 sprayA         1.94      0.214      9.07 1.18e-19   1.54        2.38
+3 sprayB         2.00      0.213      9.36 7.65e-21   1.60        2.44
+4 sprayD         0.859     0.239      3.60 3.20e- 4   0.404       1.34
+5 sprayE         0.519     0.253      2.05 4.00e- 2   0.0315      1.03
+6 sprayF         2.08      0.212      9.80 1.10e-22   1.68        2.52
+        </output>
+      </console>
 
       <p>
         Here the parameters measure the log of the multiplicative change in the expected count relative to Spray C. If a spray has the same effectiveness as Spray C, its corresponding parameter estimate would be 0. The estimated coefficients and their confidence intervals indicate that several sprays differ substantially from Spray C, and these differences are too large to be explained by Poisson sampling variability alone. In other words, Spray C's superior performance is unlikely to be due to chance.
@@ -783,12 +883,15 @@ tidy(fit, conf.int = TRUE)
       Note that the relationship between odds ratio and p-value is not one-to-one; it depends on the sample size. Therefore, a very small p-value does not necessarily mean a very large odds ratio. Observe what happens to the p-value if we multiply our two-by-two table by 10, which does not change the odds ratio:
     </p>
 
-    <program language="r">
+    <console>
       <input>
 ox10 &lt;- o |&gt; mutate(men = men*10, women = women*10) 
 c(chisq.test(o)$p.value, chisq.test(ox10)$p.value)
       </input>
-    </program>
+      <output>
+[1] 5.091372e-02 2.625423e-10
+      </output>
+    </console>
   </section>
 
   <section xml:id="glm-exercises">
@@ -1001,24 +1104,72 @@ summary(fit_interaction)
           Recall the Poisson regression model:
         </p>
 
-        <program language="r">
+        <console>
           <input>
 fit_glm &lt;- glm(count ~ spray, family = poisson, data = InsectSprays)
 summary(fit_glm)
           </input>
-        </program>
+          <output>
+
+Call:
+glm(formula = count ~ spray, family = poisson, data = InsectSprays)
+
+Coefficients:
+            Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)   0.7340     0.2000   3.670 0.000243 ***
+sprayA        1.9402     0.2139   9.071  &lt; 2e-16 ***
+sprayB        1.9961     0.2132   9.364  &lt; 2e-16 ***
+sprayD        0.8587     0.2386   3.598 0.000320 ***
+sprayE        0.5188     0.2526   2.054 0.039998 *  
+sprayF        2.0794     0.2121   9.803  &lt; 2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for poisson family taken to be 1)
+
+    Null deviance: 409.041  on 71  degrees of freedom
+Residual deviance:  98.329  on 66  degrees of freedom
+AIC: 376.59
+
+Number of Fisher Scoring iterations: 5
+          </output>
+        </console>
 
         <p>
           Fit a linear regression model to the log-transformed counts (we have to add 0.5 because some counts are 0):
         </p>
 
-        <program language="r">
+        <console>
           <input>
 InsectSprays$log_count &lt;- log(InsectSprays$count + 0.5)
 fit_lm &lt;- lm(log_count ~ spray, data = InsectSprays)
 summary(fit_lm)
           </input>
-        </program>
+          <output>
+
+Call:
+lm(formula = log_count ~ spray, data = InsectSprays)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1.36754 -0.26892  0.01343  0.27690  1.34052 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   0.6744     0.1396   4.832 8.41e-06 ***
+sprayA        1.9863     0.1974  10.063 5.86e-15 ***
+sprayB        2.0484     0.1974  10.377 1.67e-15 ***
+sprayD        0.9382     0.1974   4.753 1.12e-05 ***
+sprayE        0.6086     0.1974   3.083  0.00299 ** 
+sprayF        2.1091     0.1974  10.685 4.93e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.4835 on 66 degrees of freedom
+Multiple R-squared:  0.756,  Adjusted R-squared:  0.7375 
+F-statistic: 40.89 on 5 and 66 DF,  p-value: &lt; 2.2e-16
+          </output>
+        </console>
 
         <ol marker="a.">
           <li><p>Compare the estimated spray effects from <c>fit_glm</c> and <c>fit_lm</c>.</p></li>
@@ -1068,6 +1219,13 @@ plot(fit_glm, which = 1)
           </input>
         </program>
 
+        <figure xml:id="fig-glm-poisson-residuals">
+          <caption>Pearson residuals for the Poisson regression model</caption>
+          <image source="images/glm-poisson-residuals.png" width="70%">
+            <description>A residuals-versus-fitted plot for the Poisson regression model on insect counts. The x-axis shows fitted values and the y-axis shows Pearson residuals, with a horizontal reference line near zero for checking model fit.</description>
+          </image>
+        </figure>
+
         <p>
           To compare this to fitting a linear model to log-transformed counts:
         </p>
@@ -1077,6 +1235,13 @@ plot(fit_glm, which = 1)
 plot(fit_lm, which = 1)
           </input>
         </program>
+
+        <figure xml:id="fig-glm-log-lm-residuals">
+          <caption>Residuals for the linear model on log-transformed insect counts</caption>
+          <image source="images/glm-log-lm-residuals.png" width="70%">
+            <description>A residuals-versus-fitted plot for the linear model applied to log-transformed insect counts. The plot is used to compare the transformed linear model's residual pattern with the Poisson regression diagnostic plot.</description>
+          </image>
+        </figure>
 
         <ol marker="a.">
           <li><p>Which model appears to better describe the data?</p></li>

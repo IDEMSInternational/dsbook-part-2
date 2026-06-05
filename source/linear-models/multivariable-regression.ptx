@@ -139,6 +139,13 @@
           </input>
         </program>
 
+        <figure xml:id="fig-multivariable-regression-hr-runs">
+          <caption>Relationship between home runs and runs per game</caption>
+          <image source="images/multivariable-regression-hr-vs-runs.png" width="70%">
+            <description>A scatterplot of home runs per game versus runs per game for Major League Baseball teams from 1962 to 2001. Teams that hit more home runs generally score more runs.</description>
+          </image>
+        </figure>
+
         <p>
           The plot shows a strong association: teams with more HR tend to score more runs. Now let's examine the relationship between stolen bases and runs:
         </p>
@@ -148,6 +155,13 @@
         dat |&gt; ggplot(aes(SB, R)) + geom_point(alpha = 0.5)
           </input>
         </program>
+
+        <figure xml:id="fig-multivariable-regression-sb-runs">
+          <caption>Relationship between stolen bases and runs per game</caption>
+          <image source="images/multivariable-regression-sb-vs-runs.png" width="70%">
+            <description>A scatterplot of stolen bases per game versus runs per game for Major League Baseball teams from 1962 to 2001. The association is weaker and more diffuse than for home runs.</description>
+          </image>
+        </figure>
 
         <p>
           Here the relationship is not as clear.
@@ -163,6 +177,13 @@
           </input>
         </program>
 
+        <figure xml:id="fig-multivariable-regression-bb-runs">
+          <caption>Relationship between walks and runs per game</caption>
+          <image source="images/multivariable-regression-bb-vs-runs.png" width="70%">
+            <description>A scatterplot of walks per game versus runs per game for Major League Baseball teams from 1962 to 2001. Teams with more walks tend to score more runs.</description>
+          </image>
+        </figure>
+
         <p>
           Here again we see a clear association. But does this mean that increasing a team's BB <em>causes</em> an increase in runs? As we learned in <xref ref="sec-association-not-causation" />, association is not causation. In fact, it looks like BB and HR are also associated:
         </p>
@@ -172,6 +193,13 @@
         dat |&gt; ggplot(aes(HR, BB)) + geom_point(alpha = 0.5)
           </input>
         </program>
+
+        <figure xml:id="fig-multivariable-regression-hr-bb">
+          <caption>Relationship between home runs and walks per game</caption>
+          <image source="images/multivariable-regression-hr-vs-bb.png" width="70%">
+            <description>A scatterplot of home runs per game versus walks per game for Major League Baseball teams from 1962 to 2001. Teams with more home runs also tend to draw more walks.</description>
+          </image>
+        </figure>
 
         <p>
           We know that HR cause runs because when a player hits a HR, they are guaranteed at least one run. Could it be that HR also cause BB and this makes it appear as if BB cause runs? Are BB <em>cofounded</em> with HR? Linear regression can help us parse out the information and quantify the associations. This, in turn, will aid us in determining what players to recruit. Specifically, we will try to predict things like how many more runs will a team score if we increase the number of BB, but keep the HR fixed?
@@ -196,16 +224,27 @@
           </input>
         </program>
 
+        <figure xml:id="fig-multivariable-regression-qq-hr-strata">
+          <caption>QQ plots of runs within home run strata</caption>
+          <image source="images/multivariable-regression-qq-hr-strata.png" width="80%">
+            <description>Faceted QQ plots of runs per game after stratifying teams by rounded standardized home run rates. The points stay reasonably close to straight lines, supporting an approximate normal model within strata.</description>
+          </image>
+        </figure>
+
         <p>
           So we are ready to use linear regression to predict the number of runs a team will score, if we know how many HR the team hits using regression:
         </p>
 
-        <program language="r">
+        <console>
           <input>
         hr_fit  &lt;- lm(R ~ HR, data = dat)
         summary(hr_fit)$coef[2,]
           </input>
-        </program>
+          <output>
+     Estimate    Std. Error       t value      Pr(&gt;|t|) 
+ 1.858639e+00  4.965797e-02  3.742882e+01 8.904774e-193 
+          </output>
+        </console>
 
         <p>
           The estimated slope is . This means that, on average, teams that hit one additional home run per game score  more runs per game than teams with the same number of games but fewer home runs. Considering that many games are decided by just one run, this difference can translate into a substantial increase in wins.  Not surprisingly, HR hitters are very expensive. Because the As were working on a budget, they needed to find some other way to increase wins. In the next section we examine this more carefully.
@@ -222,12 +261,16 @@
         Previously, we noted a strong relationship between Runs and BB. If we find the regression line for predicting runs from BB, we a get slope of:
       </p>
 
-      <program language="r">
+      <console>
         <input>
       bb_slope &lt;- lm(R ~ BB, data = dat)$coef[2]
       bb_slope
         </input>
-      </program>
+        <output>
+       BB 
+0.7430888 
+        </output>
+      </console>
 
       <p>
         Does this mean that if we go and hire low salary players with many BB, and who increase the number of walks per game by 2, our team will score  more runs per game? Association is not causation: although the data shows strong evidence that a team with two more BB per game than the average team, scores  runs per game, this does not mean that BB are the cause.
@@ -237,11 +280,15 @@
         Note that, if we compute the regression line slope for singles, we get:
       </p>
 
-      <program language="r">
+      <console>
         <input>
       lm(R ~ singles, data = dat)$coef[2]
         </input>
-      </program>
+        <output>
+ singles 
+0.451882 
+        </output>
+      </console>
 
       <p>
         which is a lower value than what we obtain for BB. Remember that a single gets you to first base just like a BB. Baseball fans will point out that with a single, runners on base have a better chance of scoring than with a BB. So how can BB be more predictive of runs? The reason is because of confounding.
@@ -251,11 +298,17 @@
         Here we show the correlation between HR, BB, and singles:
       </p>
 
-      <program language="r">
+      <console>
         <input>
       dat |&gt; select(singles, BB, HR) |&gt; cor()
         </input>
-      </program>
+        <output>
+            singles          BB         HR
+singles  1.00000000 -0.04950466 -0.1714243
+BB      -0.04950466  1.00000000  0.4063978
+HR      -0.17142432  0.40639779  1.0000000
+        </output>
+      </console>
 
       <p>
         HR and BB are highly correlated! Experts will point out that pitchers are intimidated by players that excel at hitting HR and this leads to the bad performance that awards batters BB. As a result, HR hitters tend to have more BB, and a team with many HR will also have more BB. Although it may appear that BB cause runs, it is actually the HR that cause most of these runs. BB are <em>confounded</em> with HR. Nonetheless, could it be that BB still help? To find out, we somehow have to adjust for the HR effect. Multivariable regression can help with this.
@@ -276,18 +329,38 @@
         </input>
       </program>
 
+      <figure xml:id="fig-multivariable-regression-bb-runs-by-hr-strata">
+        <caption>Runs versus walks within home run strata</caption>
+        <image source="images/multivariable-regression-bb-runs-by-hr-strata.png" width="80%">
+          <description>Faceted scatterplots of walks per game versus runs per game after stratifying teams by home runs per game rounded to tenths. Each panel includes a fitted regression line, showing smaller within-stratum slopes.</description>
+        </image>
+      </figure>
+
       <p>
         Once we stratify by HR, these slopes are substantially reduced:
       </p>
 
-      <program language="r">
+      <console>
         <input>
       dat |&gt; mutate(hr_strata = round(HR, 1)) |&gt;
         filter(hr_strata &gt;= 0.5 &amp; hr_strata &lt;= 1.2) |&gt;
         group_by(hr_strata) |&gt;
         summarize(coef = lm(R ~ BB)$coef[2])
         </input>
-      </program>
+        <output>
+# A tibble: 8 × 2
+  hr_strata  coef
+      &lt;dbl&gt; &lt;dbl&gt;
+1       0.5 0.566
+2       0.6 0.405
+3       0.7 0.284
+4       0.8 0.370
+5       0.9 0.266
+6       1   0.529
+7       1.1 0.450
+8       1.2 0.474
+        </output>
+      </console>
 
       <p>
         Remember that the regression slope for predicting runs with BB was .
@@ -301,14 +374,27 @@
         Although our understanding of the application tells us that HR cause BB, but not the other way around, we can still check if stratifying by BB makes the effect of BB go down. To do this, we use the same code except that we swap HR and BB. In this case, the slopes do not change much from the original:
       </p>
 
-      <program language="r">
+      <console>
         <input>
       dat |&gt; mutate(bb_strata = round(BB, 1)) |&gt;
         filter(bb_strata &gt;= 2.5 &amp; bb_strata &lt;= 3.2) |&gt;
         group_by(bb_strata) |&gt;
         summarize(coef = lm(R ~ HR)$coef[2])
         </input>
-      </program>
+        <output>
+# A tibble: 8 × 2
+  bb_strata  coef
+      &lt;dbl&gt; &lt;dbl&gt;
+1       2.5  1.98
+2       2.6  1.07
+3       2.7  1.61
+4       2.8  1.50
+5       2.9  1.57
+6       3    1.52
+7       3.1  1.48
+8       3.2  1.60
+        </output>
+      </console>
 
       <p>
         They are reduced slightly from , which is consistent with the fact that BB do in fact cause some runs.
@@ -363,12 +449,17 @@
         To use <c>lm</c> here, we need to let the function know we have two predictor variables. We use the <c>+</c> symbol as follows:
       </p>
 
-      <program language="r">
+      <console>
         <input>
       fit &lt;- lm(R ~ BB + HR, data = dat)
       summary(fit)$coef[2:3,]
         </input>
-      </program>
+        <output>
+    Estimate Std. Error  t value      Pr(&gt;|t|)
+BB 0.3914249 0.02730752 14.33396  1.545918e-42
+HR 1.5700181 0.04954621 31.68796 2.388915e-153
+        </output>
+      </console>
 
       <p>
         When we fit the model with only one variable, the estimated slopes were  and  for BB and HR, respectively. Note that when fitting the multivariable model both go down, with the BB effect decreasing much more.
@@ -444,11 +535,15 @@
           We note that the fitted model assigns similar weights to base on balls (BB) and singles:
         </p>
 
-        <program language="r">
+        <console>
           <input>
         fit$coefficients[-1]
           </input>
-        </program>
+          <output>
+       BB   singles        XB        HR 
+0.4536041 0.5863622 0.9144075 1.4522256 
+          </output>
+        </console>
 
         <p>
           This confirms our suspicion that walks are nearly as valuable as singles in contributing to a team’s run production.
@@ -485,6 +580,13 @@
           geom_text()
           </input>
         </program>
+
+        <figure xml:id="fig-multivariable-regression-team-predicted-observed">
+          <caption>Predicted versus observed runs for American League teams in 2002</caption>
+          <image source="images/multivariable-regression-team-predicted-vs-observed.png" width="70%">
+            <description>A scatterplot comparing predicted runs per plate appearance to observed runs per plate appearance for American League teams in 2002. Team labels cluster near the identity line, indicating strong predictive performance.</description>
+          </image>
+        </figure>
 
         </subsection>
 
@@ -579,12 +681,23 @@
           If you followed baseball during the era in question you will recognize the top run producers and not be surprised that garnered high salaries:
         </p>
 
-        <program language="r">
+        <console>
           <input>
         players |&gt; select(nameFirst, nameLast, R_hat, salary) |&gt;
           arrange(desc(R_hat)) |&gt; head()
           </input>
-        </program>
+          <output>
+# A tibble: 6 × 4
+  nameFirst nameLast R_hat   salary
+  &lt;chr&gt;     &lt;chr&gt;    &lt;dbl&gt;    &lt;int&gt;
+1 Barry     Bonds    0.239 15000000
+2 Todd      Helton   0.218  5000000
+3 Manny     Ramirez  0.216 15462727
+4 Jason     Giambi   0.215 10428571
+5 Larry     Walker   0.213 12666667
+6 Sammy     Sosa     0.212 15000000
+          </output>
+        </console>
 
         <p>
           Note that because each team has, on average, 37.5 plate appearances a game, a rate of 0.24 runs per plate appearance translates to 9 runs a game, almost double the league average!
@@ -613,17 +726,35 @@
           </input>
         </program>
 
+        <figure xml:id="fig-multivariable-regression-runs-salary">
+          <caption>Predicted runs versus salary for 2002 position players</caption>
+          <image source="images/multivariable-regression-runs-vs-salary.png" width="70%">
+            <description>A scatterplot of salary in millions of dollars versus predicted runs per 37.5 plate appearances for 2002 non-pitchers. A fitted line shows higher salaries for more productive players, and four highlighted players illustrate Oakland's roster moves.</description>
+          </image>
+        </figure>
+
         <p>
           The plot also highlights four players. Before the 2002 season Oakland lost their best run producer, Jason Giambi, because they could not compete with the New York Yankees offer of over 10 million salary. Johnny Damon, another above average run producers (the dashed line shows the average) also left as Oakland was not willing to pay the 7.25 million salary the Boston Red Sox offered him. Oakland had to make up for this run production, but with a very limited budget. To do this, their first addition was Scott Hatterberg, whose salary was only $900,000, one of the lowest in the league, yet was predicted to produce more than average runs. Note that among the players in our data frame, Hatterberg while having a below league average AVG, ranked near the top 10% in BB per plate appearance. Similarly, David Justice had a near league average AVG, but ranked near the top 5% in terms of BB per plate appearance. These savings permitted the As to upgrade one of their current players, Frank Menechino, for Ray Durham.
         </p>
 
-        <program language="r">
+        <console>
           <input>
         filter(players, playerID %in% c("damonjo01", "giambja01", "menecfr01")) |&gt;
           bind_rows(filter(players, playerID %in% c("justida01", "durhara01", "hattesc01"))) |&gt;
           select(nameFirst, nameLast, AVG, BB,  R_hat)
           </input>
-        </program>
+          <output>
+# A tibble: 6 × 5
+  nameFirst nameLast    AVG     BB R_hat
+  &lt;chr&gt;     &lt;chr&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+1 Johnny    Damon     0.296 0.0930 0.141
+2 Jason     Giambi    0.330 0.188  0.215
+3 Frank     Menechino 0.245 0.137  0.126
+4 Ray       Durham    0.281 0.103  0.141
+5 Scott     Hatteberg 0.257 0.131  0.128
+6 David     Justice   0.274 0.144  0.165
+          </output>
+        </console>
 
         <p>
           Despite losing two star players, the A's predicted runs per game (<c>R_hat</c>) dropped only slightly, from 0.482 to 0.431, and the savings allowed them to acquire pitcher Billy Koch, who helped reduce opponents' scoring.

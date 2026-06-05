@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <chapter xmlns:xi="http://www.w3.org/2001/XInclude" xml:id="sec-latent-factor-models">
   <title>Latent Factor Models</title>
-  
+
   <introduction>
     <program language="r">
       <input>
@@ -13,12 +13,12 @@ movielens &lt;- movielens[, if (.N &gt;= 100) .SD, by = userId]
 set.seed(2006)
 indexes &lt;- split(1:nrow(movielens), movielens$userId)
 
-test_ind &lt;- sapply(indexes, function(i) sample(i, ceiling(length(i)*.2))) 
+test_ind &lt;- sapply(indexes, function(i) sample(i, ceiling(length(i)*.2)))
 test_ind &lt;- sort(unlist(test_ind))
 
 movielens[, `:=`(userId = as.character(userId), movieId = as.character(movieId))]
 cols &lt;- c("userId", "movieId", "title", "rating")
-test_set &lt;- movielens[test_ind, ..cols] 
+test_set &lt;- movielens[test_ind, ..cols]
 train_set &lt;- movielens[-test_ind, ..cols]
 test_set &lt;- test_set[movieId %in% train_set$movieId]
 
@@ -33,10 +33,10 @@ fit_als &lt;- function(lambda, tol = 1e-6, max_iter = 100) {
   for (iter in 1:max_iter) {
     a_old &lt;- copy(fit$a)
     b_old &lt;- copy(fit$b)
-    
+
     fit[, a := sum(rating - mu - b)/(.N + N*lambda) , by = userId]
     fit[, b := sum(rating - mu - a)/(.N + N*lambda), by = movieId]
-    
+
     delta &lt;- max(c(abs(fit$a - a_old), abs(fit$b - b_old)))
     if (delta &lt; tol) break
   }
@@ -85,7 +85,12 @@ train_set[, resid := rating - clamp(fit$mu + fit$a[userId] + fit$b[movieId])]
       and comparing the residuals for <em>The Godfather</em> with three other films:
     </p>
 
-    <!-- Figure movie-cor will be inserted here in final version -->
+    <figure xml:id="fig-movie-cor">
+      <caption>Residual comparisons for <em>The Godfather</em> and related films</caption>
+      <image source="images/latent-factor-models-movie-cor.png" width="100%">
+        <description>Three scatterplots compare residual ratings for The Godfather against The Godfather Part II, Goodfellas, and Sleepless in Seattle. The first two show strong positive association, while the last shows a weaker negative association.</description>
+      </image>
+    </figure>
 
     <p>
       These correlations range from strongly positive to negative. Specifically the correlations between <em>The Godfather</em> and <em>The Godfather part II</em>, <em>Goodfellas</em>, and <em>Sleepless in Seattle</em> are approximately 0.82, 0.69, and -0.15, respectively. Users who love <em>The Godfather</em> also tend to like <em>The Godfather Part II</em> and <em>Goodfellas</em>, but often dislike <em>Sleepless in Seattle</em>. These kinds of relationships are because movies share latent characteristics: genre, tone, style, era, or audience appeal. Similarly, users have latent traits that make them prefer some types of movies over others.
@@ -106,17 +111,17 @@ train_set[, resid := rating - clamp(fit$mu + fit$a[userId] + fit$b[movieId])]
 
   <section xml:id="sec-factor-analysis">
     <title>Factor analysis</title>
-    
+
     <program language="r">
       <input>
 set.seed(1987)
 short_names &lt;- c("Godfather", "Godfather 2", "Goodfellas",
                  "Scent of a Woman", "You've Got Mail", "Sleepless in Seattle")
-q &lt;- cbind(c(1 , 1, 1, -1, -1, -1), 
+q &lt;- cbind(c(1 , 1, 1, -1, -1, -1),
            c(1 , 1, -1, 1, -1, -1))
 p &lt;- cbind(sqrt(2)*rep(c(-1,0,1), c(3,6,3)*10),
            1/sqrt(2)*rep(c(-1,1,0,1,0,-1), c(1,2,3,2,1,3)*10))
-             
+
 rownames(p) &lt;- 1:nrow(p)
 rownames(q) &lt;- c(short_names)
 
@@ -128,21 +133,33 @@ y &lt;- p %*% t(q) + matrix(rnorm(nrow(p)*nrow(q), 0, 0.5), nrow(p), nrow(q))
       We start with a simple simulated example. Specifically, we simulate ratings <m>Y_{ij}</m> for six movies and 120 users. For simplicity we assume that these ratings have been adjusted for the movie and user effects, as described in the regularization chapter. We stored the results for 120 user and 6 movie effects in the object <c>y</c>:
     </p>
 
-    <program language="r">
+    <console>
       <input>
 dim(y)
       </input>
-    </program>
+      <output>
+[1] 120   6
+      </output>
+    </console>
 
     <p>
       If we examine the correlation between movies based on user ratings, we notice a pattern:
     </p>
 
-    <program language="r">
+    <console>
       <input>
 cor(y)
       </input>
-    </program>
+      <output>
+                     Godfather Godfather 2 Goodfellas Scent of a Woman You've Got Mail Sleepless in Seattle
+Godfather                1.000       0.671      0.558           -0.527          -0.734               -0.721
+Godfather 2              0.671       1.000      0.471           -0.450          -0.649               -0.739
+Goodfellas               0.558       0.471      1.000           -0.888          -0.487               -0.505
+Scent of a Woman        -0.527      -0.450     -0.888            1.000           0.451                0.475
+You've Got Mail         -0.734      -0.649     -0.487            0.451           1.000                0.756
+Sleepless in Seattle    -0.721      -0.739     -0.505            0.475           0.756                1.000
+      </output>
+    </console>
 
     <p>
       It appears that ratings are positively correlated within genres, for example, among mob movies or among romance movies, and negatively correlated across the two genres. In statistics, such patterns are often explained by factors: unobserved, or latent, variables that account for the correlations or associations among the observed variables. Under certain assumptions, which we will describe below, these latent factors can be estimated from the data and used to capture the underlying structure driving the correlations.
@@ -184,23 +201,42 @@ p &lt;- apply(y, 1, function(y_i) lm(y_i ~ q - 1)$coef)
       Collecting these across users gives us <c>p</c>, a vector with one entry per user. The histogram below shows users cluster into these three type:
     </p>
 
-    <!-- Figure factor-histogram-example will be inserted here in final version -->
+    <figure xml:id="fig-factor-histogram-example">
+      <caption>Estimated user preference for mob versus romance films</caption>
+      <image source="images/latent-factor-models-factor-histogram-example.png" width="70%">
+        <description>A histogram of the estimated user factor values shows three clusters, corresponding to users who prefer mob movies, users who prefer romance movies, and users with little genre preference.</description>
+      </image>
+    </figure>
 
     <p>
       We now show that we can approximate each rating <m>Y_{ij}</m> using just the product of two vectors: one describing user preferences (<c>p</c>) and one describing movie characteristics (<c>q</c>). To work with matrix algebra, we convert the vectors into matrices and multiply them:
     </p>
 
-    <!-- Figure e-vs-pq will be inserted here in final version -->
+    <figure xml:id="fig-e-vs-pq">
+      <caption>Observed ratings versus a one-factor approximation</caption>
+      <image source="images/latent-factor-models-e-vs-pq.png" width="70%">
+        <description>A scatterplot compares observed simulated ratings with their one-factor approximation. The points follow an increasing trend but still show substantial scatter around the diagonal.</description>
+      </image>
+    </figure>
 
     <p>
       The points fall roughly along the diagonal, which means the model captures a good amount of structure in the data. However, there is still substantial unexplained variation. Even after removing the "mob vs. romance" effect, we still see correlation patterns:
     </p>
 
-    <program language="r">
+    <console>
       <input>
 cor(y - p %*% t(q))
       </input>
-    </program>
+      <output>
+                     Godfather Godfather 2 Goodfellas Scent of a Woman You've Got Mail Sleepless in Seattle
+Godfather                1.000       0.185     -0.545            0.557          -0.280               -0.198
+Godfather 2              0.185       1.000     -0.618            0.594          -0.186               -0.364
+Goodfellas              -0.545      -0.618      1.000           -0.671           0.619                0.650
+Scent of a Woman         0.557       0.594     -0.671            1.000          -0.641               -0.656
+You've Got Mail         -0.280      -0.186      0.619           -0.641           1.000                0.353
+Sleepless in Seattle    -0.198      -0.364      0.650           -0.656           0.353                1.000
+      </output>
+    </console>
 
     <p>
       Looking more closely, this structure appears to come from whether or not Al Pacino is in the movie. This suggests we can improve the model by adding a second latent factor, one that distinguishes Pacino films from non-Pacino films. We do this by adding a second column to <c>q</c>:
@@ -244,17 +280,31 @@ p &lt;- t(apply(y, 1, function(y_i) lm(y_i ~ q-1)$coef))
       With two factors, our predictions improve:
     </p>
 
-    <!-- Figure e-vs-pq-2 will be inserted here in final version -->
+    <figure xml:id="fig-e-vs-pq-2">
+      <caption>Observed ratings versus a two-factor approximation</caption>
+      <image source="images/latent-factor-models-e-vs-pq-2.png" width="70%">
+        <description>A scatterplot compares observed simulated ratings with their two-factor approximation. The points lie much closer to the diagonal than in the one-factor case, indicating a better fit.</description>
+      </image>
+    </figure>
 
     <p>
       And now, if we look at the residual correlation
     </p>
 
-    <program language="r">
+    <console>
       <input>
 cor(y - p %*% t(q))
       </input>
-    </program>
+      <output>
+                     Godfather Godfather 2 Goodfellas Scent of a Woman You've Got Mail Sleepless in Seattle
+Godfather              1.00000     -0.3597    0.00716          0.00716          0.2412              0.41857
+Godfather 2           -0.35970      1.0000   -0.04429         -0.04429          0.4955              0.20741
+Goodfellas             0.00716     -0.0443    1.00000          1.00000         -0.0339             -0.00554
+Scent of a Woman       0.00716     -0.0443    1.00000          1.00000         -0.0339             -0.00554
+You've Got Mail        0.24118      0.4955   -0.03395         -0.03395          1.0000             -0.27145
+Sleepless in Seattle   0.41857      0.2074   -0.00554         -0.00554         -0.2714              1.00000
+      </output>
+    </console>
 
     <p>
       there is no clear pattern left. The two latent factors now explain the main structure in the data.
@@ -335,7 +385,7 @@ p &lt;- t(qr.solve(crossprod(q)) %*% t(q) %*% t(y))
 
   <section xml:id="connection-to-pca">
     <title>Connection to PCA</title>
-    
+
     <p>
       Notice that in the PCA chapter we learned that if we perform PCA on a matrix <m>\mathbf{Y}</m>, we obtain a transformation <m>\mathbf{V}</m> that permits us to rewrite:
     </p>
@@ -362,21 +412,30 @@ pca &lt;- prcomp(y, center = FALSE)
       First, notice that the first two PCs explain over 85% of the variability:
     </p>
 
-    <program language="r">
+    <console>
       <input>
 pca$sdev^2/sum(pca$sdev^2)
       </input>
-    </program>
+      <output>
+[1] 0.6939 0.1790 0.0402 0.0313 0.0303 0.0253
+      </output>
+    </console>
 
     <p>
       Next, notice that the first column of <m>\mathbf{V}</m>:
     </p>
 
-    <program language="r">
+    <console>
       <input>
 pca$rotation[,1]
       </input>
-    </program>
+      <output>
+           Godfather          Godfather 2           Goodfellas
+               0.306                0.261                0.581
+    Scent of a Woman      You've Got Mail Sleepless in Seattle
+              -0.570               -0.294               -0.300
+      </output>
+    </console>
 
     <p>
       is assigning positive values to the mob movies and negative values to the romance movies.
@@ -386,11 +445,17 @@ pca$rotation[,1]
       The second column:
     </p>
 
-    <program language="r">
+    <console>
       <input>
 pca$rotation[,2]
       </input>
-    </program>
+      <output>
+           Godfather          Godfather 2           Goodfellas
+               0.354                0.377               -0.382
+    Scent of a Woman      You've Got Mail Sleepless in Seattle
+               0.437               -0.448               -0.442
+      </output>
+    </console>
 
     <p>
       is coding for Al Pacino movies.
@@ -444,7 +509,7 @@ pca$rotation[,2]
 
   <section xml:id="case-study-recommendation-systems">
     <title>Case study: recommendation systems</title>
-    
+
     <p>
       We now move back from the small simulated example to the real Movielens dataset. In the previous section, we used a toy setting to illustrate how latent factors can capture patterns such as "mob vs. romance" or "Al Pacino vs. not Al Pacino". Here, we show that similar latent structure is present in the real movie ratings and that we can exploit it to further improve predictions.
     </p>
@@ -453,7 +518,31 @@ pca$rotation[,2]
       Starting from the residuals of our regularized user + movie model (introduced in the regularization chapter), we can examine how movie ratings correlate after accounting for overall averages and user and movie effects. Focusing on a small set of well-known titles, we compute the correlation matrix of these residuals:
     </p>
 
-    <!-- Correlation matrix will be computed and displayed here -->
+    <console>
+      <input>
+ow &lt;- options(width = 200)
+ms &lt;- c("Godfather, The", "Godfather: Part II, The", "Goodfellas",
+            "Scent of a Woman",  "You've Got Mail", "Sleepless in Seattle")
+ids &lt;- movie_map[match(ms, title), movieId]
+r &lt;- dcast(train_set[movieId %in% ids, ], userId ~ movieId, value.var = "resid")[,-1] |&gt;
+  as.matrix()
+r &lt;- r[,ids]
+colnames(r) &lt;- with(movie_map, title[match(colnames(r), movieId)]) |&gt;
+  stringr::str_remove(", The") |&gt; stringr::str_remove(": Part")
+
+round(cor(r, use = "pairwise.complete.obs"), 2)
+options(ow)
+      </input>
+      <output>
+                     Godfather Godfather II Goodfellas Scent of a Woman You've Got Mail Sleepless in Seattle
+Godfather                 1.00         0.84       0.49             0.46           -0.36                -0.42
+Godfather II              0.84         1.00       0.47             0.21           -0.25                -0.43
+Goodfellas                0.49         0.47       1.00             0.04           -0.27                -0.45
+Scent of a Woman          0.46         0.21       0.04             1.00           -0.37                -0.50
+You've Got Mail          -0.36        -0.25      -0.27            -0.37            1.00                 0.43
+Sleepless in Seattle     -0.42        -0.43      -0.45            -0.50            0.43                 1.00
+      </output>
+    </console>
 
     <p>
       As in the simulated example, we see clear correlation patterns. For instance, <em>The Godfather</em>, <em>The Godfather Part II</em>, and <em>Goodfellas</em> share similar residuals, while romantic comedies show different behavior. This suggests that ratings are influenced by <em>latent characteristics</em> that group movies and users in meaningful ways.
@@ -461,7 +550,7 @@ pca$rotation[,2]
 
     <subsection xml:id="latent-factor-model-for-movie-ratings">
       <title>A latent factor model for movie ratings</title>
-      
+
       <p>
         This motivates extending our earlier model. We now incorporate latent factors that capture similarities between movies and users. This leads us to a simplified version of the approach used by the winning Netflix Prize team, which combined latent factor models with the regularization methods developed in the regularization chapter.
       </p>
@@ -493,7 +582,7 @@ pca$rotation[,2]
 
     <subsection xml:id="latent-factor-regularization">
       <title>Regularization</title>
-      
+
       <p>
         Given the large number of parameters and the sparsity of the data, especially for movies with few ratings, it is appropriate to use penalized least squares. We therefore minimize:
       </p>
@@ -505,7 +594,7 @@ pca$rotation[,2]
         \|\boldsymbol{\alpha}\|^2 +
         \|\boldsymbol{\beta}\|^2
         \right) +
-        \lambda_2 
+        \lambda_2
         \sum_{k=1}^K \left( \|\mathbf{p}_k\|^2+
          \|\mathbf{q}_k\|^2
         \right)
@@ -549,14 +638,17 @@ fit &lt;- with(train_set, fit_recommender_model(rating, userId, movieId, reltol=
         Once we have a fitted model, we can build predictions for the test set and compute the RMSE:
       </p>
 
-      <program language="r">
+      <console>
         <input>
 i &lt;- test_set$userId
 j &lt;- test_set$movieId
 resid &lt;- test_set$rating - with(fit, mu + a[i] + b[j] + rowSums(p[i,]*q[j,]))
 rmse(resid)
         </input>
-      </program>
+        <output>
+[1] 0.859
+        </output>
+      </console>
 
       <p>
         This improves accuracy beyond the regularized user + movie effects model from the regularization chapter. It illustrates, in simplified form, how the Netflix Prize winners improved prediction: by combining regularization with a latent factor model that learns hidden structure in user–movie interactions.
@@ -569,7 +661,7 @@ rmse(resid)
 
     <subsection xml:id="visualizing-factors">
       <title>Visualizing factors</title>
-      
+
       <p>
         Examining the estimated movie factors <m>\mathbf{q}_k</m> reveals that they are interpretable.
       </p>
@@ -598,7 +690,12 @@ rownames(factors) &lt;- movielens[match(rownames(factors), movieId)]$title
         Plotting the first two factors reveals several insights. First note that the six movies of our earlier example are highlighted in blue: we can see that these two factors start to explain the correlations we saw earlier, with mob films clustering together, romance films far from these, and the Al Pacino being somewhere in between:
       </p>
 
-      <!-- Figure movies-pca will be inserted here in final version -->
+      <figure xml:id="fig-movies-pca">
+        <caption>Estimated movie factors from the recommender model</caption>
+        <image source="images/latent-factor-models-movies-pca.png" width="95%">
+          <description>A scatterplot of the first two estimated movie factors shows labeled movie titles. The six example films are highlighted in blue, while movies with extreme factor values are labeled in red.</description>
+        </image>
+      </figure>
 
       <p>
         Looking at the movies with the most extreme factor values (red) provides a clear interpreation for the factors.
@@ -608,41 +705,66 @@ rownames(factors) &lt;- movielens[match(rownames(factors), movieId)]$title
         The first factor separates iconic dark classics
       </p>
 
-      <program language="r">
+      <console>
         <input>
 names(sort(factors[,1], decreasing = TRUE)[1:5])
         </input>
-      </program>
+        <output>
+[1] "2001: A Space Odyssey"
+[2] "Dr. Strangelove or: How I Learned to Stop Worrying and Love the Bomb"
+[3] "Clockwork Orange, A"
+[4] "Taxi Driver"
+[5] "Silence of the Lambs, The"
+        </output>
+      </console>
 
       <p>
         from Hollywood blockbusters
       </p>
 
-      <program language="r">
+      <console>
         <input>
 names(sort(factors[,1])[1:5])
         </input>
-      </program>
+        <output>
+[1] "Armageddon"
+[2] "Pearl Harbor"
+[3] "Con Air"
+[4] "Star Wars: Episode I - The Phantom Menace"
+[5] "Mission: Impossible II"
+        </output>
+      </console>
 
       <p>
         The second factor separates weird cult movies
       </p>
 
-      <program language="r">
+      <console>
         <input>
 names(sort(factors[,2], decreasing = TRUE)[1:5])
         </input>
-      </program>
+        <output>
+[1] "Showgirls"         "Scary Movie"       "Leaving Las Vegas"
+[4] "Dogma"             "Rosemary's Baby"
+        </output>
+      </console>
 
       <p>
         from big-budget epic historical and fantasy sagas
       </p>
 
-      <program language="r">
+      <console>
         <input>
 names(sort(factors[,2])[1:5])
         </input>
-      </program>
+        <output>
+[1] "Lord of the Rings: The Two Towers, The"
+[2] "Lord of the Rings: The Return of the King, The"
+[3] "Lord of the Rings: The Fellowship of the Ring, The"
+[4] "Dances with Wolves"
+[5] "Matrix, The"
+        </output>
+      </console>
 
       <p>
         These results demonstrate that the latent factors capture meaningful distinctions in film genres and styles, showing how latent factor models can uncover interpretable structure from sparse rating data.
@@ -651,7 +773,7 @@ names(sort(factors[,2])[1:5])
 
     <subsection xml:id="practical-considerations">
       <title>Practical considerations</title>
-      
+
       <p>
         The <c>fit_recommender_model</c> function includes several adjustable parameters:
       </p>
@@ -691,7 +813,7 @@ names(sort(factors[,2])[1:5])
 
   <section xml:id="singular-value-decomposition">
     <title>Singular Value Decomposition</title>
-    
+
     <p>
       A related technique often used in latent factor analysis is the Singular Value Decomposition (SVD). It states any <m>N \times p</m> matrix can be written:
     </p>
@@ -712,7 +834,7 @@ names(sort(factors[,2])[1:5])
       In R, we can compute the SVD with <c>svd</c> and confirm its relationship to PCA:
     </p>
 
-    <program language="r">
+    <console>
       <input>
 x &lt;- matrix(rnorm(1000), 100, 10)
 pca &lt;- prcomp(x, center = FALSE)
@@ -722,7 +844,12 @@ all.equal(pca$rotation, s$v, check.attributes = FALSE)
 all.equal(pca$sdev^2, s$d^2/(nrow(x) - 1))
 all.equal(pca$x, s$u %*% diag(s$d), check.attributes = FALSE)
       </input>
-    </program>
+      <output>
+[1] TRUE
+[1] TRUE
+[1] TRUE
+      </output>
+    </console>
 
     <p>
       As an optimization, note that <c>s$u %*% diag(s$d)</c> can be written more efficiently as:
@@ -838,7 +965,7 @@ set.seed(1987)
 n &lt;- 100; k &lt;- 8
 s &lt;- 64*matrix(c(1, .85, .5,
                  .85, 1, .5,
-                 .5, .5, 1), 3, 3) 
+                 .5, .5, 1), 3, 3)
 m &lt;- MASS::mvrnorm(n, rep(0, 3), s)
 m &lt;- m[order(rowMeans(m), decreasing = TRUE), ] %x% matrix(rep(1, k), nrow = 1)
 y &lt;- m + matrix(rnorm(n * k * 3, 0, 3), n, k * 3)

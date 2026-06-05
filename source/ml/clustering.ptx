@@ -137,10 +137,17 @@ h &lt;- hclust(d)
     
     <program language="r">
       <input>
-rafalib::mypar()
+par(mar = c(5.1, 4.1, 4.1, 2.1))
 plot(h, cex = 0.75, main = "", xlab = "")
       </input>
     </program>
+    
+    <figure xml:id="fig-clustering-hierarchical-dendrogram">
+      <caption>Dendrogram from hierarchical clustering of the movie ratings matrix</caption>
+      <image source="images/clustering-hierarchical-dendrogram.png" width="90%">
+        <description>A dendrogram showing the hierarchical clustering of the 50 most-rated movies after centering ratings by movie. Movies with similar rating patterns across users appear close together, including visibly tight clusters of franchise films.</description>
+      </image>
+    </figure>
     
     <p>
       This graph gives us an approximation between the distance between any two movies. To find this distance, we find the first location, from top to bottom, where these movies split into two different groups. The height of this location is the distance between these two groups. So, for example, the distance between the three <em>Star Wars</em> movies is 8 or less, while the distance between <em>Raiders of the Lost Ark</em> and <em>Silence of the Lambs</em> is about 17.
@@ -164,21 +171,29 @@ groups &lt;- cutree(h, k = 10)
       Note that the clustering provides some insights into types of movies. Group 2 appears to be critically acclaimed movies:
     </p>
     
-    <program language="r">
+    <console>
       <input>
 names(groups)[groups == 2]
       </input>
-    </program>
+      <output>
+[1] "American Beauty"      "Fargo"                "Godfather, The"      
+[4] "Pulp Fiction"         "Silence of the La..." "Usual Suspects, The" 
+      </output>
+    </console>
     
     <p>
       And Group 9 appears to be <em>nerd</em> movies:
     </p>
     
-    <program language="r">
+    <console>
       <input>
 names(groups)[groups == 9]
       </input>
-    </program>
+      <output>
+[1] "Lord of the Rings..." "Lord of the Rings..." "Lord of the Rings..."
+[4] "Star Wars IV - A ..." "Star Wars V - The..." "Star Wars VI - Re..."
+      </output>
+    </console>
     
     <p>
       We can change the size of the group by either making <c>k</c> larger or <c>h</c> smaller.
@@ -221,6 +236,13 @@ image(genex[h_1$order, h_2$order])
       </input>
     </program>
     
+    <figure xml:id="fig-clustering-ordered-gene-expression-image">
+      <caption>Centered gene-expression matrix ordered by hierarchical clustering</caption>
+      <image source="images/clustering-ordered-gene-expression-image.png" width="80%">
+        <description>An image plot of the centered gene-expression matrix after reordering both samples and genes by hierarchical clustering. Blocks of similar colors reveal clustered structure among tissues and genes.</description>
+      </image>
+    </figure>
+    
     <p>
       The <c>heatmap</c> function that does all this for us:
     </p>
@@ -231,8 +253,15 @@ heatmap(genex)
       </input>
     </program>
     
+    <figure xml:id="fig-clustering-gene-expression-heatmap">
+      <caption>Heatmap of the full centered gene-expression matrix</caption>
+      <image source="images/clustering-gene-expression-heatmap.png" width="80%">
+        <description>A heatmap of the full centered gene-expression matrix with dendrograms for both samples and genes. The overall structure is visible, but the large number of genes makes fine detail difficult to interpret.</description>
+      </image>
+    </figure>
+    
     <p>
-      Note we do not show the results of the two lines of code above because there are too many features for the plot to be useful. We will therefore filter some columns and remake the plots.
+      The two plots above are included for completeness, but with all genes included they are too dense to be especially useful. We therefore filter some columns and remake the heatmap.
     </p>
     
     <p>
@@ -251,6 +280,13 @@ o &lt;- order(sds, decreasing = TRUE)[1:25]
 heatmap(genex[,o], col = rev(RColorBrewer::brewer.pal(11, "Spectral")))
       </input>
     </program>
+    
+    <figure xml:id="fig-clustering-variable-gene-heatmap">
+      <caption>Heatmap of the 25 most variable genes</caption>
+      <image source="images/clustering-variable-gene-heatmap.png" width="80%">
+        <description>A heatmap of the 25 genes with the largest standard deviations across tissues, colored with a divergent palette. Tissue samples form clearer groups once the display is restricted to the most variable genes.</description>
+      </image>
+    </figure>
     
     <p>
       We see clear patterns in the heatmap: observations cluster into groups that largely correspond to tissue type, and genes also form clusters that reflect biologically meaningful structure. For example, genes such as SV2B, GPM6B, LRP4, and DOCK4 cluster together because they are all associated with neuronal function.
@@ -294,11 +330,15 @@ km &lt;- kmeans(genex, centers = 7)
       The cluster assignments are stored in the <c>cluster</c> component:
     </p>
     
-    <program language="r">
+    <console>
       <input>
 km$cluster[1:5]
       </input>
-    </program>
+      <output>
+cerebellum_1 cerebellum_2 cerebellum_3 cerebellum_4 cerebellum_5 
+           7            7            7            7            7 
+      </output>
+    </console>
     
     <p>
       Because the initial centers are chosen at random (which is why we use <c>set.seed</c>), the resulting clusters can vary. To improve stability, we can repeat the process multiple times with different random starting points and keep the best result. The number of random starts is set with the <c>nstart</c> argument:
@@ -315,11 +355,22 @@ km &lt;- kmeans(genex, centers = 7, nstart = 100)
       Because we have true tissue labels for this dataset, we can evaluate how well the clusters produced by k-means align with the known biological groups. The simplest approach is to examine a contingency table and assess how <term>pure</term> each cluster is, that is, whether most of its samples come from a single tissue type:
     </p>
     
-    <program language="r">
+    <console>
       <input>
 table(km$cluster, tissue_gene_expression$y)
       </input>
-    </program>
+      <output>
+   
+    cerebellum colon endometrium hippocampus kidney liver placenta
+  1         33     0           0           0      0     0        0
+  2          0    34           0           0      1     0        0
+  3          0     0           0           0      0    26        0
+  4          0     0          15           0      0     0        0
+  5          0     0           0           0     38     0        0
+  6          5     0           0          31      0     0        0
+  7          0     0           0           0      0     0        6
+      </output>
+    </console>
     
     <p>
       The results show that k-means does a reasonably good job at recovering the tissue structure. For example, clusters 1, 3, 4, 5, and 7 correspond largely to cerebellum, liver, endometrium, kidney, and placenta, respectively. All hippocampus samples fall into cluster 6, although five cerebellum samples are incorrectly included there. Cluster 2 captures almost all colon samples, with only one kidney sample misassigned.
@@ -341,12 +392,23 @@ table(km$cluster, tissue_gene_expression$y)
       A convenient first step is to visualize cluster quality using a contingency table (or confusion matrix), as we did above with <c>table</c>. Here, rows represent clusters and columns represent true classes. After optionally reordering rows or columns to make the structure easier to interpret:
     </p>
     
-    <program language="r">
+    <console>
       <input>
 tab &lt;- table(km$cluster, tissue_gene_expression$y)
 tab[,apply(tab, 1, which.max)]
       </input>
-    </program>
+      <output>
+   
+    cerebellum colon liver endometrium kidney hippocampus placenta
+  1         33     0     0           0      0           0        0
+  2          0    34     0           0      1           0        0
+  3          0     0    26           0      0           0        0
+  4          0     0     0          15      0           0        0
+  5          0     0     0           0     38           0        0
+  6          5     0     0           0      0          31        0
+  7          0     0     0           0      0           0        6
+      </output>
+    </console>
     
     <p>
       a <q>pure</q> cluster appears as a row with one dominant entry and all remaining entries relatively small. This indicates that observations assigned to that cluster overwhelmingly share the same true label.
@@ -388,12 +450,15 @@ tab[,apply(tab, 1, which.max)]
         We can compute the purity for our gene expression example and note that it is very close to 1:
       </p>
       
-      <program language="r">
+      <console>
         <input>
 tab &lt;- table(km$cluster, tissue_gene_expression$y)
 sum(apply(tab, 1, max))/sum(tab)
         </input>
-      </program>
+        <output>
+[1] 0.968254
+        </output>
+      </console>
     </subsection>
     
     <subsection xml:id="sec-other-clustering-measures">
@@ -483,6 +548,13 @@ for (i in 1:7) {
 }
           </input>
         </program>
+      
+        <figure xml:id="fig-clustering-cerebellum-29-vs-kmeans-centers">
+          <caption>Comparing <c>cerebellum_29</c> to each of the seven k-means centers</caption>
+          <image source="images/clustering-cerebellum-29-vs-kmeans-centers.png" width="80%">
+            <description>A panel of seven scatterplots comparing the gene-expression profile of sample cerebellum_29 to each k-means cluster center. The panel helps identify which center most closely resembles this sample.</description>
+          </image>
+        </figure>
         
         <p>
           Repeat for <c>"cerebellum_30"</c>, <c>"kidney_38"</c>, <c>"kidney_39"</c>, <c>"liver_13"</c>, and <c>"liver_14"</c>, and also compare these samples directly to one another. Use these comparisons to propose possible explanations for the mismatches observed in Exercise 5.

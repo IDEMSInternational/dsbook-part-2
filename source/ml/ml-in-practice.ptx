@@ -36,32 +36,44 @@ mnist &lt;- read_mnist()
       The dataset includes two components, a training set and a test set:
     </p>
     
-    <program language="r">
+    <console>
       <input>
 names(mnist)
       </input>
-    </program>
+      <output>
+[1] "train" "test"
+      </output>
+    </console>
     
     <p>
       Each of these components includes a matrix with features in the columns:
     </p>
     
-    <program language="r">
+    <console>
       <input>
 dim(mnist$train$images)
       </input>
-    </program>
+      <output>
+[1] 60000   784
+      </output>
+    </console>
     
     <p>
       and vector with the classes as integers:
     </p>
     
-    <program language="r">
+    <console>
       <input>
 class(mnist$train$labels)
 table(mnist$train$labels)
       </input>
-    </program>
+      <output>
+[1] "integer"
+
+   0    1    2    3    4    5    6    7    8    9 
+5923 6742 5958 6131 5842 5421 5918 6265 5851 5949
+      </output>
+    </console>
     
     <p>
       Because we want this example to run on a laptop and in less than one hour, we will consider a subset of the dataset. We will sample 10,000 random rows from the training set and 1,000 random rows from the test set:
@@ -219,13 +231,17 @@ y_hat_knn &lt;- predict(train_knn, mnist_27$test, type = "raw")
         This permits us to quickly compare the algorithms. For example, we can compare the accuracy like this:
       </p>
       
-      <program language="r">
+      <console>
         <input>
 fits &lt;- list(glm = train_glm, qda = train_qda, knn = train_knn)
 sapply(fits, function(fit) 
   mean(predict(fit, mnist_27$test, type = "raw") == mnist_27$test$y))
         </input>
-      </program>
+        <output>
+  glm   qda   knn 
+0.775 0.815 0.835
+        </output>
+      </console>
     </subsection>
 
     <subsection xml:id="sec-caret-cv">
@@ -235,11 +251,15 @@ sapply(fits, function(fit)
         When an algorithm includes a tuning parameter, <c>train</c> automatically uses a resampling method to estimate MSE and decide among a few default candidate values. To find out what parameter or parameters are optimized, you can read the <term>caret</term> manual<fn><url href="http://topepo.github.io/caret/available-models.html"/></fn> or study the output of:
       </p>
       
-      <program language="r">
+      <console>
         <input>
 modelLookup("knn")
         </input>
-      </program>
+        <output>
+  model parameter      label forReg forClass probModel
+1   knn         k #Neighbors   TRUE     TRUE      TRUE
+        </output>
+      </console>
       
       <p>
         To obtain all the details of how <term>caret</term> implements kNN you can use:
@@ -271,6 +291,13 @@ ggplot(train_knn, highlight = TRUE)
         </input>
       </program>
       
+      <figure xml:id="fig-ml-in-practice-caret-default-knn-cv">
+        <caption>Cross-validation results for the default kNN tuning grid</caption>
+        <image source="images/ml-in-practice-caret-default-knn-cv.png" width="70%">
+          <description>A line plot of caret's cross-validation accuracy for the default kNN tuning grid, with the best value of k highlighted.</description>
+        </image>
+      </figure>
+      
       <p>
         By default, the resampling is performed by taking 25 bootstrap samples, each comprised of 25% of the observations.
       </p>
@@ -292,6 +319,13 @@ ggplot(train_knn, highlight = TRUE)
         </input>
       </program>
       
+      <figure xml:id="fig-ml-in-practice-caret-tuned-knn-cv">
+        <caption>Cross-validation results for an expanded kNN tuning grid</caption>
+        <image source="images/ml-in-practice-caret-tuned-knn-cv.png" width="70%">
+          <description>A line plot of caret's cross-validation accuracy for a wider range of k values, with the best-performing k highlighted.</description>
+        </image>
+      </figure>
+      
       <note>
         <p>
           Resampling methods involve random sampling steps, so repeated runs of the same code can produce different outcomes. To ensure that your results can be reproduced exactly, always set the random seed at the start of the analysis, as we did at the beginning of this chapter.
@@ -302,31 +336,45 @@ ggplot(train_knn, highlight = TRUE)
         To access the parameter that maximized the accuracy, you can use this:
       </p>
       
-      <program language="r">
+      <console>
         <input>
 train_knn$bestTune
         </input>
-      </program>
+        <output>
+    k
+13 59
+        </output>
+      </console>
       
       <p>
         and the best performing model like this:
       </p>
       
-      <program language="r">
+      <console>
         <input>
 train_knn$finalModel
         </input>
-      </program>
+        <output>
+55-nearest neighbor model
+Training set outcome distribution:
+
+  2   7 
+379 421 
+        </output>
+      </console>
       
       <p>
         The function <c>predict</c> will use this best performing model. Here is the accuracy of the best model when applied to the test set, which we have not yet used because the cross validation was done on the training set:
       </p>
       
-      <program language="r">
+      <console>
         <input>
 mean(predict(train_knn, mnist_27$test, type = "raw") == mnist_27$test$y)
         </input>
-      </program>
+        <output>
+[1] 0.825
+        </output>
+      </console>
       
       <p>
         Bootstrapping is not always the best approach to resampling (see <xref ref="sec-knn-in-practice"/>, for an example). If we want to change our resampling method, we can use the <c>trainControl</c> function. For example, the code below runs 10-fold cross validation. This means we have 10 samples using 90% of the observations to train in each sample. We accomplish this using the following code:
@@ -347,11 +395,14 @@ train_knn_cv &lt;- train(y ~ ., method = "knn",
           The <c>results</c> component of the <c>train</c> output includes several summary statistics related to the variability of the cross validation estimates:
         </p>
         
-        <program language="r">
+        <console>
           <input>
 names(train_knn$results)
           </input>
-        </program>
+          <output>
+[1] "k"          "Accuracy"   "Kappa"      "AccuracySD" "KappaSD"
+          </output>
+        </console>
         
         <p>
           You can learn many more details about the <term>caret</term> package, from the manual<fn><url href="https://topepo.github.io/caret/available-models.html"/></fn>.
@@ -382,6 +433,13 @@ hist(colSds(x), breaks = 256)
       </input>
     </program>
     
+    <figure xml:id="fig-ml-in-practice-feature-sds-histogram">
+      <caption>Histogram of pixel standard deviations in the MNIST subset</caption>
+      <image source="images/ml-in-practice-feature-sds-histogram.png" width="70%">
+        <description>A histogram of pixel standard deviations across the sampled MNIST training images, showing many pixels with near-zero variability.</description>
+      </image>
+    </figure>
+    
     <p>
       This is expected because there are parts of the image that rarely contain writing (dark pixels).
     </p>
@@ -406,6 +464,13 @@ image(matrix(1:784 %in% nzv, 28, 28))
       </input>
     </program>
     
+    <figure xml:id="fig-ml-in-practice-near-zero-variance-pixels">
+      <caption>Pixels flagged for removal by <c>nearZeroVar</c></caption>
+      <image source="images/ml-in-practice-near-zero-variance-pixels.png" width="50%">
+        <description>An image plot showing which of the 784 MNIST pixels are flagged as near-zero-variance predictors, concentrated near the edges of the digit image.</description>
+      </image>
+    </figure>
+    
     <p>
       So we end up removing <c>length(nzv)</c> predictors.
     </p>
@@ -418,13 +483,16 @@ image(matrix(1:784 %in% nzv, 28, 28))
       Below is an example demonstrating how to remove predictors with near-zero variance and then center the remaining predictors:
     </p>
     
-    <program language="r">
+    <console>
       <input>
 pp &lt;- preProcess(x, method = c("nzv", "center"))
 centered_subsetted_x_test &lt;- predict(pp, newdata = x_test)
 dim(centered_subsetted_x_test)
       </input>
-    </program>
+      <output>
+[1] 1000  252
+      </output>
+    </console>
     
     <p>
       Additionally, the <c>train</c> function in caret includes a <c>preProcess</c> argument that allows users to specify which preprocessing steps to apply automatically during model training. We will explore this functionality further in the context of a k-Nearest Neighbors model in <xref ref="sec-knn-in-practice"/>.
@@ -520,11 +588,14 @@ y_hat_knn &lt;- predict(train_knn, x_test, type = "raw")
         We achieve relatively high accuracy:
       </p>
       
-      <program language="r">
+      <console>
         <input>
 mean(y_hat_knn == y_test)
         </input>
-      </program>
+        <output>
+[1] 0.953
+        </output>
+      </console>
     </subsection>
 
     <subsection xml:id="subsec-pca-dimension-reduction">
@@ -574,11 +645,14 @@ y_hat_knn_pca &lt;- predict(fit_knn_pca, newdata, type = "class")
         The resulting accuracy is similar to what we obtained with the full feature set, but using only a reduced number of dimensions:
       </p>
       
-      <program language="r">
+      <console>
         <input>
 mean(y_hat_knn_pca == y_test)
         </input>
-      </program>
+        <output>
+[1] 0.954
+        </output>
+      </console>
       
       <p>
         In this example, we used the value of <m>k</m> optimized for the raw data, not the PCA-transformed data. To obtain an unbiased MSE estimate when using PCA, we must recompute the PCA inside each cross-validation split and apply the resulting transformation to the corresponding validation fold.
@@ -604,7 +678,7 @@ mean(y_hat_knn_pca == y_test)
         Here is how we modify our earlier code to let caret perform PCA during preprocessing:
       </p>
       
-      <program language="r">
+      <console>
         <input>
 train_knn_pca &lt;- train(x, y, method = "knn", 
                        preProcess = c("nzv", "pca"),
@@ -614,7 +688,10 @@ train_knn_pca &lt;- train(x, y, method = "knn",
 y_hat_knn_pca &lt;- predict(train_knn_pca, x_test, type = "raw")
 mean(y_hat_knn_pca == y_test)
         </input>
-      </program>
+        <output>
+[1] 0.955
+        </output>
+      </console>
       
       <p>
         This raises a natural question: why did we choose 0.9? Could another threshold lead to better performance?
@@ -672,11 +749,14 @@ y_hat_rf &lt;- predict(fit_rf, x_test[,-nzv])
       As with kNN, we also achieve high accuracy:
     </p>
     
-    <program language="r">
+    <console>
       <input>
 mean(y_hat_rf == y_test)
       </input>
-    </program>
+      <output>
+[1] 0.956
+      </output>
+    </console>
     
     <p>
       By optimizing some of the other algorithm parameters, we can achieve even higher accuracy.
@@ -689,12 +769,16 @@ mean(y_hat_rf == y_test)
         The default method for estimating accuracy used by the <c>train</c> function is to test prediction on 25 bootstrap samples. This can result in long compute times. For example, if we are considering several values, say 10, of the tuning parameters, we will fit the algorithm 250 times. We can use the <c>system.time</c> function to estimate how long it takes to run the algorithm once:
       </p>
       
-      <program language="r">
+      <console>
         <input>
 nzv &lt;- nearZeroVar(x)
 system.time({fit_rf &lt;- randomForest(x[, -nzv], y,  mtry = 9)})
         </input>
-      </program>
+        <output>
+   user  system elapsed 
+ 61.657   0.598  62.356
+        </output>
+      </console>
       
       <p>
         and use this to estimate the total time for the 250 iterations. In this case it will be several hours.
@@ -717,6 +801,13 @@ system.time({fit_rf &lt;- randomForest(x[, -nzv], y,  mtry = 9)})
 plot(fit_rf)
         </input>
       </program>
+      
+      <figure xml:id="fig-ml-in-practice-random-forest-error-rate">
+        <caption>Random forest error rate versus number of trees</caption>
+        <image source="images/ml-in-practice-random-forest-error-rate.png" width="70%">
+          <description>A random forest diagnostic plot showing how the out-of-bag error rate changes as the number of trees increases and stabilizes after roughly 200 trees.</description>
+        </image>
+      </figure>
       
       <p>
         We can use this finding to speed up the cross validation procedure. Specifically, because the default is 500, by adding the argument <c>ntree = 200</c> to the call to <c>train</c> above, the procedure will finish 2.5 times faster.
@@ -747,6 +838,13 @@ mat[-nzv] &lt;- imp$Overall
 image(matrix(mat, 28, 28))
         </input>
       </program>
+      
+      <figure xml:id="fig-ml-in-practice-random-forest-variable-importance">
+        <caption>Random forest variable importance across image pixels</caption>
+        <image source="images/ml-in-practice-random-forest-variable-importance.png" width="50%">
+          <description>An image plot mapping random forest variable importance back onto the 28 by 28 pixel grid, with the most informative pixels concentrated around the digit strokes.</description>
+        </image>
+      </figure>
     </subsection>
   </section>
 
@@ -775,6 +873,13 @@ for (i in ind[1:4]) {
       </input>
     </program>
     
+    <figure xml:id="fig-ml-in-practice-random-forest-errors">
+      <caption>High-confidence random forest misclassifications</caption>
+      <image source="images/ml-in-practice-random-forest-errors.png" width="100%">
+        <description>A row of four MNIST test images that the random forest misclassified with high confidence, each labeled with the predicted class probability and the true digit.</description>
+      </image>
+    </figure>
+    
     <p>
       By examining errors like this, we often find specific weaknesses to algorithms or parameter choices and can try to correct them.
     </p>
@@ -795,7 +900,7 @@ for (i in ind[1:4]) {
       Here is a simple example where we compute new class probabilities by taking the average of random forest and kNN. We can see that the accuracy improves:
     </p>
     
-    <program language="r">
+    <console>
       <input>
 p_rf &lt;- predict(fit_rf, x_test[,-nzv], type = "prob")  
 p_rf &lt;- p_rf / rowSums(p_rf)
@@ -804,7 +909,10 @@ p &lt;- (p_rf + p_knn_pca)/2
 y_pred &lt;- factor(apply(p, 1, which.max) - 1)
 mean(y_pred == y_test)
       </input>
-    </program>
+      <output>
+[1] 0.963
+      </output>
+    </console>
     
     <p>
       We have just built an ensemble with just two algorithms. By combing more similarly performing, but uncorrelated, algorithms we can improve accuracy further.
@@ -857,22 +965,32 @@ dat &lt;- data.frame(x = x, y = y)
           This <term>dslabs</term> <c>tissue_gene_expression</c> dataset includes a matrix <c>x</c>:
         </p>
         
-        <program language="r">
+        <console>
           <input>
 library(dslabs)
 dim(tissue_gene_expression$x)
           </input>
-        </program>
+          <output>
+[1] 189 500
+          </output>
+        </console>
         
         <p>
           with the gene expression measured on 500 genes for 189 biological samples representing seven different tissues. The tissue type is stored in <c>y</c>:
         </p>
         
-        <program language="r">
+        <console>
           <input>
 table(tissue_gene_expression$y)
           </input>
-        </program>
+          <output>
+
+ cerebellum       colon endometrium hippocampus      kidney       liver 
+         38          34          15          31          39          26 
+   placenta 
+          6 
+          </output>
+        </console>
         
         <p>
           Split the data in training and test sets, then use kNN to predict tissue type and see what accuracy you obtain. Try it for <m>k = 1, 3, \dots, 11</m>.
@@ -1101,6 +1219,13 @@ with(mnist_27$true_p, plot_cond_prob(x_1, x_2, p))
           </input>
         </program>
         
+        <figure xml:id="fig-ml-in-practice-true-conditional-probability">
+          <caption>True conditional probability for the 2-or-7 example</caption>
+          <image source="images/ml-in-practice-true-conditional-probability.png" width="70%">
+            <description>A raster plot of the true conditional probability for the 2-versus-7 example over the two-feature grid, with a contour marking the 0.5 decision boundary.</description>
+          </image>
+        </figure>
+        
         <p>
           Fit a kNN model and make this plot for the estimated conditional probability. Hint: Use the argument <c>newdata = mnist_27$train</c> to obtain predictions for a grid points.
         </p>
@@ -1113,11 +1238,16 @@ with(mnist_27$true_p, plot_cond_prob(x_1, x_2, p))
           Notice that, in the plot made in exercise 21, the boundary is somewhat wiggly. This is because kNN, like the basic bin smoother, does not use a kernel. To improve this we could try loess. By reading through the available models part of the <term>caret</term> manual, we see that we can use the <c>gamLoess</c> method. We need to install the <term>gam</term> package, if we have not done so already. We see that we have two parameters to optimize:
         </p>
         
-        <program language="r">
+        <console>
           <input>
 modelLookup("gamLoess")
           </input>
-        </program>
+          <output>
+     model parameter  label forReg forClass probModel
+1 gamLoess      span   Span   TRUE     TRUE      TRUE
+2 gamLoess    degree Degree   TRUE     TRUE      TRUE
+          </output>
+        </console>
         
         <p>
           Use resampling to pick a span between 0.15 and 0.75. Keep <c>degree = 1</c>. What span is select?

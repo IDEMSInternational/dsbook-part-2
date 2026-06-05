@@ -190,13 +190,19 @@ C &lt;- A %*% B
       To solve the first equation we wrote out in R, we can use the function <c>solve</c>:
     </p>
 
-    <program language="r">
+    <console>
       <input>
 A &lt;- matrix(c(1, 3, -2, 3, 5, 6, 2, 4, 3), 3, 3, byrow = TRUE)
 b &lt;- matrix(c(5, 7, 8))
 solve(A, b)
       </input>
-    </program>
+      <output>
+     [,1]
+[1,]  -15
+[2,]    8
+[3,]    2
+      </output>
+    </console>
 
     <note>
       <p>
@@ -245,11 +251,17 @@ solve(A, b)
       Because the default for the second argument in <c>solve</c> is an identity matrix, if we simply type <c>solve(A)</c>, we obtain the inverse <m>\mathbf{A}^{-1}</m>. This means we can also obtain a solution to our system of equations with:
     </p>
 
-    <program language="r">
+    <console>
       <input>
 solve(A) %*% b
       </input>
-    </program>
+      <output>
+     [,1]
+[1,]  -15
+[2,]    8
+[3,]    2
+      </output>
+    </console>
   </section>
 
   <section xml:id="distance">
@@ -337,21 +349,27 @@ x_3 &lt;- x[16,]
       We can compute the distances between each pair using the definitions we just learned:
     </p>
 
-    <program language="r">
+    <console>
       <input>
 c(sum((x_1 - x_2)^2), sum((x_1 - x_3)^2), sum((x_2 - x_3)^2)) |&gt; sqrt()
       </input>
-    </program>
+      <output>
+[1] 2319.867 2331.210 2518.969
+      </output>
+    </console>
 
     <p>
       In R, the function <c>crossprod(x)</c> is convenient for computing norms. It multiplies <c>t(x)</c> by <c>x</c>:
     </p>
 
-    <program language="r">
+    <console>
       <input>
 c(crossprod(x_1 - x_2), crossprod(x_1 - x_3), crossprod(x_2 - x_3)) |&gt; sqrt()
       </input>
-    </program>
+      <output>
+[1] 2319.867 2331.210 2518.969
+      </output>
+    </console>
 
     <p>
       Note <c>crossprod</c> takes a matrix as the first argument. As a result, the vectors used here are being coerced into single column matrices. Also, note that <c>crossprod(x,y)</c> multiplies <c>t(x)</c> by <c>y</c>.
@@ -361,22 +379,28 @@ c(crossprod(x_1 - x_2), crossprod(x_1 - x_3), crossprod(x_2 - x_3)) |&gt; sqrt()
       We can see that the distance is smaller between the first two. This agrees with the fact that the first two are 2s and the third is a 7.
     </p>
 
-    <program language="r">
+    <console>
       <input>
 y[c(6, 17, 16)]
       </input>
-    </program>
+      <output>
+[1] 2 2 7
+      </output>
+    </console>
 
     <p>
       We can also compute all the distances at once relatively quickly using the function <c>dist</c>, which takes a matrix as input and computes the distance between each row and produces an object of class <c>dist</c>:
     </p>
 
-    <program language="r">
+    <console>
       <input>
 d &lt;- dist(x[c(6,17,16),])
 class(d)
       </input>
-    </program>
+      <output>
+[1] "dist"
+      </output>
+    </console>
 
     <p>
       This is convenient because there are several machine learning related functions in R that take objects of class <c>dist</c> as input.
@@ -386,11 +410,16 @@ class(d)
       We can see the distance we calculated above like this:
     </p>
 
-    <program language="r">
+    <console>
       <input>
 d
       </input>
-    </program>
+      <output>
+         1        2
+2 2319.867         
+3 2331.210 2518.969
+      </output>
+    </console>
 
     <p>
       Note that the diagonal is omitted because all self-distances are zero, and the upper triangle is also excluded due to the symmetry of the distance matrix, which follows from the fact that distance is commutative.
@@ -418,18 +447,18 @@ d &lt;- dist(x[1:300,])
       If we order this distance by the labels, we can see yellowish squares near the diagonal. This is because observations from the same digits tend to be closer than to different digits:
     </p>
 
-    <figure xml:id="fig-diatance-image-ordered">
-      <caption>Distance image ordered by labels</caption>
-      <image source="images/distance-image-ordered.png" width="50%">
-        <description>A heatmap showing the distance matrix for the first 300 MNIST observations, ordered by digit label. The image displays yellowish squares near the diagonal, indicating that observations of the same digit are closer to each other than to different digits.</description>
-      </image>
-    </figure>
-
     <program language="r">
       <input>
 image(as.matrix(d)[order(y[1:300]), order(y[1:300])])
       </input>
     </program>
+
+    <figure xml:id="fig-diatance-image-ordered">
+      <caption>Distance image ordered by labels</caption>
+      <image source="images/linear-algebra-distance-image-ordered.png" width="50%">
+        <description>A heatmap showing the distance matrix for the first 300 MNIST observations, ordered by digit label. The image displays yellowish squares near the diagonal, indicating that observations of the same digit are closer to each other than to different digits.</description>
+      </image>
+    </figure>
   </section>
 
   <section xml:id="sec-predictor-space">

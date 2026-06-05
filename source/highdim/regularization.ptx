@@ -42,13 +42,23 @@
         The Netflix data is not publicly available, but the GroupLens research lab<fn>https://grouplens.org/</fn> generated their own database with over 20 million ratings for over 27,000 movies by more than 138,000 users. We make a small subset of this data available via the <c>dslabs</c> package:
       </p>
 
-      <program language="r">
+      <console>
         <input>
 library(data.table)
 library(dslabs)
 movielens |&gt; tibble:::tibble() |&gt; head(5)
         </input>
-      </program>
+        <output>
+# A tibble: 5 × 7
+  movieId title                              year genres userId rating timestamp
+    &lt;int&gt; &lt;chr&gt;                             &lt;int&gt; &lt;fct&gt;   &lt;int&gt;  &lt;dbl&gt;     &lt;int&gt;
+1      31 Dangerous Minds                    1995 Drama       1    2.5    1.26e9
+2    1029 Dumbo                              1941 Animation   1    3      1.26e9
+3    1061 Sleepers                           1996 Thriller    1    3      1.26e9
+4    1129 Escape from New York               1981 Action      1    2      1.26e9
+5    1172 Cinema Paradiso (Nuovo cinema Pa…  1989 Drama       1    4      1.26e9
+        </output>
+      </console>
 
       <p>
         Each row represents a rating given by one user to one movie.
@@ -68,11 +78,15 @@ dt &lt;- as.data.table(movielens)
         We can see the number of unique users that provided ratings and how many unique movies were rated:
       </p>
 
-      <program language="r">
+      <console>
         <input>
 dt[, .(n_users = uniqueN(userId), n_movies = uniqueN(movieId))]
         </input>
-      </program>
+        <output>
+   n_users n_movies
+1:     671     9066
+        </output>
+      </console>
 
       <p>
         If we multiply those two numbers, we get a figure exceeding 5 million, yet our dataset contains only about 100,000 rows. This tells us that not every user rated every movie. In fact, the median number of movies rated per user is relatively small. We can think of the data as a very large matrix, with users as rows and movies as columns, filled with many missing entries. The goal of a movie recommendation system is to accurately predict those missing values.
@@ -86,13 +100,12 @@ dt[, .(n_users = uniqueN(userId), n_movies = uniqueN(movieId))]
         Let's look at some of the general properties of the data to better understand the challenges by examing histograms of the number of ratings given to movies, and the number of ratings given by users:
       </p>
 
-      <program language="r">
-        <input>
-rafalib::mypar(1,2)
-hist(log2(table(dt$movieId)), 0:9, xlab = "# Ratings (log 2)", main = "Movies")
-hist(table(dt$userId), seq(0, 2400, 50), xlab = "# Ratings", main = "Users")
-        </input>
-      </program>
+      <figure xml:id="fig-regularization-movie-user-histograms">
+        <caption>Histograms of the number of ratings per movie and per user</caption>
+        <image source="images/regularization-movie-user-histograms.png" width="100%">
+          <description>Two histograms shown side by side. The first shows the distribution of the number of ratings received by movies on a log base 2 scale, with most movies receiving relatively few ratings and a small number receiving many. The second shows the distribution of the number of ratings provided by users, with most users rating a modest number of movies and fewer users rating many movies.</description>
+        </image>
+      </figure>
 
       <p>
         The first thing we notice is that some movies receive far more ratings than others. Most movies are rated only a handful of times, while a small number accumulate hundreds of ratings. This pattern is not surprising. Popular, widely released films tend to be watched and rated by many users, while niche or independent films attract much smaller audiences.
@@ -274,21 +287,27 @@ mu &lt;- mean(train_set$rating)
         If we predict every rating in the test set with this single value, the resulting RMSE is:
       </p>
 
-      <program language="r">
+      <console>
         <input>
 rmse(test_set$rating - mu)
         </input>
-      </program>
+        <output>
+[1] 1.039564
+        </output>
+      </console>
 
       <p>
         Mathematically, this choice is optimal for this model. Any other number leads to a larger RMSE. For example:
       </p>
 
-      <program language="r">
+      <console>
         <input>
 rmse(test_set$rating - 3)
         </input>
-      </program>
+        <output>
+[1] 1.170255
+        </output>
+      </console>
 
       <p>
         This simple approach provides a useful baseline. However, it falls well short of the performance needed to win the Netflix challenge, which required an RMSE of about 0.857 to claim the one million dollar prize. We should be able to do better by incorporating more structure into the model.
@@ -302,12 +321,12 @@ rmse(test_set$rating - 3)
         A natural question is whether all users rate movies in the same way. Some users tend to give very high ratings, while others rarely give more than three stars. To see this, we compute the average rating for each user:
       </p>
 
-      <program language="r">
-        <input>
-rafalib::mypar(1,1)
-hist(with(dt, tapply(rating, userId, mean)), nclass = 30, main = "User averages")
-        </input>
-      </program>
+      <figure xml:id="fig-regularization-user-averages-histogram">
+        <caption>Histogram of average ratings by user</caption>
+        <image source="images/regularization-user-averages-histogram.png" width="70%">
+          <description>A histogram of user-specific average movie ratings. The distribution is centered around the overall average rating, with noticeable spread showing that some users tend to rate movies more generously while others rate them more harshly.</description>
+        </image>
+      </figure>
 
       <p>
         The histogram shows substantial variation. This suggests that some of the differences between ratings can be explained simply by how generous or harsh the user is, regardless of which movie is being rated.
@@ -339,11 +358,14 @@ fit &lt;- lm(rating ~ userId, data = train_set)
         However, in this dataset, the number of user effect parameters is:
       </p>
 
-      <program language="r">
+      <console>
         <input>
 uniqueN(train_set$userId)
         </input>
-      </program>
+        <output>
+[1] 263
+        </output>
+      </console>
 
       <p>
         We therefore need hundreds of dummy variables, which makes fitting the model computationally inefficient.
@@ -396,12 +418,15 @@ clamp &lt;- function(x, lower = 0.5, upper = 5) pmax(pmin(x, upper), lower)
         We obtain predictions for the test set using the estimates obtained on the training set and then evaluate the RMSE:
       </p>
 
-      <program language="r">
+      <console>
         <input>
 resid &lt;- with(test_set, rating - clamp(mu + a[userId]))
 rmse(resid)
         </input>
-      </program>
+        <output>
+[1] 0.9490388
+        </output>
+      </console>
 
       <p>
         The RMSE decreases, which confirms that user effects improve our predictions. But users are not the only source of variation. Some movies are simply better liked than others. We address this next.
@@ -493,12 +518,15 @@ b &lt;- setNames(fit$b, fit$movieId)
         The resulting RMSE for the predictions on the test set is:
       </p>
 
-      <program language="r">
+      <console>
         <input>
 resid &lt;- with(test_set, rating - clamp(mu + a[userId] + b[movieId]))
 rmse(resid)
         </input>
-      </program>
+        <output>
+[1] 0.8815976
+        </output>
+      </console>
 
       <p>
         This further reduces the error, confirming that including both user and movie effects improves predictive accuracy. However, these estimates can still be unstable, especially for movies with only a few ratings.
@@ -512,43 +540,60 @@ rmse(resid)
         If we examine the movies with the largest estimated movie effects <m>\hat{\beta}_j</m>, we find that they are all obscure films with only a single rating:
       </p>
 
-      <program language="r">
+      <console>
         <input>
 top_movies &lt;- names(b[b == max(b)])
 train_set[, .(n = .N), by = .(movieId, title)][movieId %in% top_movies]
         </input>
-      </program>
+        <output>
+   movieId                                         title n
+1:    1450 Prisoner of the Mountains (Kavkazsky plennik) 1
+2:    4076                                     Two Ninas 1
+3:    4591                               Erik the Viking 1
+4:    4930                             Funeral in Berlin 1
+5:    5427                                       Caveman 1
+        </output>
+      </console>
 
       <p>
         Do we really believe these are the best movies in the database? None of these supposedly top-rated movies appears in the test set. To investigate further, let us examine all movies with estimated effects <m>\hat{\beta}_j \ge 2</m>:
       </p>
 
-      <program language="r">
+      <console>
         <input>
 top_movies &lt;- names(b[b &gt; 2])
 length(top_movies)
         </input>
-      </program>
+        <output>
+[1] 16
+        </output>
+      </console>
 
       <p>
         All 16 of these movies were rated at most twice:
       </p>
 
-      <program language="r">
+      <console>
         <input>
 range(table(train_set[movieId %in% top_movies]$movieId))
         </input>
-      </program>
+        <output>
+[1] 1 2
+        </output>
+      </console>
 
       <p>
         And every prediction we made for these movies in the test set was an overestimate:
       </p>
 
-      <program language="r">
+      <console>
         <input>
 range(resid[with(test_set, which(movieId %in% top_movies))])
         </input>
-      </program>
+        <output>
+[1] -1.408257 -0.500000
+        </output>
+      </console>
 
       <p>
         This is a clear example of <em>overfitting</em>. A movie rated only once or twice can receive a very large positive (or negative) estimate simply by chance. The fewer observations that support an estimate, the more variable it becomes. These unstable estimates lead to large prediction errors, which in turn increase the RMSE.
@@ -742,12 +787,20 @@ mu &lt;- fit$mu; a_reg &lt;- fit$a; b_reg &lt;- fit$b
         Let us look at the top 5 movies under the penalized model:
       </p>
 
-      <program language="r">
+      <console>
         <input>
 top_movies &lt;- names(sort(-b_reg[unique(names(b_reg))])[1:5])
 train_set[, .(n = .N), by = .(movieId, title)][movieId %in% top_movies]
         </input>
-      </program>
+        <output>
+   movieId                     title   n
+1:     296              Pulp Fiction 155
+2:     858            Godfather, The 112
+3:      50       Usual Suspects, The 111
+4:     318 Shawshank Redemption, The 131
+5:    1252                 Chinatown  49
+        </output>
+      </console>
 
       <p>
         These are far more plausible than the previous list of one-rating obscure films.
@@ -757,12 +810,15 @@ train_set[, .(n = .N), by = .(movieId, title)][movieId %in% top_movies]
         Finally, we evaluate the RMSE:
       </p>
 
-      <program language="r">
+      <console>
         <input>
 resid &lt;- with(test_set, rating - clamp(mu + a_reg[userId] + b_reg[movieId]))
 rmse(resid)
         </input>
-      </program>
+        <output>
+[1] 0.867735
+        </output>
+      </console>
 
       <p>
         The RMSE improves, confirming that regularization stabilizes estimates and reduces overfitting.
@@ -800,23 +856,26 @@ rmses &lt;- sapply(lambdas, function(lambda) {
       We then plot RMSE as a function of <m>\lambda</m>:
     </p>
 
-    <program language="r">
-      <input>
-rafalib::mypar()
-plot(lambdas, rmses, type = "l", xlab = expression(lambda), ylab = "RMSE")
-      </input>
-    </program>
+    <figure xml:id="fig-regularization-rmse-vs-lambda">
+      <caption>RMSE as a function of the regularization parameter</caption>
+      <image source="images/regularization-rmse-vs-lambda.png" width="70%">
+        <description>A line plot of prediction RMSE against the regularization parameter lambda. The curve decreases at first, reaches a minimum at a small positive value of lambda, and then rises slightly, illustrating the tradeoff between under-regularization and over-regularization.</description>
+      </image>
+    </figure>
 
     <p>
       We see a clear minimum. The optimal value is:
     </p>
 
-    <program language="r">
+    <console>
       <input>
 best_lambda &lt;- lambdas[which.min(rmses)]
 best_lambda
       </input>
-    </program>
+      <output>
+[1] 3.636364e-05
+      </output>
+    </console>
 
     <p>
       We now refit the model using this value:
@@ -832,12 +891,15 @@ fit &lt;- fit_als(best_lambda)
       and compute the final RMSE:
     </p>
 
-    <program language="r">
+    <console>
       <input>
 resid &lt;- with(test_set, rating - clamp(fit$mu + fit$a[userId] + fit$b[movieId]))
 rmse(resid)
       </input>
-    </program>
+      <output>
+[1] 0.8630572
+      </output>
+    </console>
 
     <p>
       This result confirms that regularization improves our predictive accuracy. The following table compares this RMSE to the values obtained from the earlier models.
@@ -899,12 +961,25 @@ schools &lt;- data.frame(id = sprintf("PS%03d", 0:999), size = n, quality = mu,
       We can see that the top 10 schools are:
     </p>
 
-    <program language="r">
+    <console>
       <input>
 library(dplyr)
 schools |&gt; top_n(10, quality) |&gt; arrange(desc(quality))
       </input>
-    </program>
+      <output>
+      id size quality rank
+1  PS040  491      90  1.0
+2  PS443  527      89  2.0
+3  PS433  153      88  4.5
+4  PS506  201      88  4.5
+5  PS526  243      88  4.5
+6  PS569  520      88  4.5
+7  PS410  126      87  8.5
+8  PS547  469      87  8.5
+9  PS645  185      87  8.5
+10 PS919  121      87  8.5
+      </output>
+    </console>
 
     <p>
       Now let's have the students in the school take a test. There is variability across students in each school so we will as well as random variability in test taking so we will simulate the test scores as normally distributed with the average determined by the school quality and standard deviations of 30 percentage points:

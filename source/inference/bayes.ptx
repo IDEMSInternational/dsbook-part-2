@@ -79,6 +79,13 @@ tmp_2 |>
       </input>
     </program>
 
+    <figure xml:id="fig-bayes-election-forecast-distributions">
+      <caption>Forecast distributions for the 2016 popular vote</caption>
+      <image source="images/bayes-election-forecast-distributions.png" width="70%">
+        <description>A faceted density-style plot showing forecast distributions for Clinton, Trump, and Johnson in the 2016 popular vote. Each panel highlights the central 80 percent region and marks the projected average vote share for the candidate.</description>
+      </image>
+    </figure>
+
     <p>
       But what does this mean in the context of the theory we have previously covered, in which these percentages are considered fixed? Furthermore, election forecasters make probabilistic statements such as "Obama has a 90% chance of winning the election." Note that in the context of an urn model, this would be equivalent to stating that the probability of <m>p>0.5</m> is 90%. However, in the urn model <m>p</m> is a fixed parameter and it does not make sense to talk about probability. With Bayesian statistics, we assume <m>p</m> is a random variable, and thus, a statement such as "90% chance of winning" is consistent with the mathematical approach. Forecasters also use models to describe variability at different levels. For example, sampling variability, pollster to pollster variability, day to day variability, and election to election variability. One of the most successful approaches used for this are hierarchical models, which can be explained in the context of Bayesian statistics.
     </p>
@@ -168,13 +175,16 @@ D &lt;- sample(c(1, 0), N, replace = TRUE, prob = c(p, 1 - p))
       Note that, as expected, there are very few people with the disease and many people without the disease,
     </p>
 
-    <program language="r">
+    <console>
       <input>
 N_1 &lt;- sum(D == 1)
 N_0 &lt;- sum(D == 0)
 cat(N_1, "with disease, and", N_0, "without.")
       </input>
-    </program>
+      <output>
+23 with disease, and 99977 without.
+      </output>
+    </console>
 
     <p>
       This makes it more probable that we will see some false positives given that the test is not perfect. Now, each person gets the test, which is correct 99% of the time:
@@ -193,11 +203,17 @@ test[D == 0] &lt;- sample(c("-", "+"), N_0, replace = TRUE, prob = c(acc, 1 - ac
       Since the number of healthy individuals is much larger than the number of individuals with the disease, even a low false positive rate results in more healthy individuals testing positive than actual cases.
     </p>
 
-    <program language="r">
+    <console>
       <input>
 table(D, test)
       </input>
-    </program>
+      <output>
+   test
+D       -     +
+  0 99012   965
+  1     0    23
+      </output>
+    </console>
 
     <p>
       From this table, we see that the proportion of positive tests that have the disease is about 2%. We can run this over and over again to see that, in fact, the probability converges to about 0.02.
@@ -294,7 +310,7 @@ tau &lt;- 0.05
       We can then compute the posterior distribution by applying the equations above to the <c>one_poll_per_pollster</c> data defined in <xref ref="sec-models"/>:
     </p>
 
-    <program language="r">
+    <console>
       <input>
 res &lt;- one_poll_per_pollster |> 
   summarise(y_bar = mean(spread), sigma = sd(spread), n = n())
@@ -303,17 +319,23 @@ posterior_mean &lt;- B*theta_0 + (1 - B)*res$y_bar
 posterior_se &lt;- with(res, sqrt(1/(n/sigma^2 + 1/tau^2)))
 posterior_mean + c(-1, 1)*qnorm(0.975)*posterior_se
       </input>
-    </program>
+      <output>
+[1] 0.02032131 0.03967773
+      </output>
+    </console>
 
     <p>
       Furthermore, we can now make the probabilistic statement that we could not make with the frequentists approach. Specifically, <m>\mathrm{Pr}(\mu>0 \mid \bar{X})</m> can be computed as follows:
     </p>
 
-    <program language="r">
+    <console>
       <input>
 1 - pnorm(0, posterior_mean, posterior_se)
       </input>
-    </program>
+      <output>
+[1] 1
+      </output>
+    </console>
 
     <p>
       According to the calculation above, we would be almost 100% certain that Clinton will win the popular vote, an estimate that feels overly confident. Moreover, it does not align with FiveThirtyEight's reported probability of 81.4%. What accounts for this difference? Our current model does not yet capture all sources of uncertainty. We will revisit this issue and address the missing variability in <xref ref="sec-election-forecasting"/>.

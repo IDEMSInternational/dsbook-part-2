@@ -135,11 +135,14 @@ mean(s &lt;= a)
       For instance, the probability of observing 40 or fewer heads out of 100 is:
     </p>
     
-    <program language="r">
+    <console>
       <input>
 mean(s &lt;= 40)
       </input>
-    </program>
+      <output>
+[1] 0.02885
+      </output>
+    </console>
     
     <p>
       We can visualize the distribution of <m>S_n</m> with a histogram, overlaying the corresponding normal density curve for comparison:
@@ -157,6 +160,13 @@ data.frame(S_n = s) |&gt; ggplot(aes(S_n, after_stat(density))) +
       </input>
     </program>
     
+    <figure xml:id="fig-random-variables-binomial-histogram">
+      <caption>Distribution of the number of heads in 100 fair coin tosses</caption>
+      <image source="images/random-variables-binomial-histogram.png" width="70%">
+        <description>A histogram of the simulated number of heads from 100,000 repetitions of 100 fair coin tosses. The bars form an approximately bell-shaped distribution centered near 50, and a blue normal density curve closely follows the histogram.</description>
+      </image>
+    </figure>
+    
     <p>
       We see that the distribution is approximately normal. A qqplot will confirm that the normal approximation provides an excellent fit.
       In the next chapter (<xref ref="sec-clt-prob"/>), we will learn the theory that explains why this approximation works so well. In fact, this result extends far beyond coin flips, it applies broadly to averages and sums of many kinds of random variables.
@@ -173,11 +183,14 @@ data.frame(S_n = s) |&gt; ggplot(aes(S_n, after_stat(density))) +
       <p>
         We can compute probabilities directly with <c>dbinom</c> or <c>pbinom</c>. For example, to find <m>\mathrm{Pr}(S_n \leq 40)</m>:
       </p>
-      <program language="r">
+      <console>
         <input>
 pbinom(40, size = n, prob = 1/2)
         </input>
-      </program>
+        <output>
+[1] 0.02844397
+        </output>
+      </console>
       <p>
         We can also simulate the number of heads using a <c>rbinom</c> instead of <c>replicate</c> and <c>sample</c>:
       </p>
@@ -236,13 +249,16 @@ rbinom(100000, n, 1/2)
       Although <m>X</m> only takes the values 0 or 1, its <em>expected value</em> of 0.5 represents the long-run proportion of heads if the experiment were repeated many times:
     </p>
     
-    <program language="r">
+    <console>
       <input>
 B &lt;- 10^6
 x &lt;- sample(c(0, 1), B, replace = TRUE)
 mean(x)
       </input>
-    </program>
+      <output>
+[1] 0.499449
+      </output>
+    </console>
     
     <p>
       The <em>standard error</em> (SE) describes the typical deviation of <m>X</m> from its expected value. It is defined as:
