@@ -229,6 +229,13 @@ heights |> filter(sex == "Male") |>
       </input>
     </program>
 
+    <figure xml:id="fig-male-height-histogram-relative-freq">
+      <caption>Histogram of male heights showing relative frequency</caption>
+      <image source="images/distributions-male-height-histogram-relative-freq.png" width="70%">
+        <description>A histogram showing the relative frequency distribution of male heights in inches. The x-axis shows height values and the y-axis shows relative frequency (f). The distribution is approximately bell-shaped and centered around 69 inches.</description>
+      </image>
+    </figure>
+
     <p>
       The R base <c>hist</c> function also allows us to quickly construct a histogram. We can define custom bin intervals which is particularly useful for grouping extreme values and avoiding empty bins:
     </p>
@@ -238,6 +245,13 @@ heights |> filter(sex == "Male") |>
 with(heights, hist(height[sex == "Male"], breaks = c(50, 55, 60:80, 85)))
       </input>
     </program>
+
+    <figure xml:id="fig-male-height-hist-custom-breaks">
+      <caption>Histogram of male heights with custom bin intervals</caption>
+      <image source="images/distributions-male-height-hist-custom-breaks.png" width="70%">
+        <description>A histogram of male heights with custom breaks that group extreme values. The x-axis shows height in inches and the y-axis shows frequency. The histogram uses wider bins for extreme values (below 60 and above 80 inches) and standard bins for the central range.</description>
+      </image>
+    </figure>
 
     <p>
       If we were to send either of these plots to an extraterrestrial unfamiliar with human height distributions, they would immediately gain key insights about the data. First, the male height values range from 50 to 84 inches, with over 95% of observations falling between 63 and 75 inches. Second, the distribution is approximately symmetric around 69 inches. Additionally, by summing bin counts, one could estimate the proportion of data falling within any given interval. Thus, a histogram provides an intuitive summary that preserves most of the information from the original height measurements using only about 30 bin counts.
@@ -260,6 +274,13 @@ heights |> filter(sex == "Male") |> ggplot(aes(x = height)) +
         </input>
       </program>
 
+      <figure xml:id="fig-male-height-ggplot-frequency">
+        <caption>ggplot2 histogram showing frequency (count)</caption>
+        <image source="images/distributions-male-height-ggplot-frequency.png" width="70%">
+          <description>A histogram created with ggplot2 showing the frequency distribution of male heights. The x-axis shows height and the y-axis shows count. Grey bars with black borders display the number of observations in each bin.</description>
+        </image>
+      </figure>
+
       <p>
         Note we use <c>fill</c> and <c>color</c> to mimic the behavior of <c>hist</c>.
       </p>
@@ -275,6 +296,13 @@ heights |> filter(sex == "Male") |>
   geom_histogram(breaks = c(50, 55, 60:80, 85), fill = "grey", color = "black")
         </input>
       </program>
+
+      <figure xml:id="fig-male-height-ggplot-density">
+        <caption>ggplot2 histogram showing density</caption>
+        <image source="images/distributions-male-height-ggplot-density.png" width="70%">
+          <description>A histogram created with ggplot2 showing the density distribution of male heights. The x-axis shows height and the y-axis shows density instead of count. This allows for comparison across datasets of different sizes.</description>
+        </image>
+      </figure>
     </note>
 
     <subsection xml:id="choosing-bin-widths">
@@ -299,6 +327,13 @@ heights |> filter(sex == "Male") |>
   ggplot(aes(height)) + geom_density(alpha = 0.2, fill = "#00BFC4")
       </input>
     </program>
+
+    <figure xml:id="fig-male-height-density">
+      <caption>Smooth density plot of male heights</caption>
+      <image source="images/distributions-male-height-density.png" width="70%">
+        <description>A smooth density plot of male heights created with geom_density. The x-axis shows height and the y-axis shows density. The plot shows a smooth, continuous curve filled with a semi-transparent cyan color, representing the estimated probability density of male heights.</description>
+      </image>
+    </figure>
 
     <p>
       In this plot, we no longer have sharp edges at the interval boundaries and many of the local peaks have been removed.
