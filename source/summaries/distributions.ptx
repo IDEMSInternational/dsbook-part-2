@@ -24,7 +24,7 @@ str(heights)
     </console>
 
     <p>
-      One way to convey the heights to ET is to simply send him a list with all the heights. However, there are much more effective ways to convey this information, and understanding the concept of a distribution will help. To simplify the explanation, we first focus on male heights. We examine the female height data in a later chapter on stratification.
+      One way to convey the heights to ET is to simply send him a list with all the heights. However, there are much more effective ways to convey this information, and understanding the concept of a distribution will help. To simplify the explanation, we first focus on male heights. We examine the female height data in <xref ref="sec-stratification"/>.
     </p>
 
     <p>
@@ -186,12 +186,12 @@ state.region
     </p>
 
     <p>
-      Paraphrasing the saying <q>a picture is worth a thousand words,</q> in this case, a picture is as informative as hundreds of numbers.
+      Paraphrasing the saying <q>a picture is worth a thousand words,</q> in this case, a picture is as informative as 812 numbers.
     </p>
 
     <note>
       <p>
-        The reason we add the word <em>empirical</em> is because, as we will see in a later chapter, the cumulative distribution function (CDF) can be defined mathematically, meaning without any data.
+        The reason we add the word <em>empirical</em> is because, as we will see in <xref ref="sec-cdf-intro"/>, the cumulative distribution function (CDF) can be defined mathematically, meaning without any data.
       </p>
     </note>
   </section>
@@ -254,7 +254,7 @@ with(heights, hist(height[sex == "Male"], breaks = c(50, 55, 60:80, 85)))
     </figure>
 
     <p>
-      If we were to send either of these plots to an extraterrestrial unfamiliar with human height distributions, they would immediately gain key insights about the data. First, the male height values range from 50 to 84 inches, with over 95% of observations falling between 63 and 75 inches. Second, the distribution is approximately symmetric around 69 inches. Additionally, by summing bin counts, one could estimate the proportion of data falling within any given interval. Thus, a histogram provides an intuitive summary that preserves most of the information from the original height measurements using only about 30 bin counts.
+      If we were to send either of these plots to an extraterrestrial unfamiliar with human height distributions, they would immediately gain key insights about the data. First, the male height values range from 50 to 84 inches, with over 95% of observations falling between 63 and 75 inches. Second, the distribution is approximately symmetric around 69 inches. Additionally, by summing bin counts, one could estimate the proportion of data falling within any given interval. Thus, a histogram provides an intuitive summary that preserves most of the information from the original 812 height measurements using only about 30 bin counts.
     </p>
 
     <p>
@@ -344,7 +344,7 @@ heights |> filter(sex == "Male") |>
     </p>
 
     <p>
-      The main new concept is the assumption that our list of observed values is a subset of an unobserved, much larger list of values. In the case of heights, you can imagine that our list of male students comes from a hypothetical list containing all the heights of all the male students in all the world measured very precisely. Let's say there are 1,000,000 of these measurements. This list of values has a distribution, like any other list of values, and what we truly want to report to ET is this larger distribution, as it is much more general. Unfortunately, we don't get to see it.
+      The main new concept is the assumption that our list of observed values is a subset of an unobserved, much larger list of values. In the case of heights, you can imagine that our list of 812 male students comes from a hypothetical list containing all the heights of all the male students in all the world measured very precisely. Let's say there are 1,000,000 of these measurements. This list of values has a distribution, like any other list of values, and what we truly want to report to ET is this larger distribution, as it is much more general. Unfortunately, we don't get to see it.
     </p>
 
     <p>
@@ -363,7 +363,7 @@ heights |> filter(sex == "Male") |>
     </p>
 
     <p>
-      Now, back to reality. We don't have millions of measurements. Instead, we have hundreds and we can't make a histogram with very small bins.
+      Now, back to reality. We don't have millions of measurements. Instead, we have 812 and we can't make a histogram with very small bins.
     </p>
 
     <p>
