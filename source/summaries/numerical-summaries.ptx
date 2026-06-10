@@ -68,7 +68,7 @@ pnorm(a, mu, sigma)
     <title>The average and standard deviation</title>
     
     <p>
-      Discrete distributions also have means and standard deviations. We will discuss these terms in more detail in a later chapter on random variables. For a list of values <m>x_1, \dots, x_n</m> the mean, call it <m>\mu_x</m> is defined by
+      Discrete distributions also have means and standard deviations. We will discuss these terms in more detail in <xref ref="random-variables"/>. For a list of values <m>x_1, \dots, x_n</m> the mean, call it <m>\mu_x</m> is defined by
     </p>
 
     <me>
@@ -255,7 +255,7 @@ mean(abs(z) &lt; 2)
     <title>Robust summaries</title>
     
     <p>
-      Note that the heights we explored in the previous chapter are not the original heights reported by students. A second challenge involves exploring the <em>original</em> reported heights, which are also included in the <term>dslabs</term> package in the <c>reported_heights</c> object. We will see that due to errors in reporting, using <em>robust summaries</em> are necessary to produce useful summaries.
+      Note that the heights we explored in <xref ref="sec-summaries-distributions"/> are not the original heights reported by students. A second challenge involves exploring the <em>original</em> reported heights, which are also included in the <term>dslabs</term> package in the <c>reported_heights</c> object. We will see that due to errors in reporting, using <em>robust summaries</em> are necessary to produce useful summaries.
     </p>
 
     <subsection xml:id="sec-outliers">
