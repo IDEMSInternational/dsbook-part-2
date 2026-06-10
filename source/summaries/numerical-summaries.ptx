@@ -31,7 +31,7 @@ library(dslabs)
     </me>
 
     <p>
-      But you don't need to memorize the formula to use the normal distribution in practice. The most important characteristic is that it is completely defined by just two parameters: <m>\mu</m> and <m>\sigma</m>. The rest of the symbols in the formula represent the interval ends, <m>a</m> and <m>b</m>, and known mathematical constants <m>\pi</m> and <m>e</m>. These two parameters, <m>\mu</m> and <m>\sigma</m>, are referred to as the <em>mean</em> and the <em>standard deviation</em> (SD) of the distribution, respectively (<m>\mu</m> and <m>\sigma</m> are the Greek letters for <m>m</m> and <m>s</m>). In R the function <c>pnorm</c> lets us compute the <m>\mathrm{Pr}(x \leq a)</m> for any <m>a, \mu</m>, and <m>\sigma</m>:
+      But you don't need to memorize the formula to use the normal distribution in practics. The most important characterstics is that it is completely defined by just two parameters: <m>\mu</m> and <m>\sigma</m>. The rest of the symbols in the formula represent the interval ends, <m>a</m> and <m>b</m>, and known mathematical constants <m>\pi</m> and <m>e</m>. These two parameters, <m>\mu</m> and <m>\sigma</m>, are referred to as the <em>mean</em> and the <em>standard deviation</em> (SD) of the distribution, respectively (<m>\mu</m> and <m>\sigma</m> are the Greek letters for <m>m</m> and <m>s</m>). In R the fucntion <c>pnorm</c> let's us compute the <m>\mathrm{Pr}(x \leq a)</m> for any <m>a, \mu</m>, and <m>\sigma</m>:
     </p>
 
     <program language="r">
