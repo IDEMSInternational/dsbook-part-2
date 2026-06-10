@@ -102,7 +102,7 @@ abline(0,1)
       </figure>
 
       <p>
-        We see that in the middle of the plot the points are on the identity line, confirming the distributions are similar except for the shift. However, for the smaller and larger quantiles we see a deviation from the line. We come back to this observation in <xref ref="sec-stratification"/>.
+        We see that in the middle of the plot the points are on the identiy line, confirming the distirbutiosn are similar except for the shift. However, for the smaller and larger quantiles we see a deviation from the line. We come back to this observation in <xref ref="sec-stratification"/>.
       </p>
     </subsection>
 
