@@ -31,7 +31,7 @@ library(dslabs)
     </me>
 
     <p>
-      But you don't need to memorize the formula to use the normal distribution in practice. The most important characteristic is that it is completely defined by just two parameters: <m>\mu</m> and <m>\sigma</m>. The rest of the symbols in the formula represent the interval ends, <m>a</m> and <m>b</m>, and known mathematical constants <m>\pi</m> and <m>e</m>. These two parameters, <m>\mu</m> and <m>\sigma</m>, are referred to as the <em>mean</em> and the <em>standard deviation</em> (SD) of the distribution, respectively (<m>\mu</m> and <m>\sigma</m> are the Greek letters for <m>m</m> and <m>s</m>). In R the function <c>pnorm</c> lets us compute the <m>\mathrm{Pr}(x \leq a)</m> for any <m>a, \mu</m>, and <m>\sigma</m>:
+      But you don't need to memorize the formula to use the normal distribution in practics. The most important characterstics is that it is completely defined by just two parameters: <m>\mu</m> and <m>\sigma</m>. The rest of the symbols in the formula represent the interval ends, <m>a</m> and <m>b</m>, and known mathematical constants <m>\pi</m> and <m>e</m>. These two parameters, <m>\mu</m> and <m>\sigma</m>, are referred to as the <em>mean</em> and the <em>standard deviation</em> (SD) of the distribution, respectively (<m>\mu</m> and <m>\sigma</m> are the Greek letters for <m>m</m> and <m>s</m>). In R the fucntion <c>pnorm</c> let's us compute the <m>\mathrm{Pr}(x \leq a)</m> for any <m>a, \mu</m>, and <m>\sigma</m>:
     </p>
 
     <program language="r">
@@ -68,7 +68,7 @@ pnorm(a, mu, sigma)
     <title>The average and standard deviation</title>
     
     <p>
-      Discrete distributions also have means and standard deviations. We will discuss these terms in more detail in a later chapter on random variables. For a list of values <m>x_1, \dots, x_n</m> the mean, call it <m>\mu_x</m> is defined by
+      Discrete distributions also have means and standard deviations. We will discuss these terms in more detail in <xref ref="random-variables"/>. For a list of values <m>x_1, \dots, x_n</m> the mean, call it <m>\mu_x</m> is defined by
     </p>
 
     <me>
@@ -255,7 +255,7 @@ mean(abs(z) &lt; 2)
     <title>Robust summaries</title>
     
     <p>
-      Note that the heights we explored in the previous chapter are not the original heights reported by students. A second challenge involves exploring the <em>original</em> reported heights, which are also included in the <term>dslabs</term> package in the <c>reported_heights</c> object. We will see that due to errors in reporting, using <em>robust summaries</em> are necessary to produce useful summaries.
+      Note that the heights we explored in <xref ref="sec-summaries-distributions"/> are not the original heights reported by students. A second challenge involves exploring the <em>original</em> reported heights, which are also included in the <term>dslabs</term> package in the <c>reported_heights</c> object. We will see that due to errors in reporting, using <em>robust summaries</em> are necessary to produce useful summaries.
     </p>
 
     <subsection xml:id="sec-outliers">

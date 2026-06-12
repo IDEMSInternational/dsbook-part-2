@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <chapter xmlns:xi="http://www.w3.org/2001/XInclude" xml:id="continuous-probability">
   <title>Continuous Probability</title>
-  
+
   <introduction>
     <p>
       In <xref ref="sec-ecdf-intro"/>, we discussed why it is not practical to assign a frequency to every possible continuous outcome, such as an exact height, since there are infinitely many possible values. The same idea extends to random outcomes that take values on a continuous scale: each individual value has probability zero. Instead, we describe their behavior through probability density functions, which let us compute probabilities for intervals of values rather than single points.
-    </p>
-    <p>
-      In this chapter, we introduce the mathematical framework for continuous probability distributions and present several useful approximations that frequently appear in data analysis.
     </p>
   </introduction>
 
