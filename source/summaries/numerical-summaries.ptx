@@ -255,7 +255,7 @@ mean(abs(z) &lt; 2)
     <title>Robust summaries</title>
     
     <p>
-      Note that the heights we explored in <xref ref="sec-summaries-distributions"/> are not the original heights reported by students. A second challenge involves exploring the <em>original</em> reported heights, which are also included in the <term>dslabs</term> package in the <c>reported_heights</c> object. We will see that due to errors in reporting, using <em>robust summaries</em> are necessary to produce useful summaries.
+      Note that the heights we explored in <xref ref="distributions"/> are not the original heights reported by students. A second challenge involves exploring the <em>original</em> reported heights, which are also included in the <term>dslabs</term> package in the <c>reported_heights</c> object. We will see that due to errors in reporting, using <em>robust summaries</em> are necessary to produce useful summaries.
     </p>
 
     <subsection xml:id="sec-outliers">
