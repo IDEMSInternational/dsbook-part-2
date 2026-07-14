@@ -12,6 +12,16 @@
   <preface xml:id="preface">
     <title>Preface</title>
     <p>
+      This is a PreTeXt version of <em>Statistics and Prediction Algorithms Through Case Studies</em> 
+      by Rafael A. Irizarry. The original book and Quarto source code are available on 
+      <url href="https://github.com/rafalab/dsbook-part-2">GitHub</url>, and the original book website 
+      can be found at <url href="https://rafalab.github.io/dsbook-part-2/">https://rafalab.github.io/dsbook-part-2/</url>. 
+      This PreTeXt conversion is maintained at 
+      <url href="https://github.com/PreTeXtBooks/dsbook-part-2">https://github.com/PreTeXtBooks/dsbook-part-2</url>. 
+      For any issues related to the PreTeXt rendering, please report them on the 
+      <url href="https://github.com/PreTeXtBooks/dsbook-part-2/issues">PreTeXt repository</url>.
+    </p>
+    <p>
       This is the website for the <em>Statistics and Prediction Algorithms Through Case Studies</em>, 
       the second part of <em>Introduction to Data Science</em>.
     </p>
